@@ -1,0 +1,6 @@
+name: MPCUtilities
+summary: "A store of generally useful MPC routines."
+repo: https://github.com/matthewjohnpayne/MPCUtilities
+language: Python
+featured: true
+order: 4

@@ -1,0 +1,6 @@
+title: From MPC Orbit to Ephemeris-Quality Integration with ASSIST
+summary: High-accuracy test-particle integration using ASSIST, which reads planetary positions from JPL DE440/441 and applies the forces used in JPL's own small-body propagation.
+topic: orbits
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_to_assist/
+tools: [ASSIST, REBOUND]
+order: 5

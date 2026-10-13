@@ -1,0 +1,11 @@
+# Copy to a new file (e.g. 2021-payne-shifty.yaml) — files starting with "_" are ignored.
+# Add only records verified against ADS, ORCID or the publisher. Never infer from author names.
+title: ""
+authors: ["Payne, M. J."]
+year: 2000
+venue: ""
+doi: ""
+bibcode: ""
+url: ""
+featured: false
+source: ADS

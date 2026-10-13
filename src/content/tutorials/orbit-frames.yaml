@@ -1,0 +1,6 @@
+title: Reference Frames for Solar System Dynamics
+summary: One 800-year N-body integration, stored once in the inertial barycentric frame, viewed from several origins and orientations by pure post-processing.
+topic: orbits
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_frames/
+tools: [REBOUND]
+order: 1

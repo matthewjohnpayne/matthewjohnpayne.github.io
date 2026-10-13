@@ -1,0 +1,6 @@
+name: MPCFit
+summary: "MPC routines for fitting orbits of various kinds to observational data."
+repo: https://github.com/matthewjohnpayne/MPCFit
+language: Python
+featured: false
+order: 7

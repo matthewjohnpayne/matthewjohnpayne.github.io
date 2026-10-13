@@ -1,0 +1,6 @@
+title: From MPC Orbit to N-Body Simulation
+summary: Connects MPC data products directly to the REBOUND dynamical simulation package.
+topic: orbits
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_to_rebound/
+tools: [REBOUND, mpc-orb]
+order: 4

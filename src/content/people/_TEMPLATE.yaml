@@ -1,0 +1,11 @@
+# Copy to a new file (e.g. jane-doe.yaml) — files starting with "_" are ignored.
+# Only add a person after they have approved their entry; approvedByPerson must be true.
+# Do not infer mentorship or collaboration from coauthorship alone.
+name: ""
+relationship: mentee   # mentee | collaborator
+role: ""
+affiliation: ""
+period: ""
+url: ""
+summary: ""
+approvedByPerson: true

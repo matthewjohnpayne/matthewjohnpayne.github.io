@@ -1,0 +1,6 @@
+name: shifty
+summary: "Python code to shift-and-stack astronomy exposures."
+repo: https://github.com/matthewjohnpayne/shifty
+language: Jupyter Notebook
+featured: true
+order: 3

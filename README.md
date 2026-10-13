@@ -44,6 +44,8 @@ src/
     site.json          Name, introduction, links, optional portrait
     pages.json         Content for the six top-level sections
     features.json      The three homepage research previews
+  content/             One YAML record per tutorial, repository, publication or person
+  content.config.ts    Schemas that validate those records at build time
   layouts/             Shared header, footer, SEO and navigation
   pages/               Homepage and individual section routes
   styles/              Global palette, layout and responsive rules

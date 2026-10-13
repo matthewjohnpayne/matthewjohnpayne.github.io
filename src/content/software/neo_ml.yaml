@@ -1,0 +1,6 @@
+name: neo_ml
+summary: "Machine-learning project for the classification of NEOs from short tracklets."
+repo: https://github.com/matthewjohnpayne/neo_ml
+language: Python
+featured: false
+order: 10
