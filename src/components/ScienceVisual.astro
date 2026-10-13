@@ -1,0 +1,30 @@
+---
+interface Props { kind?: string; }
+const { kind = 'orbit' } = Astro.props;
+const caption = kind === 'scatter'
+  ? 'Illustrative scatter-plot of a small-body population'
+  : kind === 'loops' ? 'Illustrative looping trajectory' : 'Illustrative orbital trajectories';
+---
+<svg viewBox="0 0 360 170" xmlns="http://www.w3.org/2000/svg" class="science-art" role="img" aria-label={caption}>
+  {kind === 'loops' && <g>
+    <line x1="30" y1="85" x2="334" y2="85" stroke="#d8e4e7" stroke-width="1"/>
+    <line x1="178" y1="14" x2="178" y2="153" stroke="#d8e4e7" stroke-width="1"/>
+    <path d="M44 92 C58 35 109 27 132 79 C145 130 170 138 185 80 C199 30 251 22 287 77 S316 143 321 97" fill="none" stroke="#11949b" stroke-width="2"/>
+    <circle cx="178" cy="85" r="6" fill="#ed9956"/><circle cx="284" cy="72" r="4" fill="#098f98"/>
+  </g>}
+  {kind === 'scatter' && <g>
+    <line x1="34" y1="137" x2="336" y2="137" stroke="#cad8dc" stroke-width="1"/>
+    <line x1="34" y1="20" x2="34" y2="137" stroke="#cad8dc" stroke-width="1"/>
+    {Array.from({length:75},(_,i) => {
+      const x=43+((i*71)%285), y=30+((i*37+i*i*3)%95);
+      return <circle cx={x} cy={y} r={1+(i%3)*.25} fill={i%5===0?'#e4945b':'#008b98'} opacity={0.3+(i%6)*.11}/>;
+    })}
+    <path d="M43 111 C113 91 162 78 225 71 S307 58 332 42" stroke="#1c7886" stroke-width="1.4" fill="none"/>
+  </g>}
+  {kind !== 'loops' && kind !== 'scatter' && <g>
+    <ellipse cx="180" cy="87" rx="118" ry="49" transform="rotate(-22 180 87)" stroke="#128f9c" stroke-width="1.8" fill="none"/>
+    <ellipse cx="180" cy="87" rx="86" ry="31" transform="rotate(23 180 87)" stroke="#81b3be" stroke-width="1.4" fill="none"/>
+    <circle cx="180" cy="87" r="6" fill="#ec9d58"/>
+    <circle cx="273" cy="51" r="4" fill="#11949b"/>
+  </g>}
+</svg>

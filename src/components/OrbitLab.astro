@@ -1,0 +1,31 @@
+---
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+---
+<div class="orbit-lab" id="orbit-lab">
+  <div class="orbit-topline"><span class="lab-label"><span class="signal-dot"></span> ORBITAL LABORATORY</span><span class="lab-subtitle">An experiment in gravity</span></div>
+  <div class="orbit-stage">
+    <canvas id="orbit-canvas" aria-label="Integrated paths of the Sun, Earth, Jupiter and a massless test particle in a two-dimensional Newtonian model." role="img"></canvas>
+    <div class="orbit-key" aria-hidden="true">
+      <span><i class="key-sun"></i> Sun</span>
+      <span><i class="key-earth"></i> Earth</span>
+      <span><i class="key-asteroid"></i> Test particle</span>
+    </div>
+    <div class="orbit-loading" id="orbit-loading">Preparing simulation…</div>
+  </div>
+  <div class="orbit-controls">
+    <label class="scenario-group">Scenario
+      <select id="orbit-scenario" aria-label="Choose initial conditions">
+        <option value="near">Near-Earth orbit</option>
+        <option value="resonant">Near co-orbital</option>
+        <option value="eccentric">Eccentric orbit</option>
+      </select>
+    </label>
+    <div class="time-group"><span>Elapsed time</span> <output id="orbit-time" aria-live="off">0.00 yr</output></div>
+    <div class="lab-buttons">
+      <button id="orbit-play" class="sim-button play-button" type="button" aria-pressed="false">▶ <span>Play</span></button>
+      <button id="orbit-reset" class="sim-button" type="button" title="Reset simulation">↺ <span>Reset</span></button>
+    </div>
+  </div>
+  <p class="model-note">A simplified 2D Newtonian integration in AU and years. Jupiter's gravity is included although its orbit is outside this view. Not an MPC ephemeris.</p>
+</div>
+<script is:inline src={asset('js/orbital-lab.js')}></script>

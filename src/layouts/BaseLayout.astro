@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+import site from '../data/site.json';
+
+interface Props { title?: string; description?: string; }
+const { title = site.name, description = site.introduction } = Astro.props;
+const root = import.meta.env.BASE_URL;
+const asset = (path: string) => `${root}${path.replace(/^\//, '')}`;
+const nav = [
+  ['Research', 'research/'], ['People', 'people/'], ['Software', 'software/'],
+  ['Teaching', 'teaching/'], ['MPC', 'mpc/'], ['Publications', 'publications/']
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a1723" />
+    <meta name="description" content={description} />
+    <title>{title === site.name ? `${site.name} — Astrophysicist` : `${title} — ${site.name}`}</title>
+    <link rel="icon" type="image/svg+xml" href={asset('assets/favicon.svg')} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner content-width">
+        <a class="brand" href={asset('')} aria-label="Matthew Payne, homepage">
+          <span class="brand-name">{site.name}</span>
+          <span class="brand-role">Astrophysicist · MPC Director</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
+          {nav.map(([label, href]) => <a href={asset(href)}>{label}</a>)}
+          <a class="nav-github" href={site.github} rel="noopener noreferrer" target="_blank" aria-label="GitHub profile (opens new tab)">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.76-.24.76-.54v-2.11c-3.09.67-3.74-1.32-3.74-1.32-.5-1.28-1.23-1.62-1.23-1.62-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 .1.95.95 3.25.65.1-.72.39-1.21.71-1.49-2.47-.28-5.06-1.24-5.06-5.54 0-1.22.44-2.22 1.15-3-.11-.28-.5-1.42.11-2.96 0 0 .94-.3 3.08 1.14a10.7 10.7 0 0 1 5.6 0c2.14-1.45 3.08-1.14 3.08-1.14.61 1.54.22 2.68.11 2.96.71.78 1.15 1.78 1.15 3 0 4.31-2.6 5.25-5.08 5.53.4.35.76 1.04.76 2.1v3.12c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"/></svg>
+          </a>
+        </nav>
+      </div>
+    </header>
+    <main id="main-content"><slot /></main>
+    <footer class="site-footer">
+      <div class="content-width footer-content">
+        <div><strong>Matthew Payne</strong><span>Astrophysics · Small-body dynamics · Scientific computing</span></div>
+        <div class="footer-links"><a href={asset('teaching/')}>Tutorials</a><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href={site.cfaProfile} target="_blank" rel="noopener noreferrer">CfA profile ↗</a></div>
+      </div>
+    </footer>
+    <script is:inline>
+      (() => {
+        const button = document.querySelector('.menu-toggle');
+        const nav = document.getElementById('site-navigation');
+        if (!button || !nav) return;
+        button.addEventListener('click', () => {
+          const open = button.getAttribute('aria-expanded') !== 'true';
+          button.setAttribute('aria-expanded', String(open));
+          button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+          nav.classList.toggle('is-open', open);
+        });
+        nav.addEventListener('click', (event) => {
+          if (event.target.closest('a')) {
+            nav.classList.remove('is-open');
+            button.setAttribute('aria-expanded', 'false');
+            button.setAttribute('aria-label', 'Open navigation');
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
