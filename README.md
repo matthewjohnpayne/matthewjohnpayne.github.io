@@ -16,7 +16,7 @@ npm install
 npm run dev
 ```
 
-Open the URL printed by Astro (usually `http://localhost:4321/ScientistWebsite/`). For a production build:
+Open the URL printed by Astro (usually `http://localhost:4321/`). For a production build:
 
 ```bash
 npm run build
@@ -71,20 +71,18 @@ Long-term content collections (Markdown and structured metadata) can replace or 
 
 ## GitHub Pages deployment
 
-The Astro configuration assumes the GitHub repository will be called `ScientistWebsite` in the `matthewjohnpayne` account:
+The site lives in the user Pages repository `matthewjohnpayne/matthewjohnpayne.github.io` and is served at `https://matthewjohnpayne.github.io/`, so `astro.config.mjs` sets `site` and no `base`.
 
-- `site`: `https://matthewjohnpayne.github.io`
-- `base`: `/ScientistWebsite/`
-- Expected URL after publication: `https://matthewjohnpayne.github.io/ScientistWebsite/`
+1. Under **Settings → Pages**, set the build/deployment source to **GitHub Actions**.
+2. Push to `main` (do not commit `node_modules/`, `dist/` or `.astro/`).
+3. GitHub Actions runs `.github/workflows/deploy.yml` and publishes the Astro build.
 
-When ready:
+For a custom domain, update `site` in `astro.config.mjs` and configure the domain under **Settings → Pages**.
 
-1. Create a repository named `ScientistWebsite` under `matthewjohnpayne`.
-2. Push these sources to its `main` branch (do not commit `node_modules/`, `dist/` or `.astro/`).
-3. Under **Settings → Pages**, set the build/deployment source to **GitHub Actions**.
-4. GitHub Actions runs `.github/workflows/deploy.yml` and publishes the Astro build.
+## License
 
-This project has **not** been pushed or deployed on your behalf. For a repository named `matthewjohnpayne.github.io` (user Pages) or a custom domain, remove `base` from `astro.config.mjs` and update `site` accordingly.
+- **Code** (source, styles, scripts, configuration and tooling) is released under the MIT License in `LICENSE`.
+- **Content** (biographical and descriptive text, photographs and other images, and the site's written material) is © Matthew Payne, all rights reserved. It is not covered by the MIT License.
 
 ## Physics implementation
 

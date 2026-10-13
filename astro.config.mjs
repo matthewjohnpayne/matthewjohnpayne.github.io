@@ -1,9 +1,8 @@
 import { defineConfig } from 'astro/config';
 
-// GitHub project Pages defaults. For a user-site repository named
-// matthewjohnpayne.github.io or a custom domain, remove `base`.
+// Served from the user Pages repository matthewjohnpayne.github.io, so no
+// `base` is needed. For a project repository, add e.g. base: '/RepoName/'.
 export default defineConfig({
   site: 'https://matthewjohnpayne.github.io',
-  base: '/ScientistWebsite/',
   output: 'static'
 });
