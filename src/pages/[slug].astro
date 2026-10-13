@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import pages from '../data/pages.json';
-import site from '../data/site.json';
 
 export function getStaticPaths() {
   return pages.map((page) => ({params:{slug:page.slug}, props:{page}}));
