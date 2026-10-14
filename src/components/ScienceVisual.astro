@@ -1,9 +1,35 @@
 ---
+import { resonanceSeparatrix, overlapPeriodRatio } from '../scripts/overlap/physics.js';
 interface Props { kind?: string; }
 const { kind = 'orbit' } = Astro.props;
 const caption = kind === 'scatter'
   ? 'Illustrative scatter-plot of a small-body population'
-  : kind === 'loops' ? 'Illustrative looping trajectory' : 'Illustrative orbital trajectories';
+  : kind === 'loops' ? 'Illustrative looping trajectory'
+  : kind === 'resonance' ? 'First-order resonance widths for two planets of about five Earth masses each, crowding together and overlapping at small period ratios'
+  : 'Illustrative orbital trajectories';
+
+// 'resonance': computed separatrices of the first-order resonances (2:1 to 16:15)
+// in period ratio (log P2/P1 - 1) and weighted eccentricity, as on the
+// resonance-overlap page, for total planet mass 3e-5, with the DPH13
+// circular overlap criterion dashed.
+const resonance = kind === 'resonance' ? (() => {
+  const eps = 3e-5, L = 40, R = 322, T = 22, B = 140, S_MAX = 0.2;
+  const X_LO = Math.log10(0.03), X_HI = Math.log10(1.1);
+  const X = (pr: number) => L + ((Math.log10(pr - 1) - X_LO) / (X_HI - X_LO)) * (R - L);
+  const Y = (s: number) => B - (Math.min(s, 2 * S_MAX) / S_MAX) * (B - T);
+  const bands = [];
+  for (let m = 1; m <= 15; m++) {
+    const [a, b] = resonanceSeparatrix(eps, m, { n: 120, gammaMax: 3000 });
+    const pts: string[] = [];
+    const add = (pr: number, s: number) => {
+      if (pr > 1.001 && Number.isFinite(s)) pts.push(`${X(pr).toFixed(1)},${Y(s).toFixed(1)}`);
+    };
+    a.pr.forEach((pr: number, i: number) => add(pr, a.sigma[i]));
+    for (let i = b.pr.length - 1; i >= 0; i--) add(b.pr[i], b.sigma[i]);
+    bands.push({ d: "M" + pts.join("L") + "Z", thin: m >= 6 });
+  }
+  return { bands, overlapX: X(overlapPeriodRatio(eps)), L, R, T, B };
+})() : null;
 ---
 <svg viewBox="0 0 360 170" xmlns="http://www.w3.org/2000/svg" class="science-art" role="img" aria-label={caption}>
   {kind === 'loops' && <g>
@@ -21,7 +47,15 @@ const caption = kind === 'scatter'
     })}
     <path d="M43 111 C113 91 162 78 225 71 S307 58 332 42" stroke="#1c7886" stroke-width="1.4" fill="none"/>
   </g>}
-  {kind !== 'loops' && kind !== 'scatter' && <g>
+  {resonance && <g>
+    <defs><clipPath id="resonance-clip"><rect x={resonance.L} y={resonance.T} width={resonance.R - resonance.L} height={resonance.B - resonance.T}/></clipPath></defs>
+    <line x1={resonance.L} y1={resonance.B} x2={resonance.R} y2={resonance.B} stroke="#cad8dc" stroke-width="1"/>
+    <g clip-path="url(#resonance-clip)">
+      {resonance.bands.map((b) => <path d={b.d} fill="rgba(7,141,151,0.09)" stroke="rgba(7,141,151,0.7)" stroke-width={b.thin ? 0.6 : 1}/>)}
+      <line x1={resonance.overlapX} y1={resonance.T} x2={resonance.overlapX} y2={resonance.B} stroke="#e4945b" stroke-width="1.8" stroke-dasharray="5 4"/>
+    </g>
+  </g>}
+  {kind !== 'loops' && kind !== 'scatter' && kind !== 'resonance' && <g>
     <ellipse cx="180" cy="87" rx="118" ry="49" transform="rotate(-22 180 87)" stroke="#128f9c" stroke-width="1.8" fill="none"/>
     <ellipse cx="180" cy="87" rx="86" ry="31" transform="rotate(23 180 87)" stroke="#81b3be" stroke-width="1.4" fill="none"/>
     <circle cx="180" cy="87" r="6" fill="#ec9d58"/>

@@ -21,7 +21,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 
 - [ ] **Render science-notebooks to GitHub Pages** (Jupyter Book or similar) at `matthewjohnpayne.github.io/science-notebooks/`.
 - [ ] **Featured papers:** set `featured: true` on a handful, and show them at the top of Publications and on the homepage.
-- [ ] **Replace the illustrative homepage card figures** (`src/components`) with real computed figures.
+- [ ] **Replace the illustrative homepage card figures** (`src/components`) with real computed figures. (The fourth card, "Planetary chaos", already draws computed resonance separatrices.)
 - [ ] **Extend the reference-frames run to about 400 years**, so readers can see Kamoʻoalewa leave the quasi-satellite state around 2306 (about 0.7 s of compute).
 
 ## Content ideas
@@ -69,3 +69,4 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
   - Wrote the resonance-overlap notebook in science-notebooks.
   - 2026-10-14: full-resolution version pushed (science-notebooks 7576a3c): DPH13 Lyapunov estimator, analogues of Figs. 4, 5, 9, 10 and 14, results cached in `cache/`.
   - 2026-10-14: interactive page `/teaching/resonance-overlap/` (Matthew: "go ahead with the interactive version"). The analytic overlap diagram, the notebook's Figure 5 maps, maps computed in the browser at four masses, and single orbits. Validated by `tools/validate_overlap/`: 747 of 750 notebook pixels agree on chaotic vs regular. Linked from Teaching (new "Science notebooks" group) and the Research exoplanet-dynamics theme.
+  - 2026-10-14: fourth homepage card, "Planetary chaos", linking to it (Matthew chose a fourth card over replacing one). Its drawing is computed at build time from `resonanceSeparatrix`. The card grid is now 4 across, 2 by 2 below 1080px and 1 column on phones.

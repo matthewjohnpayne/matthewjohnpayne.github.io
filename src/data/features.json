@@ -1,5 +1,6 @@
 [
   {"title":"Temporary satellites","description":"Capture, release, and the dynamics of Earth's temporary companions.","visual":"loops","link":"https://docs.minorplanetcenter.net/tutorials/animation_tutorials/","cta":"Explore"},
   {"title":"Orbital dynamics","description":"Numerical integration, co-orbital motion, and changing reference frames.","visual":"orbit","link":"/teaching/reference-frames/","cta":"Try the interactive demo"},
-  {"title":"Small-body populations","description":"The distributions, motions, and origins of minor Solar System bodies.","visual":"scatter","link":"/research/","cta":"Explore"}
+  {"title":"Small-body populations","description":"The distributions, motions, and origins of minor Solar System bodies.","visual":"scatter","link":"/research/","cta":"Explore"},
+  {"title":"Planetary chaos","description":"When do neighbouring resonances overlap? Map the chaos in your browser.","visual":"resonance","link":"/teaching/resonance-overlap/","cta":"Try the interactive demo"}
 ]
