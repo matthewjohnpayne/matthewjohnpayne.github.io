@@ -1,0 +1,31 @@
+{
+  "description": "Minor Planet Center staff. `current` follows the MPC About page (https://minorplanetcenter.net/about) as fetched on 2026-10-14; roles and start dates are as stated there, and are left blank where the page gives none. `former` lists people shown on archived copies of that page (Internet Archive) but no longer listed; `listed` gives the years of the archived copies that show them, which is evidence of when they were on staff, not their exact dates of employment. Matthew Payne himself is omitted. Earlier staff (before 2013, when the page moved to /about) are not covered yet.",
+  "source": "https://minorplanetcenter.net/about",
+  "fetched": "2026-10-14",
+  "current": [
+    { "name": "Federica Spoto", "role": "MPC Project Scientist", "since": "2020" },
+    { "name": "Peter K. G. Williams", "role": "MPC Technical Lead", "since": "2024" },
+    { "name": "Mike Alexandersen", "role": "Astronomer", "since": "2020" },
+    { "name": "David Bell", "role": "", "since": "2018" },
+    { "name": "Brian Burt", "role": "Software team", "since": "2023" },
+    { "name": "N Casale", "role": "Software Engineer", "since": "2022" },
+    { "name": "Radiy Matveev", "role": "Software Engineer", "since": "2023" },
+    { "name": "Margaret Pan", "role": "Astronomer", "since": "2019" },
+    { "name": "Jorge A. Pérez Hernández", "role": "Astronomer", "since": "2025" },
+    { "name": "Rosemary Pike", "role": "Astronomer", "since": "2020" },
+    { "name": "Michael Rudenko", "role": "", "since": "2009" },
+    { "name": "Peter Veres", "role": "Astronomer", "since": "2017" }
+  ],
+  "former": [
+    { "name": "Tim Spahr", "role": "MPC Director", "listed": "2013–2015" },
+    { "name": "Matthew Holman", "role": "MPC Director (Interim Director in 2017)", "listed": "2017–2021" },
+    { "name": "Gareth Williams", "role": "MPC Associate Director", "listed": "2013–2020" },
+    { "name": "Sonia Keys", "role": "", "listed": "2013–2017" },
+    { "name": "José Luis Galache", "role": "", "listed": "2013–2017" },
+    { "name": "James Davies", "role": "", "listed": "2013–2015" },
+    { "name": "Paresh Prema", "role": "MPC Web Developer", "listed": "2019–2025" },
+    { "name": "David M. Hernandez", "role": "MPC Fellow", "listed": "2021–2022" },
+    { "name": "Chris Moriarty", "role": "MPC Technical Manager", "listed": "2022–2025" },
+    { "name": "Ben Gafford", "role": "Software Engineer", "listed": "2023" }
+  ]
+}

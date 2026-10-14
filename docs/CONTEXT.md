@@ -24,7 +24,7 @@ Matthew planned the concept in a ChatGPT conversation ("Website concept planning
 | Section | Source of truth | Notes |
 |---|---|---|
 | Research | `src/data/research.json` | Six themes; each paper assigned by ADS bibcode. Titles approved 2026-10-14. |
-| People | `src/data/collaborators.json` (generated) plus `src/content/people/` | Co-authors from ADS. Mentees to be added with details from Matthew. |
+| People | `src/content/people/`, `src/data/mpc-staff.json`, `src/data/collaborators.json` (generated) | Three sections. **Students and postdocs:** names, roles and years from the Academic Supervision section of Matthew's 2021 CV; he will supply fuller details, and "–" periods may have ended since 2021. **MPC staff:** current staff from minorplanetcenter.net/about (2026-10-14); former staff from Internet Archive copies of that page, 2013–2026. Staff before 2013 are not yet covered. **Collaborators:** co-authors from ADS. |
 | Software | `src/content/software/` | Curated by Matthew. On 2026-10-14 he removed the first list (old or unfinished repos) and is adding entries one at a time, starting with digest2. Add only entries he chooses. |
 | Teaching | `src/content/tutorials/`, `src/content/courses/` | All 30 MPC tutorial notebooks are Matthew's. PHYS 422 (Bridgewater State) is a course he wrote, teaching Python to undergraduates with no programming background. |
 | MPC | `src/data/pages.json` | Links to MPC services and documentation. |

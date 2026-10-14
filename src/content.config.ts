@@ -81,7 +81,9 @@ const people = defineCollection({
     affiliation: z.string().optional(),
     period: z.string().optional(),
     url: z.url().optional(),
-    summary: z.string().optional()
+    summary: z.string().optional(),
+    order: z.number().default(0),        // sort key, newest first (e.g. start year)
+    source: z.string().optional()        // where the details came from, e.g. "CV (2021)"
   })
 });
 
