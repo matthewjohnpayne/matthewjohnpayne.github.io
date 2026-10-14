@@ -34,7 +34,7 @@ Each idea comes from one of Matthew's refereed papers. Pair each notebook with a
 | Resonance overlap and the stability of close planet pairs | Deck, Payne & Holman 2013 (ApJ 774, 129) | **Done:** notebook in science-notebooks; interactive page at `/teaching/resonance-overlap/`. |
 | Transit timing variations: a two-planet TTV explorer | Payne et al. 2010 (ApJL 712, L86); Payne & Ford 2011 (ApJ 729, 98); Veras, Ford & Payne 2011 (ApJ 727, 74) | Near-resonant TTV signal against period ratio and mass. Inclined and retrograde cases. |
 | Stellar wobble to radial-velocity curve | Nelson et al. 2014, RUN DMC (ApJS 210, 11) | Ties to the Sun-wobble inset on the reference-frames page. N-body versus Keplerian RV fits for interacting planets. |
-| HelioLinC: linking detections by guessing the distance | Holman et al. 2018 (AJ 156, 135) | Propagate tracklets to a common epoch under an assumed heliocentric distance and watch real objects cluster. Strong browser demo. |
+| HelioLinC: linking detections by guessing the distance | Holman et al. 2018 (AJ 156, 135) | **Notebook written** (science-notebooks abbaaa0, 2026-10-14; not yet pushed): simulated survey of real MPCORB orbits. Next: Matthew's review, then a browser interactive (a γ̇ slider bringing clusters into focus). |
 | Shift-and-stack on detection catalogues | Stetzler et al. 2025 (AJ 170, 352) | Synthetic catalogue: recover a faint mover by stacking along trial velocities. |
 | Exomoons freed by white dwarf mass loss | Payne et al. 2016 (MNRAS 457, 217), 2017 (MNRAS 464, 2557) | Hill-sphere growth and loss as the star loses mass. |
 | Planet Nine and TNO orbits | Li, Hadden, Payne & Holman 2018 (AJ 156, 263); Hadden et al. 2018 (AJ 155, 249) | Secular and chaotic dynamics of distant TNOs. |
