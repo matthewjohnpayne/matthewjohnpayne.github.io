@@ -4,3 +4,4 @@ topic: orbits
 url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_frames/
 tools: [REBOUND]
 order: 1
+interactive: teaching/reference-frames/
