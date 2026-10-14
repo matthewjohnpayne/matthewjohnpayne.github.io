@@ -1,7 +1,7 @@
 {
  "description": "Initial conditions for the reference-frames demo. Barycentric ecliptic (ICRF) positions in AU, velocities in AU/day; GM in AU^3/day^2.",
  "epochMJD_TT": 61200.0,
- "fetched": "2026-10-13",
+ "fetched": "2026-10-14",
  "sources": {
   "asteroids": "MPC Orbits API, https://data.minorplanetcenter.net/api/get-orb",
   "planets": "JPL Horizons API, https://ssd.jpl.nasa.gov/api/horizons.api",
@@ -166,6 +166,42 @@
     "fitted": "2026-10-01 22:10:42",
     "arc": "2004-2025",
     "nobs": 335
+   }
+  },
+  {
+   "key": "hektor",
+   "name": "Hektor",
+   "designation": "624",
+   "state": [
+    -5.046291829647799,
+    -0.8075760888059959,
+    -0.7399168570385334,
+    0.001385224243952882,
+    -0.0072209473941832565,
+    -0.0021279965640196965
+   ],
+   "mpc": {
+    "fitted": "2026-10-09T15:07:37.291496+00:00",
+    "arc": "1907-2026",
+    "nobs": 7328
+   }
+  },
+  {
+   "key": "hilda",
+   "name": "Hilda",
+   "designation": "153",
+   "state": [
+    2.5244353026467206,
+    3.608442781832679,
+    -0.07341024815005645,
+    -0.0058856717474635575,
+    0.004881245111348764,
+    -0.0010515373355859167
+   ],
+   "mpc": {
+    "fitted": "2026-10-14T05:36:56.296755+00:00",
+    "arc": "1880-2026",
+    "nobs": 12181
    }
   }
  ]

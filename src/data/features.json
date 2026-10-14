@@ -1,5 +1,5 @@
 [
-  {"title":"Temporary satellites","description":"Capture, release, and the dynamics of Earth's temporary companions.","visual":"loops","link":"https://docs.minorplanetcenter.net/tutorials/animation_tutorials/"},
-  {"title":"Orbital dynamics","description":"Numerical integration, co-orbital motion, and changing reference frames.","visual":"orbit","link":"https://docs.minorplanetcenter.net/tutorials/orbit_tutorials/"},
-  {"title":"Small-body populations","description":"The distributions, motions, and origins of minor Solar System bodies.","visual":"scatter","link":"/research/"}
+  {"title":"Temporary satellites","description":"Capture, release, and the dynamics of Earth's temporary companions.","visual":"loops","link":"https://docs.minorplanetcenter.net/tutorials/animation_tutorials/","cta":"Explore"},
+  {"title":"Orbital dynamics","description":"Numerical integration, co-orbital motion, and changing reference frames.","visual":"orbit","link":"/teaching/reference-frames/","cta":"Try the interactive demo"},
+  {"title":"Small-body populations","description":"The distributions, motions, and origins of minor Solar System bodies.","visual":"scatter","link":"/research/","cta":"Explore"}
 ]

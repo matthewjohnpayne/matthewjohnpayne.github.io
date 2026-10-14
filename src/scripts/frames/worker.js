@@ -1,5 +1,5 @@
-// Runs the integration off the main thread and returns the xy series needed
-// by the frames: Sun, Earth and Kamoʻoalewa, barycentric.
+// Runs the integration off the main thread and returns the barycentric xy
+// series needed by the frames: the Sun, Earth, Jupiter and every asteroid.
 import { integrate } from './nbody.js';
 
 self.onmessage = ({ data: { ic, years, dt, sampleDays } }) => {
@@ -12,6 +12,6 @@ self.onmessage = ({ data: { ic, years, dt, sampleDays } }) => {
     for (let k = 0; k < N; k++) { xy[2 * k] = out.xyz[(k * nk + j) * 3]; xy[2 * k + 1] = out.xyz[(k * nk + j) * 3 + 1]; }
     return xy;
   };
-  const result = { t: out.t, sun: pick('sun'), earth: pick('earth'), target: pick('kamooalewa'), ms };
-  self.postMessage(result, [result.t.buffer, result.sun.buffer, result.earth.buffer, result.target.buffer]);
+  const xy = Object.fromEntries(['sun', 'earth', 'jupiter', ...ic.particles.map((p) => p.key)].map((k) => [k, pick(k)]));
+  self.postMessage({ t: out.t, xy, ms }, [out.t.buffer, ...Object.values(xy).map((a) => a.buffer)]);
 };

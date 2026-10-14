@@ -25,3 +25,4 @@ const err = (key, rel) => {
 };
 console.log(`dt=${dt} d, ${N} samples, ${ms.toFixed(0)} ms`);
 console.log(err('earth', 'sun')); console.log(err('kamooalewa', 'sun')); console.log(err('kamooalewa', 'earth')); console.log(err('moon','earth'));
+console.log(err('hektor', 'jupiter')); console.log(err('hilda', 'jupiter')); console.log(err('jupiter', 'sun'));

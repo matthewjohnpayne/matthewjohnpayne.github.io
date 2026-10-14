@@ -6,46 +6,78 @@ const root = import.meta.env.BASE_URL;
 const notebook = 'https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_frames/';
 const epochDate = new Date(Date.UTC(1858, 10, 17) + ic.epochMJD_TT * 86400000).toISOString().slice(0, 10);
 
-// Copy for each frame. Wording follows the MPC tutorial, which is authoritative.
+// Copy for each frame, for each planet. Wording follows the MPC tutorial, which is authoritative.
+// Numbers quoted here are checked by tools/validate_frames/frames_test.mjs.
+const sunWobble = 'Newton’s laws hold with no fictitious forces. It also shows that the Sun moves: the inset follows the Sun’s own path, drawn to scale in solar radii, as Jupiter and Saturn pull it around the barycentre.';
 const frames = [
   {
     id: 'barycentric', n: 1, name: 'Inertial barycentric', origin: 'Solar System barycentre', axes: 'Fixed',
     how: 'Nothing to transform: this is the frame the integration runs in, and the only one stored.',
-    reveals: 'Newton’s laws hold with no fictitious forces. It also shows that the Sun moves: the inset follows the Sun’s own path, drawn to scale in solar radii, as Jupiter and Saturn pull it around the barycentre.',
-    hides: 'Kamoʻoalewa’s relationship with Earth. Its orbit is just another ellipse.'
+    earth: { reveals: sunWobble, hides: 'Kamoʻoalewa’s relationship with Earth. Its orbit is just another ellipse.' },
+    jupiter: { reveals: sunWobble, hides: 'Hektor’s and Hilda’s resonant lockstep with Jupiter.' }
   },
   {
     id: 'heliocentric', n: 2, name: 'Inertial heliocentric', origin: 'Sun', axes: 'Fixed',
     how: 'Subtract the Sun’s position from everything.',
-    reveals: 'Near-perfect Kepler ellipses. This is the frame of the MPC’s Cartesian and orbital elements.',
-    hides: 'Everything interesting about this object: two unremarkable ellipses, and no hint of a resonance.'
+    earth: {
+      reveals: 'Near-perfect Kepler ellipses. This is the frame of the MPC’s Cartesian and orbital elements.',
+      hides: 'Everything interesting about this object: two unremarkable ellipses, and no hint of a resonance.'
+    },
+    jupiter: {
+      reveals: 'Near-perfect Kepler ellipses. This is the frame of the MPC’s Cartesian and orbital elements.',
+      hides: 'Both resonances. Three unremarkable ellipses are all this frame will ever show.'
+    }
   },
   {
-    id: 'planetocentric', n: 3, name: 'Earth-centred, non-rotating', origin: 'Earth', axes: 'Fixed to the distant stars',
-    how: 'Subtract Earth’s position instead of the Sun’s.',
-    reveals: 'The honest test of “does it orbit Earth?” Kamoʻoalewa stays 0.1–0.35 AU away, ten to thirty times the radius of Earth’s Hill sphere (dashed circle), and its annual loops never enclose Earth.',
-    hides: 'Why it stays close. The resonance that holds it there is only visible when the axes turn with Earth.'
+    id: 'planetocentric', n: 3, name: '{p}-centred, non-rotating', origin: '{p}', axes: 'Fixed to the distant stars',
+    how: 'Subtract the planet’s position instead of the Sun’s.',
+    earth: {
+      reveals: 'The honest test of “does it orbit Earth?” Kamoʻoalewa stays 0.1–0.35 AU away, ten to thirty times the radius of Earth’s Hill sphere (dashed circle), and its annual loops never enclose Earth.',
+      hides: 'Why it stays close. The resonance that holds it there is only visible when the axes turn with Earth.'
+    },
+    jupiter: {
+      reveals: 'Neither asteroid orbits Jupiter. Both stay far outside Jupiter’s Hill sphere (dashed circle, 0.35 AU): Hektor 3–7 AU away, Hilda 2–10 AU. Both appear to circle Jupiter once every 12 years, but only because they share its trip around the Sun.',
+      hides: 'The resonances. From here the paths just wind round Jupiter; their order appears only when the axes turn with it.'
+    }
   },
   {
-    id: 'corotating', n: 4, name: 'Co-rotating with Earth', origin: 'Sun', axes: 'Rotate with Earth’s true longitude',
-    how: 'Rotate every heliocentric position by −θ(t), Earth’s longitude, which pins Earth to the +x axis.',
-    reveals: 'The famous quasi-satellite loops: once a year, retrograde, around Earth. The 1:1 resonance stands still and shows itself.',
-    hides: 'Earth’s own eccentricity, which is silently absorbed into the frame’s uneven rotation.'
+    id: 'corotating', n: 4, name: 'Co-rotating with {p}', origin: 'Sun', axes: 'Rotate with {p}’s true longitude',
+    how: 'Rotate every heliocentric position by −θ(t), the planet’s longitude, which pins the planet to the +x axis.',
+    earth: {
+      reveals: 'The famous quasi-satellite loops: once a year, retrograde, around Earth. The 1:1 resonance stands still and shows itself.',
+      hides: 'Earth’s own eccentricity, which is silently absorbed into the frame’s uneven rotation.'
+    },
+    jupiter: {
+      reveals: 'Both resonances, standing still. Hektor traces a compact tadpole around L4, 60° ahead of Jupiter. Hilda traces a triangle with rounded corners at L4, L3 and L5.',
+      hides: 'Jupiter’s own eccentricity, which is silently absorbed into the frame’s uneven rotation.'
+    }
   },
   {
-    id: 'synodic', n: 5, name: 'Uniform synodic', origin: 'Sun', axes: 'Rotate at Earth’s constant mean motion',
-    how: 'Rotate by −(λ₀ + n t), a straight-line fit through Earth’s unwrapped longitude.',
-    reveals: 'The frame of restricted three-body theory. Earth itself is no longer fixed: it traces its own small 2:1 eccentricity epicycle.',
-    hides: 'Tidiness. With Earth no longer pinned in place, librations look less clean than in frame 4; this frame is where the theory lives, not the prettiest pictures.'
+    id: 'synodic', n: 5, name: 'Uniform synodic', origin: 'Sun', axes: 'Rotate at {p}’s constant mean motion',
+    how: 'Rotate by −(λ₀ + n t), a straight-line fit through the planet’s unwrapped longitude.',
+    earth: {
+      reveals: 'The frame of restricted three-body theory. Earth itself is no longer fixed: it traces its own small 2:1 eccentricity epicycle.',
+      hides: 'Tidiness. With Earth no longer pinned in place, librations look less clean than in frame 4; this frame is where the theory lives, not the prettiest pictures.'
+    },
+    jupiter: {
+      reveals: 'The frame of restricted three-body theory. Jupiter is no longer fixed: it traces its eccentricity epicycle, about 0.25 AU by 0.51 AU, and the fitted period is 11.86 years.',
+      hides: 'Tidiness. With Jupiter no longer pinned in place, the tadpole and triangle look less clean than in frame 4.'
+    }
   }
 ];
+const planets = [
+  { id: 'earth', name: 'Earth', with: 'Kamoʻoalewa' },
+  { id: 'jupiter', name: 'Jupiter', with: 'Hektor and Hilda' }
+];
+// "{p}" marks where the planet's name goes; the script swaps it when the planet changes.
+const parts = (text: string) => text.split('{p}');
 ---
 <BaseLayout title="Same orbit. Different point of view." description="One trajectory of the quasi-satellite Kamoʻoalewa, computed in your browser and seen from five reference frames.">
   <section class="inner-hero rf-hero">
     <div class="content-width inner-hero-content">
       <p class="eyebrow">INTERACTIVE TUTORIAL · REFERENCE FRAMES</p>
       <h1>Same orbit. Different point of view.</h1>
-      <p>A reference frame is a choice of origin and of how the axes behave. Neither choice changes the physics, but both change what a trajectory looks like. Below, one integration of the quasi-satellite (469219) Kamoʻoalewa is computed in your browser, then drawn in five frames.</p>
+      <p>A reference frame is a choice of origin and of how the axes behave. Neither choice changes the physics, but both change what a trajectory looks like. Below, one integration of three asteroids is computed in your browser, then drawn in five frames: Earth’s quasi-satellite (469219) Kamoʻoalewa, and Jupiter’s companions (624) Hektor and (153) Hilda.</p>
     </div>
   </section>
 
@@ -53,7 +85,7 @@ const frames = [
     <div class="content-width rf-layout">
       <div class="rf-figure">
         <div class="rf-stage">
-          <canvas id="rf-canvas" role="img" aria-label="Trajectory of Kamoʻoalewa in the selected reference frame"></canvas>
+          <canvas id="rf-canvas" role="img" aria-label="Trajectories of the asteroids in the selected reference frame"></canvas>
           <div class="rf-status" id="rf-status" role="status">Integrating 300 years of Solar System motion in your browser…</div>
         </div>
         <div class="rf-controls">
@@ -70,6 +102,7 @@ const frames = [
               <option value="1">1 year</option>
               <option value="10" selected>10 years</option>
               <option value="50">50 years</option>
+              <option value="150">150 years</option>
               <option value="10000">Everything so far</option>
             </select>
           </label>
@@ -83,31 +116,43 @@ const frames = [
           </label>
         </div>
         <dl class="rf-readout">
-          <div><dt>Earth–Kamoʻoalewa distance</dt><dd id="rf-dist">–</dd></div>
-          <div><dt>Longitude ahead of Earth</dt><dd id="rf-dlam">–</dd></div>
-          <div><dt>Turns around Earth during the trail</dt><dd id="rf-wind">–</dd></div>
+          <div><dt id="rf-r1-label">Earth–Kamoʻoalewa distance</dt><dd id="rf-r1">–</dd></div>
+          <div><dt id="rf-r2-label">Longitude ahead of Earth</dt><dd id="rf-r2">–</dd></div>
+          <div><dt id="rf-r3-label">Turns around Earth during the trail</dt><dd id="rf-r3">–</dd></div>
         </dl>
       </div>
 
       <div class="rf-side">
+        <fieldset class="rf-planets">
+          <legend>Planet</legend>
+          {planets.map((p) => (
+            <label class="rf-planet-option">
+              <input type="radio" name="rf-planet" value={p.id} checked={p.id === 'earth'} />
+              <span><strong>{p.name}</strong><small>with {p.with}</small></span>
+            </label>
+          ))}
+        </fieldset>
         <fieldset class="rf-frames">
           <legend>Reference frame</legend>
           {frames.map((f) => (
             <label class="rf-frame-option">
               <input type="radio" name="rf-frame" value={f.id} checked={f.id === 'corotating'} />
               <span class="rf-frame-n">{f.n}</span>
-              <span class="rf-frame-text"><strong>{f.name}</strong><small>Origin: {f.origin} · Axes: {f.axes}</small></span>
+              <span class="rf-frame-text">
+                <strong>{parts(f.name).map((t, i) => <>{i > 0 && <span class="rf-pname">Earth</span>}{t}</>)}</strong>
+                <small>Origin: {parts(f.origin).map((t, i) => <>{i > 0 && <span class="rf-pname">Earth</span>}{t}</>)} · Axes: {parts(f.axes).map((t, i) => <>{i > 0 && <span class="rf-pname">Earth</span>}{t}</>)}</small>
+              </span>
             </label>
           ))}
         </fieldset>
-        {frames.map((f) => (
-          <div class="rf-explain" data-frame={f.id} hidden={f.id !== 'corotating'}>
-            <h2>{f.n}. {f.name}</h2>
+        {planets.map((p) => frames.map((f) => (
+          <div class="rf-explain" data-frame={f.id} data-planet={p.id} hidden={f.id !== 'corotating' || p.id !== 'earth'}>
+            <h2>{f.n}. {f.name.replace('{p}', p.name)}</h2>
             <p><b>How.</b> {f.how}</p>
-            <p><b>What it reveals.</b> {f.reveals}</p>
-            <p><b>What it hides.</b> {f.hides}</p>
+            <p><b>What it reveals.</b> {f[p.id as 'earth' | 'jupiter'].reveals}</p>
+            <p><b>What it hides.</b> {f[p.id as 'earth' | 'jupiter'].hides}</p>
           </div>
-        ))}
+        )))}
       </div>
     </div>
   </section>
@@ -118,13 +163,19 @@ const frames = [
       <p>Frame 3 shows loops that never enclose Earth. Frame 4 shows the same trajectory looping around Earth once a year. Neither plot is lying: both are drawn from the same stored numbers.</p>
       <p>Watch the <em>turns around Earth</em> readout with a 10-year trail. In the <button type="button" class="rf-inline" data-show-frame="corotating">co-rotating frame</button> the line from Earth to Kamoʻoalewa turns once a year, clockwise: −1 per year. But that frame itself rotates once a year, anticlockwise, with Earth: +1 per year. Undo the rotation, as the <button type="button" class="rf-inline" data-show-frame="planetocentric">non-rotating frame</button> does, and the two simply add to (−1) + (+1) = 0.</p>
       <p>The frame-independent fact is that Kamoʻoalewa is not bound to Earth: it orbits the Sun, well outside Earth’s Hill sphere. The loop is its eccentricity epicycle, about 0.1 AU by 0.2 AU for its eccentricity of 0.10. What makes it a quasi-satellite is where that loop sits: the 1:1 resonance keeps its mean longitude librating about Earth’s, so the loop is centred on Earth and encloses it.</p>
+
+      <h2>Jupiter’s companions: a tadpole and a triangle</h2>
+      <p>Switch the planet to Jupiter and the same five frames tell a second story. Seen from <button type="button" class="rf-inline" data-show-planet="jupiter" data-show-frame="planetocentric">Jupiter, with fixed axes</button>, Hektor and Hilda both seem to circle the planet once every 12 years. This time the illusion runs the other way: they share Jupiter’s trip around the Sun, and in the <button type="button" class="rf-inline" data-show-planet="jupiter" data-show-frame="corotating">co-rotating frame</button> that shared motion vanishes.</p>
+      <p>What remains is the resonance. Hektor, the largest Jupiter Trojan, is in the 1:1 resonance and traces a compact tadpole around the L4 point, 60° ahead of Jupiter. It librates gently about L4 and never strays far.</p>
+      <p>Hilda, in the 3:2 resonance, traces a triangle with rounded corners at L4, L3 and L5. Hilda reaches aphelion three times for every two Jupiter orbits, and those aphelia land at L4, then L3, then L5: always the corners farthest from Jupiter. Its perihelion passages happen when Jupiter is safely elsewhere. With a trail of 50 years or more, the third readout counts Hilda’s orbits per Jupiter orbit; it stays close to 1.5.</p>
+      <p>In the <button type="button" class="rf-inline" data-show-planet="jupiter" data-show-frame="synodic">uniform synodic frame</button>, Jupiter itself comes loose and traces its eccentricity epicycle, a 2:1 ellipse about 0.25 AU by 0.51 AU.</p>
       <p>Choose the frame that makes your question easy, and know what it hides.</p>
 
       <h2>How this page works</h2>
-      <p>When the page opens, your browser integrates the Sun, the eight planets, the Moon and Kamoʻoalewa for 300 years, starting on {epochDate}. Following the tutorial’s rule, the motion is integrated once, in the inertial barycentric frame, and stored. Every frame is then derived by subtracting an origin and rotating the axes; nothing is re-integrated when you switch.</p>
+      <p>When the page opens, your browser integrates the Sun, the eight planets, the Moon, Kamoʻoalewa, Hektor and Hilda for 300 years, starting on {epochDate}. Following the tutorial’s rule, the motion is integrated once, in the inertial barycentric frame, and stored. Every frame is then derived by subtracting an origin and rotating the axes; nothing is re-integrated when you switch.</p>
       <ul>
-        <li><b>Initial conditions.</b> Kamoʻoalewa’s state vector is from the <a href="https://data.minorplanetcenter.net/api/get-orb" target="_blank" rel="noopener noreferrer">MPC Orbits API</a> (orbit fitted {ic.particles[0].mpc.fitted.slice(0, 10)} to {ic.particles[0].mpc.nobs} observations, {ic.particles[0].mpc.arc}). The Sun, planets and Moon are from <a href="https://ssd.jpl.nasa.gov/horizons/" target="_blank" rel="noopener noreferrer">JPL Horizons</a>, with masses from DE440.</li>
-        <li><b>Integrator.</b> A sixth-order symplectic method (Yoshida 1990) with a fixed half-day step, Newtonian point masses only. Over the full 300 years its Earth–Kamoʻoalewa separation agrees with REBOUND’s high-accuracy IAS15 integrator to within 30 km.</li>
+        <li><b>Initial conditions.</b> The asteroids’ state vectors are from the <a href="https://data.minorplanetcenter.net/api/get-orb" target="_blank" rel="noopener noreferrer">MPC Orbits API</a> ({ic.particles.map((p) => `${p.name}: ${p.mpc.nobs.toLocaleString('en')} observations, ${p.mpc.arc}`).join('; ')}). The Sun, planets and Moon are from <a href="https://ssd.jpl.nasa.gov/horizons/" target="_blank" rel="noopener noreferrer">JPL Horizons</a>, with masses from DE440.</li>
+        <li><b>Integrator.</b> A sixth-order symplectic method (Yoshida 1990) with a fixed half-day step, Newtonian point masses only. Over the full 300 years its Earth–Kamoʻoalewa separation agrees with REBOUND’s high-accuracy IAS15 integrator to within 30 km, and the Jupiter–Hektor and Jupiter–Hilda separations to within 20 m.</li>
         <li><b>Limitations.</b> Positions are projected onto the ecliptic plane. Relativity, asteroid perturbers and non-gravitational forces are omitted, and orbit uncertainty is not propagated, so this is a demonstration, not an ephemeris.</li>
       </ul>
       <div class="rf-links">

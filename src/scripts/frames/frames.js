@@ -31,14 +31,17 @@ export function fitMeanMotion(t, px, py) {
 }
 
 /**
- * Build all five frames for a target relative to a reference planet.
- * @param {{t: Float64Array, sun: Float64Array, planet: Float64Array, target: Float64Array}} d
+ * Build all five frames relative to a reference planet.
+ * @param {{t: Float64Array, sun: Float64Array, planet: Float64Array, targets: Record<string, Float64Array>}} d
  *   Barycentric xy series, interleaved [x0, y0, x1, y1, ...].
- * @returns {Record<string, {target: Float64Array, planet: Float64Array, sun: Float64Array}>}
+ * @returns {{frames: Record<string, Record<string, Float64Array>>, meanMotion: number, lambda0: number}}
+ *   frames[frame][key] for key "sun", "planet" and each target key.
  */
-export function buildFrames({ t, sun, planet, target }) {
+export function buildFrames({ t, sun, planet, targets }) {
   const N = t.length;
-  const make = () => ({ target: new Float64Array(2 * N), planet: new Float64Array(2 * N), sun: new Float64Array(2 * N) });
+  const pts = { sun, planet, ...targets };
+  const keys = Object.keys(pts);
+  const make = () => Object.fromEntries(keys.map((k) => [k, new Float64Array(2 * N)]));
   const f = { barycentric: make(), heliocentric: make(), planetocentric: make(), corotating: make(), synodic: make() };
 
   const hx = new Float64Array(N), hy = new Float64Array(N);
@@ -47,10 +50,9 @@ export function buildFrames({ t, sun, planet, target }) {
 
   for (let k = 0; k < N; k++) {
     const i = 2 * k, j = i + 1;
-    const pts = { target, planet, sun };
     const theta = Math.atan2(hy[k], hx[k]);
     const lam = lambda0 + n * t[k];
-    for (const key of ['target', 'planet', 'sun']) {
+    for (const key of keys) {
       const bx = pts[key][i], by = pts[key][j];
       // 1. Inertial barycentric: as stored.
       f.barycentric[key][i] = bx; f.barycentric[key][j] = by;

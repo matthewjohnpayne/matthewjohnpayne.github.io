@@ -38,7 +38,7 @@ const link = (path: string) => path.startsWith('http') ? path : root + path.repl
       <div class="feature-grid">
         {features.map((feature) => <a class="feature-card" href={link(feature.link)}>
           <div class="feature-illustration"><ScienceVisual kind={feature.visual}/></div>
-          <div class="feature-copy"><h3>{feature.title}</h3><p>{feature.description}</p><span class="small-link">Explore <span aria-hidden="true">→</span></span></div>
+          <div class="feature-copy"><h3>{feature.title}</h3><p>{feature.description}</p><span class="small-link">{feature.cta} <span aria-hidden="true">→</span></span></div>
         </a>)}
       </div>
       <div class="discipline-grid">

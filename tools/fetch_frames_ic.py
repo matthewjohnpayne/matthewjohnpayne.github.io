@@ -20,7 +20,11 @@ import urllib.request
 OUT = pathlib.Path(__file__).resolve().parents[1] / "src" / "data" / "frames-ic.json"
 
 # Test particles: (MPC designation, key, display name)
-ASTEROIDS = [("469219", "kamooalewa", "Kamoʻoalewa")]
+ASTEROIDS = [
+    ("469219", "kamooalewa", "Kamoʻoalewa"),  # Earth quasi-satellite
+    ("624", "hektor", "Hektor"),             # Jupiter Trojan, L4
+    ("153", "hilda", "Hilda"),               # 3:2 resonance with Jupiter
+]
 
 # Massive bodies: (Horizons id, key, name, GM in km^3/s^2 from JPL DE440).
 # As in the tutorial, "399"/"301" select the Earth and Moon individually;
