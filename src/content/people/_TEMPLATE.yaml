@@ -8,5 +8,8 @@ role: ""
 roleUrl: ""   # optional link for the role text, e.g. a programme page
 affiliation: ""
 period: ""
+# moreRoles:   # optional further lines shown under the first
+#   - role: ""
+#     period: ""
 url: ""
 summary: ""

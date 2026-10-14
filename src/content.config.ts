@@ -79,6 +79,9 @@ const people = defineCollection({
     relationship: z.enum(['mentee', 'collaborator']),
     role: z.string().optional(),
     roleUrl: z.url().optional(),         // links the role text, e.g. to a programme page
+    moreRoles: z.array(z.object({        // further lines under the first, e.g. a later fellowship
+      role: z.string(), roleUrl: z.url().optional(), period: z.string().optional()
+    })).default([]),
     affiliation: z.string().optional(),
     period: z.string().optional(),
     url: z.url().optional(),

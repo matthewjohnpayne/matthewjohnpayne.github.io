@@ -104,7 +104,7 @@
 @media(max-width:820px){.theme-index{grid-template-columns:1fr 1fr}.theme{grid-template-columns:1fr;gap:20px;padding-top:40px}}
 @media(max-width:575px){.theme-index,.people-list{grid-template-columns:1fr}}
 .people-jump{display:flex;flex-wrap:wrap;gap:10px 24px;margin:0 0 48px;font-size:13px;font-weight:620}.people-jump a{color:#087d89}.people-jump a:hover{text-decoration:underline;text-underline-offset:3px}
-.people-list .people-role-link{display:inline;padding:0;color:#087d89;text-decoration:underline;text-decoration-color:rgba(8,125,137,.35);text-underline-offset:3px}.people-list .people-role-link:hover{text-decoration-color:currentColor}.people-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0}
+.people-list .people-role-link{display:inline;padding:0;color:#087d89;text-decoration:underline;text-decoration-color:rgba(8,125,137,.35);text-underline-offset:3px}.people-list .people-role-link:hover{text-decoration-color:currentColor}.people-meta-line{display:block}.people-period{white-space:nowrap}.people-meta-line+.people-meta-line{margin-top:3px}.people-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0}
 .people-list-wide{grid-template-columns:repeat(2,minmax(0,1fr))}
 .people-subhead{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:28px 0 10px}
 .catalogue-intro a{color:#087d89;text-decoration:underline;text-underline-offset:2px}

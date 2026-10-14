@@ -2,5 +2,8 @@ name: "Sam Hadden"
 relationship: mentee
 role: "Postdoctoral researcher"
 period: "2017–2018"
+moreRoles:
+  - role: "CfA Fellow"
+    period: "2018–2021"
 order: 2017.1
-source: "Matthew Payne's CV (2021), Academic Supervision Roles"
+source: "Matthew Payne's CV (2021), Academic Supervision Roles; CfA Fellow 2018–2021 supplied by Matthew Payne (2026-10-14)"

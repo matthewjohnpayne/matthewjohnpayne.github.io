@@ -37,15 +37,17 @@ const join = (...parts: (string | undefined)[]) => parts.filter(Boolean).join(' 
         <div class="section-heading"><h2>Students and postdocs</h2></div>
         <p class="catalogue-intro">Students and postdoctoral researchers I have supervised or advised.</p>
         <ul class="people-list people-list-wide">
-          {mentees.map((m) => (
-            <li>
+          {mentees.map((m) => {
+            const lines = [{ role: m.role, roleUrl: m.roleUrl, period: m.period }, ...m.moreRoles];
+            const meta = <span class="people-meta">{lines.map((l) => <span class="people-meta-line">{l.roleUrl && !m.url
+              ? <a class="people-role-link" href={l.roleUrl} target="_blank" rel="noopener noreferrer">{l.role}</a>
+              : l.role}{l.role && l.period && ' · '}{l.period && <span class="people-period">{l.period}</span>}</span>)}</span>;
+            return <li>
               {m.url
-                ? <a href={m.url} target="_blank" rel="noopener noreferrer"><span class="people-name">{m.name}</span><span class="people-meta">{join(m.role, m.period)}</span></a>
-                : <div class="people-row"><span class="people-name">{m.name}</span><span class="people-meta">{m.roleUrl
-                    ? <><a class="people-role-link" href={m.roleUrl} target="_blank" rel="noopener noreferrer">{m.role}</a>{m.period && ` · ${m.period}`}</>
-                    : join(m.role, m.period)}</span></div>}
-            </li>
-          ))}
+                ? <a href={m.url} target="_blank" rel="noopener noreferrer"><span class="people-name">{m.name}</span>{meta}</a>
+                : <div class="people-row"><span class="people-name">{m.name}</span>{meta}</div>}
+            </li>;
+          })}
         </ul>
       </div>
 
