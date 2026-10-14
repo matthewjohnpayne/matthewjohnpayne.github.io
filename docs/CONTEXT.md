@@ -55,7 +55,8 @@ Matthew planned the concept in a ChatGPT conversation ("Website concept planning
 
 - **2026-10-13: Repository.** The site lives in Matthew's existing `matthewjohnpayne/matthewjohnpayne.github.io` repo and is served at the root, so there is no `base` in `astro.config.mjs`.
 - **2026-10-13: License.** Code is MIT (`LICENSE`); text and images are © Matthew Payne, all rights reserved. The footer and README say so.
-- **2026-10-13: Commits.** Local commits are fine. **Nothing has been pushed.** Publishing needs Matthew's go-ahead: push `main`, then set Settings → Pages → Source to "GitHub Actions" (it is currently "Deploy from branch").
+- **2026-10-13: Commits.** Local commits are fine; pushing needs Matthew's go-ahead.
+- **2026-10-14: Live.** With Matthew's go-ahead, Pages was switched to "GitHub Actions" and `main` pushed. **Every push to `main` now publishes the site**, so push only with his go-ahead.
 - **2026-10-14: GitHub.** Matthew asked for `matthewjohnpayne/science-notebooks` to be created; it is public. He removed the first Software list, as it was old or unfinished.
 - **2026-10-14: Content approvals.**
   - Publications come from the ADS query above.

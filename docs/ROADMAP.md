@@ -4,7 +4,6 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 
 ## Waiting on Matthew
 
-- [ ] **Publish the site.** Push `main` to `origin` and switch Pages to GitHub Actions. Not yet: Matthew said on 2026-10-14 not to push.
 - [ ] **Biography and CV details** for the homepage and an About section. Do not draft from public sources without his review.
 - [ ] **Portrait photo**, with permission (`public/assets/matthew.jpg`, then `site.json`).
 - [ ] **Software list:** Matthew is supplying a curated, up-to-date list, one entry at a time; so far digest2 (2026-10-14). Copy `src/content/software/_TEMPLATE.yaml` for each entry.
@@ -53,6 +52,8 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 - **Cross-links:** link each research theme to its software, tutorials and interactive pages, and each collaborator to the themes you share.
 
 ## Done
+
+- 2026-10-14: **Site published** at https://matthewjohnpayne.github.io/ (Matthew's go-ahead). Pages source switched to GitHub Actions; `deploy.yml` builds and deploys on every push to `main`.
 
 - **2026-10-13:**
   - Imported v0.1 and made it build (Astro 7).
