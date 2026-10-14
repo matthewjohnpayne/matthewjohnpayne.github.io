@@ -1,0 +1,6 @@
+title: "MPC NEA Observation Planning Aid: a Python Convenience Wrapper"
+summary: "Wrap the NEA Observation Planning Aid to list near-Earth asteroids needing follow-up as a pandas DataFrame."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_neaobs/
+tools: [pandas]
+order: 16

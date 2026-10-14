@@ -1,0 +1,5 @@
+title: "MPC Magnitude Band API"
+summary: "Current and historical magnitude bands used in MPC observation records."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_mag_band/
+order: 12

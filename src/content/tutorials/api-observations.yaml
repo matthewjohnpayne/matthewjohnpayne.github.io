@@ -1,0 +1,5 @@
+title: "MPC Observations API"
+summary: "Retrieve the observational data for specified Solar System objects."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_observations/
+order: 3

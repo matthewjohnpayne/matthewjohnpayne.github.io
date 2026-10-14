@@ -1,0 +1,6 @@
+title: "Understanding and Building the digest2 Population Model"
+summary: "The four-dimensional histogram over q, e, i and H that digest2 compares observed motion against, and how to build it."
+topic: iod
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_population_model/
+tools: [digest2]
+order: 3

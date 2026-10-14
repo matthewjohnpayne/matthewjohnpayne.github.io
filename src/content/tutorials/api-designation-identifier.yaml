@@ -1,0 +1,5 @@
+title: "MPC Designation Identifier"
+summary: "Return the various designations assigned to any given object."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_designation_identifier/
+order: 1

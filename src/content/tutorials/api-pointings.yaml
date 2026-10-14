@@ -1,0 +1,5 @@
+title: "MPC Pointings API"
+summary: "Submit telescope exposure details (direction, timing, duration and field geometry) to the MPC Pointings Database."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_pointings/
+order: 13

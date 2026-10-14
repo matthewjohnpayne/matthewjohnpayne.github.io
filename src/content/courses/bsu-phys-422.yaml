@@ -1,0 +1,6 @@
+title: "PHYS 422: Computer Simulation in Physical Science"
+institution: Bridgewater State University
+summary: "A Python course I wrote for undergraduates with no programming background, taught in the spirit of numerical methods: Python fundamentals, data analysis, and ODEs and numerical integration, with projects ending in a simulated and animated physical system."
+topics: [Python fundamentals, Data analysis, ODEs and numerical integration]
+repo: https://github.com/matthewjohnpayne/BSU422_unsolved
+order: 1

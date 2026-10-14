@@ -1,0 +1,6 @@
+title: "Initial Orbit Determination with digest2"
+summary: "digest2 scores short tracklets against 14 orbit classes; it is the MPC's primary tool for deciding what goes on the NEO Confirmation Page."
+topic: iod
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_digest2/
+tools: [digest2]
+order: 1

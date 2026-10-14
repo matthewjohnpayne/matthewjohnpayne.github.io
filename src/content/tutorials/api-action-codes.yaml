@@ -1,0 +1,5 @@
+title: "MPC Action Codes API"
+summary: "Retrieve the action codes sent when new NEO and comet candidates were submitted."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_action_codes/
+order: 8

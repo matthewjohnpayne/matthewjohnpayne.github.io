@@ -1,0 +1,5 @@
+title: "MPC Submission Status"
+summary: "Use a Submission-ID to check whether a submission has been ingested by the MPC, or rejected and why."
+topic: submission
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_submission_status/
+order: 4

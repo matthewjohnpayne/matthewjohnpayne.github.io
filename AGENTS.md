@@ -20,6 +20,7 @@ This repository is a **personal scientific website** for Matthew Payne. Preserve
 - Featured research themes: `src/data/features.json`.
 - Structured records (one YAML file each, validated by `src/content.config.ts`):
   - `src/content/tutorials/`: notebooks, linking to the authoritative MPC tutorial pages.
+  - `src/content/courses/`: courses written or taught.
   - `src/content/software/`: public repositories, described in their own words.
   - `src/content/publications/`: verified bibliographic records only. Copy `_TEMPLATE.yaml`.
   - `src/content/people/`: mentees and collaborators, each requiring `approvedByPerson: true`. Copy `_TEMPLATE.yaml`.

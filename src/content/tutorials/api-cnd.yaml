@@ -1,0 +1,5 @@
+title: "MPC Check Near-Duplicates (CND) API"
+summary: "Find published observations that are near-duplicates of yours before you submit."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_cnd/
+order: 6

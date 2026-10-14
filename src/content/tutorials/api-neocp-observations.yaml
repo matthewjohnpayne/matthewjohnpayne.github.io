@@ -1,0 +1,5 @@
+title: "MPC NEOCP Observations API"
+summary: "Retrieve observations of objects currently on the NEO Confirmation Page."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_neocp_observations/
+order: 4

@@ -1,0 +1,6 @@
+title: "Validating ADES Observation Files"
+summary: "Use the valsubmit function to check that ADES (XML or PSV) observation files are valid before submitting them to the MPC."
+topic: submission
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_ades_validation/
+tools: [iau-ades]
+order: 1

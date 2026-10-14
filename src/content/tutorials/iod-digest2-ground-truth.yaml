@@ -1,0 +1,6 @@
+title: "digest2 Ground-Truth Evaluation"
+summary: "Measure how accurately digest2 classifies tracklets of objects with known orbits, using the digest2.truth module."
+topic: iod
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_digest2_ground_truth/
+tools: [digest2]
+order: 2

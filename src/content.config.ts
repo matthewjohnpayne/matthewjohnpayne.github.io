@@ -12,11 +12,24 @@ const tutorials = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
-    topic: z.enum(['orbits', 'animations']),
+    topic: z.enum(['orbits', 'animations', 'iod', 'submission', 'api']),
     url: z.url(),
     tools: z.array(z.string()).default([]),
     // Site-relative path of an interactive adaptation, once one exists.
     interactive: z.string().optional(),
+    order: z.number().default(100)
+  })
+});
+
+// Courses Matthew Payne has written or taught.
+const courses = defineCollection({
+  loader: glob({ pattern, base: './src/content/courses' }),
+  schema: z.object({
+    title: z.string(),
+    institution: z.string(),
+    summary: z.string(),
+    topics: z.array(z.string()).default([]),
+    repo: z.url().optional(),
     order: z.number().default(100)
   })
 });
@@ -65,4 +78,4 @@ const people = defineCollection({
   })
 });
 
-export const collections = { tutorials, software, publications, people };
+export const collections = { tutorials, courses, software, publications, people };

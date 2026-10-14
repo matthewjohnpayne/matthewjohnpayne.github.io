@@ -1,0 +1,6 @@
+title: "MPC Observing Target List ('WhatsUp'): a Python Convenience Wrapper"
+summary: "Wrap the Observing Target List web form so the brightest objects visible from a site can be fetched like an API."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_whatsup/
+tools: [pandas]
+order: 15

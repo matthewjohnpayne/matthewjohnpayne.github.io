@@ -1,0 +1,5 @@
+title: "MPC Submission of Observations"
+summary: "Submit a validated ADES file of observations to the MPC programmatically."
+topic: submission
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_submission_submission/
+order: 3

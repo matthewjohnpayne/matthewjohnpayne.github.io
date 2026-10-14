@@ -1,0 +1,5 @@
+title: "MPC Observatory Codes API"
+summary: "Look up information about observatories registered with the MPC."
+topic: api
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_api_obscodes/
+order: 5

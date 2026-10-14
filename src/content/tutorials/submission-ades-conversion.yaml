@@ -1,0 +1,6 @@
+title: "Converting 80-Column Observations to ADES Format"
+summary: "Convert legacy 80-column (MPC1992) observations to ADES, then add RA and Dec measurement uncertainties."
+topic: submission
+url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_ades_conversion/
+tools: [iau-ades]
+order: 2
