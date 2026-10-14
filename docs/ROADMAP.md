@@ -69,3 +69,4 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
   - Built the People page (86 collaborators, with a co-author filter on Publications).
   - Added the project notes (this file and `CONTEXT.md`).
   - Wrote the resonance-overlap notebook in science-notebooks.
+  - 2026-10-14: full-resolution version pushed (science-notebooks 7576a3c): DPH13 Lyapunov estimator, analogues of Figs. 4, 5, 9, 10 and 14, results cached in `cache/`.
