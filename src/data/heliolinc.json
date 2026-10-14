@@ -1,0 +1,894 @@
+{
+ "description": "The simulated survey of the science-notebooks HelioLinC notebook, exported by tools/export_heliolinc_data.py.",
+ "source": "https://github.com/matthewjohnpayne/science-notebooks/tree/main/notebooks/heliolinc",
+ "commit": "abbaaa0",
+ "file": "data/heliolinc/field.bin",
+ "names": "data/heliolinc/names.json",
+ "windowCentreJD": 2461206.620939,
+ "oppositionLongitudeDeg": 83.687289,
+ "fieldHalfWidthDeg": 4.0,
+ "nightsFromCentre": [
+  -12.0,
+  -9.0,
+  -6.0,
+  -3.0,
+  0.0,
+  3.0,
+  6.0,
+  9.0,
+  12.0
+ ],
+ "raRef": 1.4502200796264395,
+ "decRef": 0.4054482561441875,
+ "nDetections": 111843,
+ "nTracklets": 37281,
+ "nObjects": 11919,
+ "nFindable": 6614,
+ "findableByClass": {
+  "MBA": 6522,
+  "NEO": 25,
+  "Hilda": 28,
+  "Trojan": 34,
+  "Centaur": 1,
+  "TNO": 2,
+  "Other": 2
+ },
+ "classes": [
+  "MBA",
+  "NEO",
+  "Hilda",
+  "Trojan",
+  "Centaur",
+  "TNO",
+  "Other"
+ ],
+ "crocco": {
+  "windowCentreJD": 2461502.493906718,
+  "t": [
+   -12.0,
+   -11.98611111100763,
+   -11.972222222015262,
+   -9.0,
+   -8.98611111100763,
+   -8.972222222015262,
+   -6.0,
+   -5.986111111007631,
+   -5.972222222015262,
+   -3.0,
+   -2.986111111007631,
+   -2.9722222220152617,
+   0.0,
+   0.013888888992369175,
+   0.02777777798473835,
+   3.0,
+   3.013888888992369,
+   3.0277777779847383,
+   6.0,
+   6.013888888992369,
+   6.027777777984738,
+   9.0,
+   9.01388888899237,
+   9.027777777984738,
+   12.0,
+   12.01388888899237,
+   12.027777777984738
+  ],
+  "ra": [
+   3.3344497496101155,
+   3.3343985820048094,
+   3.3343464128271867,
+   3.323259597191324,
+   3.323207630517166,
+   3.3231551858599757,
+   3.3119776620751216,
+   3.3119249574839205,
+   3.311873050525144,
+   3.300698506754497,
+   3.3006450035314296,
+   3.300593661765293,
+   3.289514933914734,
+   3.2894622853102433,
+   3.2894113832208602,
+   3.2785157825406706,
+   3.278466311832437,
+   3.2784155848516554,
+   3.2677939999524,
+   3.267745195075126,
+   3.267696607963755,
+   3.257429029367051,
+   3.257382157000602,
+   3.2573348547967824,
+   3.2474995338806125,
+   3.2474553348716277,
+   3.2474099888989447
+  ],
+  "dec": [
+   0.19875273782001512,
+   0.19876045443263787,
+   0.19877004353070898,
+   0.20050120993930065,
+   0.20050846197875835,
+   0.2005154996750383,
+   0.20194764492915476,
+   0.20195316189775628,
+   0.20195912100547983,
+   0.20306476414078245,
+   0.2030671885463206,
+   0.20307277684707442,
+   0.2038282149605142,
+   0.2038302555750238,
+   0.20383446217905146,
+   0.20421991530547015,
+   0.2042211711633619,
+   0.20422141210978859,
+   0.20422502917323057,
+   0.20422464079097954,
+   0.20422344781668902,
+   0.20383371564415542,
+   0.2038311650905889,
+   0.20382847822918138,
+   0.2030380328956101,
+   0.20303326375226197,
+   0.20302891279160373
+  ],
+  "gamma": 0.30415267016961195,
+  "gammaDot": -0.00018378857275754554,
+  "r": 3.2894958537031833,
+  "delta": 2.3287510212401736
+ },
+ "notebook": {
+  "gammaDots": [
+   -0.004,
+   -0.002,
+   0.0,
+   0.002,
+   0.004
+  ],
+  "dGrid": [
+   8.838834764831845e-05,
+   0.000125,
+   0.0001767766952966369,
+   0.00025,
+   0.0003535533905932738,
+   0.0005,
+   0.0007071067811865476,
+   0.001,
+   0.0014142135623730952,
+   0.002,
+   0.0028284271247461905,
+   0.004,
+   0.005656854249492381
+  ],
+  "dts": [
+   1.0,
+   2.0,
+   5.0,
+   10.0,
+   20.0
+  ],
+  "scan": {
+   "1.0": [
+    {
+     "pure_objects": 395,
+     "valid_objects": 395,
+     "erroneous": 0,
+     "clusters": 416
+    },
+    {
+     "pure_objects": 1301,
+     "valid_objects": 1301,
+     "erroneous": 1,
+     "clusters": 1450
+    },
+    {
+     "pure_objects": 2630,
+     "valid_objects": 2632,
+     "erroneous": 1,
+     "clusters": 3200
+    },
+    {
+     "pure_objects": 3724,
+     "valid_objects": 3730,
+     "erroneous": 18,
+     "clusters": 4820
+    },
+    {
+     "pure_objects": 4577,
+     "valid_objects": 4597,
+     "erroneous": 53,
+     "clusters": 5765
+    },
+    {
+     "pure_objects": 5342,
+     "valid_objects": 5433,
+     "erroneous": 159,
+     "clusters": 6662
+    },
+    {
+     "pure_objects": 5856,
+     "valid_objects": 6164,
+     "erroneous": 577,
+     "clusters": 7808
+    },
+    {
+     "pure_objects": 5471,
+     "valid_objects": 6539,
+     "erroneous": 1403,
+     "clusters": 10129
+    },
+    {
+     "pure_objects": 3773,
+     "valid_objects": 6608,
+     "erroneous": 3093,
+     "clusters": 14705
+    },
+    {
+     "pure_objects": 1600,
+     "valid_objects": 6612,
+     "erroneous": 5344,
+     "clusters": 24377
+    },
+    {
+     "pure_objects": 341,
+     "valid_objects": 6612,
+     "erroneous": 5732,
+     "clusters": 42175
+    },
+    {
+     "pure_objects": 56,
+     "valid_objects": 6613,
+     "erroneous": 4555,
+     "clusters": 69359
+    },
+    {
+     "pure_objects": 23,
+     "valid_objects": 6613,
+     "erroneous": 4569,
+     "clusters": 101071
+    }
+   ],
+   "2.0": [
+    {
+     "pure_objects": 130,
+     "valid_objects": 130,
+     "erroneous": 0,
+     "clusters": 136
+    },
+    {
+     "pure_objects": 614,
+     "valid_objects": 614,
+     "erroneous": 0,
+     "clusters": 667
+    },
+    {
+     "pure_objects": 1827,
+     "valid_objects": 1827,
+     "erroneous": 0,
+     "clusters": 2112
+    },
+    {
+     "pure_objects": 3323,
+     "valid_objects": 3324,
+     "erroneous": 2,
+     "clusters": 4178
+    },
+    {
+     "pure_objects": 4441,
+     "valid_objects": 4442,
+     "erroneous": 20,
+     "clusters": 5628
+    },
+    {
+     "pure_objects": 5337,
+     "valid_objects": 5359,
+     "erroneous": 69,
+     "clusters": 6476
+    },
+    {
+     "pure_objects": 6028,
+     "valid_objects": 6122,
+     "erroneous": 201,
+     "clusters": 7064
+    },
+    {
+     "pure_objects": 6144,
+     "valid_objects": 6518,
+     "erroneous": 544,
+     "clusters": 7835
+    },
+    {
+     "pure_objects": 5384,
+     "valid_objects": 6608,
+     "erroneous": 1357,
+     "clusters": 9948
+    },
+    {
+     "pure_objects": 3484,
+     "valid_objects": 6610,
+     "erroneous": 2623,
+     "clusters": 14667
+    },
+    {
+     "pure_objects": 1285,
+     "valid_objects": 6612,
+     "erroneous": 4031,
+     "clusters": 25459
+    },
+    {
+     "pure_objects": 266,
+     "valid_objects": 6613,
+     "erroneous": 3799,
+     "clusters": 47354
+    },
+    {
+     "pure_objects": 70,
+     "valid_objects": 6613,
+     "erroneous": 4262,
+     "clusters": 82573
+    }
+   ],
+   "5.0": [
+    {
+     "pure_objects": 17,
+     "valid_objects": 17,
+     "erroneous": 0,
+     "clusters": 17
+    },
+    {
+     "pure_objects": 87,
+     "valid_objects": 87,
+     "erroneous": 0,
+     "clusters": 93
+    },
+    {
+     "pure_objects": 398,
+     "valid_objects": 398,
+     "erroneous": 0,
+     "clusters": 428
+    },
+    {
+     "pure_objects": 1383,
+     "valid_objects": 1383,
+     "erroneous": 0,
+     "clusters": 1581
+    },
+    {
+     "pure_objects": 3048,
+     "valid_objects": 3048,
+     "erroneous": 1,
+     "clusters": 3898
+    },
+    {
+     "pure_objects": 4655,
+     "valid_objects": 4655,
+     "erroneous": 12,
+     "clusters": 6108
+    },
+    {
+     "pure_objects": 5817,
+     "valid_objects": 5825,
+     "erroneous": 52,
+     "clusters": 7047
+    },
+    {
+     "pure_objects": 6366,
+     "valid_objects": 6431,
+     "erroneous": 187,
+     "clusters": 7217
+    },
+    {
+     "pure_objects": 6343,
+     "valid_objects": 6592,
+     "erroneous": 489,
+     "clusters": 7678
+    },
+    {
+     "pure_objects": 5679,
+     "valid_objects": 6610,
+     "erroneous": 1100,
+     "clusters": 9480
+    },
+    {
+     "pure_objects": 4113,
+     "valid_objects": 6611,
+     "erroneous": 1953,
+     "clusters": 13617
+    },
+    {
+     "pure_objects": 1747,
+     "valid_objects": 6611,
+     "erroneous": 2622,
+     "clusters": 23854
+    },
+    {
+     "pure_objects": 419,
+     "valid_objects": 6613,
+     "erroneous": 2771,
+     "clusters": 47139
+    }
+   ],
+   "10.0": [
+    {
+     "pure_objects": 2,
+     "valid_objects": 2,
+     "erroneous": 0,
+     "clusters": 2
+    },
+    {
+     "pure_objects": 10,
+     "valid_objects": 10,
+     "erroneous": 0,
+     "clusters": 10
+    },
+    {
+     "pure_objects": 56,
+     "valid_objects": 56,
+     "erroneous": 0,
+     "clusters": 58
+    },
+    {
+     "pure_objects": 302,
+     "valid_objects": 302,
+     "erroneous": 0,
+     "clusters": 328
+    },
+    {
+     "pure_objects": 1046,
+     "valid_objects": 1046,
+     "erroneous": 0,
+     "clusters": 1192
+    },
+    {
+     "pure_objects": 2562,
+     "valid_objects": 2562,
+     "erroneous": 0,
+     "clusters": 3256
+    },
+    {
+     "pure_objects": 4367,
+     "valid_objects": 4367,
+     "erroneous": 7,
+     "clusters": 5923
+    },
+    {
+     "pure_objects": 5806,
+     "valid_objects": 5810,
+     "erroneous": 42,
+     "clusters": 7575
+    },
+    {
+     "pure_objects": 6431,
+     "valid_objects": 6481,
+     "erroneous": 211,
+     "clusters": 7415
+    },
+    {
+     "pure_objects": 6355,
+     "valid_objects": 6602,
+     "erroneous": 599,
+     "clusters": 7846
+    },
+    {
+     "pure_objects": 5691,
+     "valid_objects": 6609,
+     "erroneous": 1471,
+     "clusters": 10218
+    },
+    {
+     "pure_objects": 4100,
+     "valid_objects": 6611,
+     "erroneous": 2537,
+     "clusters": 15723
+    },
+    {
+     "pure_objects": 1789,
+     "valid_objects": 6611,
+     "erroneous": 2735,
+     "clusters": 29373
+    }
+   ],
+   "20.0": [
+    {
+     "pure_objects": 0,
+     "valid_objects": 0,
+     "erroneous": 0,
+     "clusters": 0
+    },
+    {
+     "pure_objects": 0,
+     "valid_objects": 0,
+     "erroneous": 0,
+     "clusters": 0
+    },
+    {
+     "pure_objects": 3,
+     "valid_objects": 3,
+     "erroneous": 0,
+     "clusters": 3
+    },
+    {
+     "pure_objects": 24,
+     "valid_objects": 24,
+     "erroneous": 0,
+     "clusters": 25
+    },
+    {
+     "pure_objects": 143,
+     "valid_objects": 143,
+     "erroneous": 0,
+     "clusters": 150
+    },
+    {
+     "pure_objects": 581,
+     "valid_objects": 581,
+     "erroneous": 0,
+     "clusters": 627
+    },
+    {
+     "pure_objects": 1575,
+     "valid_objects": 1575,
+     "erroneous": 0,
+     "clusters": 1898
+    },
+    {
+     "pure_objects": 3273,
+     "valid_objects": 3273,
+     "erroneous": 3,
+     "clusters": 4347
+    },
+    {
+     "pure_objects": 5066,
+     "valid_objects": 5071,
+     "erroneous": 55,
+     "clusters": 7051
+    },
+    {
+     "pure_objects": 6189,
+     "valid_objects": 6230,
+     "erroneous": 202,
+     "clusters": 8102
+    },
+    {
+     "pure_objects": 6337,
+     "valid_objects": 6570,
+     "erroneous": 784,
+     "clusters": 8187
+    },
+    {
+     "pure_objects": 5721,
+     "valid_objects": 6608,
+     "erroneous": 2337,
+     "clusters": 11114
+    },
+    {
+     "pure_objects": 4022,
+     "valid_objects": 6610,
+     "erroneous": 4646,
+     "clusters": 19812
+    }
+   ]
+  },
+  "gridScan": {
+   "nominal": [
+    {
+     "pure_objects": 17,
+     "valid_objects": 17,
+     "erroneous": 0,
+     "clusters": 17
+    },
+    {
+     "pure_objects": 87,
+     "valid_objects": 87,
+     "erroneous": 0,
+     "clusters": 93
+    },
+    {
+     "pure_objects": 398,
+     "valid_objects": 398,
+     "erroneous": 0,
+     "clusters": 428
+    },
+    {
+     "pure_objects": 1383,
+     "valid_objects": 1383,
+     "erroneous": 0,
+     "clusters": 1581
+    },
+    {
+     "pure_objects": 3048,
+     "valid_objects": 3048,
+     "erroneous": 1,
+     "clusters": 3898
+    },
+    {
+     "pure_objects": 4655,
+     "valid_objects": 4655,
+     "erroneous": 12,
+     "clusters": 6108
+    },
+    {
+     "pure_objects": 5817,
+     "valid_objects": 5825,
+     "erroneous": 52,
+     "clusters": 7047
+    },
+    {
+     "pure_objects": 6366,
+     "valid_objects": 6431,
+     "erroneous": 187,
+     "clusters": 7217
+    },
+    {
+     "pure_objects": 6343,
+     "valid_objects": 6592,
+     "erroneous": 489,
+     "clusters": 7678
+    },
+    {
+     "pure_objects": 5679,
+     "valid_objects": 6610,
+     "erroneous": 1100,
+     "clusters": 9480
+    },
+    {
+     "pure_objects": 4113,
+     "valid_objects": 6611,
+     "erroneous": 1953,
+     "clusters": 13617
+    },
+    {
+     "pure_objects": 1747,
+     "valid_objects": 6611,
+     "erroneous": 2622,
+     "clusters": 23854
+    },
+    {
+     "pure_objects": 419,
+     "valid_objects": 6613,
+     "erroneous": 2771,
+     "clusters": 47139
+    }
+   ],
+   "four-gamma": [
+    {
+     "pure_objects": 30,
+     "valid_objects": 30,
+     "erroneous": 0,
+     "clusters": 30
+    },
+    {
+     "pure_objects": 145,
+     "valid_objects": 145,
+     "erroneous": 0,
+     "clusters": 157
+    },
+    {
+     "pure_objects": 599,
+     "valid_objects": 599,
+     "erroneous": 0,
+     "clusters": 661
+    },
+    {
+     "pure_objects": 1790,
+     "valid_objects": 1790,
+     "erroneous": 0,
+     "clusters": 2116
+    },
+    {
+     "pure_objects": 3445,
+     "valid_objects": 3445,
+     "erroneous": 1,
+     "clusters": 4438
+    },
+    {
+     "pure_objects": 4953,
+     "valid_objects": 4953,
+     "erroneous": 16,
+     "clusters": 6454
+    },
+    {
+     "pure_objects": 5989,
+     "valid_objects": 5999,
+     "erroneous": 72,
+     "clusters": 7109
+    },
+    {
+     "pure_objects": 6402,
+     "valid_objects": 6498,
+     "erroneous": 253,
+     "clusters": 7244
+    },
+    {
+     "pure_objects": 6277,
+     "valid_objects": 6604,
+     "erroneous": 645,
+     "clusters": 7993
+    },
+    {
+     "pure_objects": 5461,
+     "valid_objects": 6611,
+     "erroneous": 1427,
+     "clusters": 10445
+    },
+    {
+     "pure_objects": 3602,
+     "valid_objects": 6611,
+     "erroneous": 2543,
+     "clusters": 16006
+    },
+    {
+     "pure_objects": 1314,
+     "valid_objects": 6613,
+     "erroneous": 3111,
+     "clusters": 29559
+    },
+    {
+     "pure_objects": 297,
+     "valid_objects": 6613,
+     "erroneous": 3113,
+     "clusters": 58209
+    }
+   ],
+   "nine-gammadot": [
+    {
+     "pure_objects": 22,
+     "valid_objects": 22,
+     "erroneous": 0,
+     "clusters": 22
+    },
+    {
+     "pure_objects": 136,
+     "valid_objects": 136,
+     "erroneous": 0,
+     "clusters": 142
+    },
+    {
+     "pure_objects": 661,
+     "valid_objects": 661,
+     "erroneous": 0,
+     "clusters": 729
+    },
+    {
+     "pure_objects": 2125,
+     "valid_objects": 2125,
+     "erroneous": 0,
+     "clusters": 2720
+    },
+    {
+     "pure_objects": 3962,
+     "valid_objects": 3962,
+     "erroneous": 2,
+     "clusters": 5907
+    },
+    {
+     "pure_objects": 5338,
+     "valid_objects": 5338,
+     "erroneous": 19,
+     "clusters": 7671
+    },
+    {
+     "pure_objects": 6183,
+     "valid_objects": 6192,
+     "erroneous": 68,
+     "clusters": 7185
+    },
+    {
+     "pure_objects": 6439,
+     "valid_objects": 6524,
+     "erroneous": 215,
+     "clusters": 7047
+    },
+    {
+     "pure_objects": 6288,
+     "valid_objects": 6604,
+     "erroneous": 492,
+     "clusters": 7733
+    },
+    {
+     "pure_objects": 5560,
+     "valid_objects": 6610,
+     "erroneous": 1101,
+     "clusters": 9571
+    },
+    {
+     "pure_objects": 3986,
+     "valid_objects": 6611,
+     "erroneous": 1847,
+     "clusters": 13928
+    },
+    {
+     "pure_objects": 1656,
+     "valid_objects": 6611,
+     "erroneous": 2431,
+     "clusters": 25227
+    },
+    {
+     "pure_objects": 409,
+     "valid_objects": 6613,
+     "erroneous": 2707,
+     "clusters": 53699
+    }
+   ],
+   "both": [
+    {
+     "pure_objects": 42,
+     "valid_objects": 42,
+     "erroneous": 0,
+     "clusters": 42
+    },
+    {
+     "pure_objects": 227,
+     "valid_objects": 227,
+     "erroneous": 0,
+     "clusters": 241
+    },
+    {
+     "pure_objects": 970,
+     "valid_objects": 970,
+     "erroneous": 0,
+     "clusters": 1100
+    },
+    {
+     "pure_objects": 2613,
+     "valid_objects": 2613,
+     "erroneous": 0,
+     "clusters": 3556
+    },
+    {
+     "pure_objects": 4383,
+     "valid_objects": 4383,
+     "erroneous": 3,
+     "clusters": 6700
+    },
+    {
+     "pure_objects": 5612,
+     "valid_objects": 5613,
+     "erroneous": 26,
+     "clusters": 7822
+    },
+    {
+     "pure_objects": 6296,
+     "valid_objects": 6311,
+     "erroneous": 101,
+     "clusters": 7115
+    },
+    {
+     "pure_objects": 6431,
+     "valid_objects": 6557,
+     "erroneous": 286,
+     "clusters": 7162
+    },
+    {
+     "pure_objects": 6199,
+     "valid_objects": 6609,
+     "erroneous": 660,
+     "clusters": 8125
+    },
+    {
+     "pure_objects": 5334,
+     "valid_objects": 6611,
+     "erroneous": 1421,
+     "clusters": 10649
+    },
+    {
+     "pure_objects": 3448,
+     "valid_objects": 6611,
+     "erroneous": 2446,
+     "clusters": 16589
+    },
+    {
+     "pure_objects": 1237,
+     "valid_objects": 6613,
+     "erroneous": 2896,
+     "clusters": 31968
+    },
+    {
+     "pure_objects": 285,
+     "valid_objects": 6613,
+     "erroneous": 3045,
+     "clusters": 69155
+    }
+   ]
+  }
+ }
+}

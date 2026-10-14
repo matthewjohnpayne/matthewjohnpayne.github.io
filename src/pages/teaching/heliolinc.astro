@@ -1,0 +1,217 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import meta from '../../data/heliolinc.json';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/heliolinc/heliolinc.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2018AJ....156..135H/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const SUP: Record<string, string> = { '-': '⁻', 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹' };
+const sci = (x: number) => {
+  const e = Math.floor(Math.log10(x) + 1e-9), m = x / 10 ** e;
+  return `${m.toFixed(1)} × 10${String(e).split('').map((c) => SUP[c]).join('')}`;
+};
+const fmt = (x: number) => x.toLocaleString('en');
+const nb5 = meta.notebook.scan['5.0'][meta.notebook.dGrid.findIndex((d) => Math.abs(d - 1e-3) < 1e-12)];
+const references = [
+  ['Bernstein, G. & Khushalani, B. (2000), AJ 120, 3323', '2000AJ....120.3323B'],
+  ['Bowell, E., Hapke, B., Domingue, D., et al. (1989), in Asteroids II, 524', '1989aste.conf..524B'],
+  ['Holman, M. J., Payne, M. J., Blankley, P., Janssen, R. & Kuindersma, S. (2018), AJ 156, 135', '2018AJ....156..135H'],
+  ['Jones, R. L., Slater, C. T., Moeyens, J., et al. (2018), Icarus 303, 181', '2018Icar..303..181J']
+];
+---
+<BaseLayout title="Linking asteroids by guessing their distance" description="An interactive guide to HelioLinC (Holman, Payne et al. 2018): transform asteroid tracklets to the Sun's point of view and link a month of simulated survey data in your browser.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · LINKING ASTEROID DETECTIONS</p>
+      <h1>Linking asteroids by guessing their distance</h1>
+      <p>A survey sees each asteroid as a tracklet: a few detections over an hour, giving a position and a direction of motion. To find an orbit, tracklets from different nights must be recognised as the same object, among hundreds of asteroids per square degree. HelioLinC (<a href={paper} target="_blank" rel="noopener noreferrer">Holman, Payne et al. 2018</a>) guesses each object’s distance from the Sun and its rate of change, transforms every tracklet to the Sun’s point of view at one moment, and lets the tracklets of each asteroid pile up together. Every step on this page runs in your browser.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="hl-crocco">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>One asteroid, nine nights</h2><p>Make a guess, and see whether the tracklets line up.</p></div>
+      </div>
+      <div class="hl-triple">
+        <figure>
+          <div class="ro-stage hl-stage-sq"><canvas id="hl-c-sky" role="img" aria-label="Crocco's detections on nine nights, as seen from the Earth, moving westward along a curved path"></canvas></div>
+          <figcaption><b>As observed.</b> Crocco’s nine tracklets, coloured from the first night (purple) to the last (yellow). The Earth is overtaking it, so it moves backwards along a curve.</figcaption>
+        </figure>
+        <figure>
+          <div class="ro-stage hl-stage-sq"><canvas id="hl-c-helio" role="img" aria-label="The same detections transformed to the Sun's point of view"></canvas></div>
+          <figcaption><b>As seen from the Sun</b>, for your guess (H18 Eq. 6). Near the right guess, the motion is steady and straight.</figcaption>
+        </figure>
+        <figure>
+          <div class="ro-stage hl-stage-sq"><canvas id="hl-c-arrows" role="img" aria-label="Crocco's nine arrows relative to their mean"></canvas></div>
+          <figcaption><b>Arrows at one moment.</b> Each tracklet propagated to the reference time, relative to the average. Lines show rate differences over 5 days. Dashed circle: the cluster radius, 10⁻³ rad.</figcaption>
+        </figure>
+      </div>
+      <div class="hl-controls">
+        <div class="ro-control">
+          <label for="hl-gamma">Assumed inverse distance from the Sun: <output id="hl-gamma-out" class="hl-value"></output></label>
+          <input id="hl-gamma" type="range" min="0.15" max="0.7" step="0.005" value="0.4" />
+        </div>
+        <div class="ro-control">
+          <label for="hl-gdot">Assumed scaled radial velocity: <output id="hl-gdot-out" class="hl-value"></output></label>
+          <input id="hl-gdot" type="range" min="-5" max="5" step="0.05" value="0" />
+        </div>
+        <div class="ro-presets" role="group" aria-label="Guesses">
+          <button type="button" class="ro-chip" data-guess="0.4,0">The paper’s main-belt guess</button>
+          <button type="button" class="ro-chip" data-guess="true">Crocco’s true values</button>
+          <button type="button" class="ro-chip" data-guess="0.6,0">Far too close</button>
+          <button type="button" class="ro-chip" data-guess="0.304,0.004">Wrong radial velocity</button>
+        </div>
+        <dl class="rf-readout">
+          <div><dt>Spread of the arrows (H18 Eq. 11, d<sub>t</sub> = 5 days)</dt><dd id="hl-c-spread">–</dd></div>
+          <div><dt>Compared with the cluster radius</dt><dd id="hl-c-ratio">–</dd></div>
+          <div><dt>Crocco’s true values</dt><dd id="hl-c-true" class="hl-small">–</dd></div>
+        </dl>
+        <p class="hl-verdict" id="hl-c-verdict" role="status"></p>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>The guess.</b> A tracklet measures four of the six numbers an orbit needs: two angles and two angular rates. The distance and how fast it changes are unknown. HelioLinC asserts them, as γ ≈ 1/r (the inverse heliocentric distance, in au) and γ̇ (the radial velocity divided by the distance, per day), following the formalism of <a href={ads('2000AJ....120.3323B')} target="_blank" rel="noopener noreferrer">Bernstein &amp; Khushalani (2000)</a>.</p>
+        <p><b>Try it.</b> The paper’s standard main-belt guess, r = 2.5 au, is far from Crocco’s true 3.3 au, yet the arrows stay within the cluster radius: an error in distance is largely absorbed by the fitted rate. A wrong radial velocity, or a much too small distance, spreads them out.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab ro-lab-map" id="hl-field">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">2</p>
+        <div><h2>A month of survey data</h2><p>{fmt(meta.nTracklets)} tracklets of {fmt(meta.nObjects)} real minor planets, seen from the Sun.</p></div>
+      </div>
+      <div class="ro-map-controls">
+        <div class="ro-control hl-field-gdot">
+          <label for="hl-field-gdot">Assumed γ̇ (γ = 0.4): <output id="hl-field-gdot-out" class="hl-value"></output></label>
+          <input id="hl-field-gdot" type="range" min="-4" max="4" step="0.25" value="0" />
+        </div>
+        <label>Zoom
+          <select id="hl-zoom-size">
+            <option value="0.08">0.08°</option>
+            <option value="0.25" selected>0.25°</option>
+            <option value="0.8">0.8°</option>
+          </select>
+        </label>
+        <fieldset class="ro-segmented">
+          <legend>Colour by</legend>
+          <label><input type="radio" name="hl-colour" value="truth" checked /><span>True object</span></label>
+          <label><input type="radio" name="hl-colour" value="link" disabled /><span>Linking result</span></label>
+        </fieldset>
+      </div>
+      <figure class="hl-overview-fig">
+        <div class="ro-stage hl-stage-wide"><canvas id="hl-overview" tabindex="0" role="img" aria-label="Every arrow in the field. Select a point, or use the arrow keys, to move the zoomed view."></canvas></div>
+        <figcaption>Every tracklet’s arrow position, as seen from the Sun at the reference time. Select a point (or focus the map and use the arrow keys) to move the red box.</figcaption>
+      </figure>
+      <div class="hl-field-layout">
+        <figure>
+          <div class="ro-stage hl-stage-sq hl-stage-zoom"><canvas id="hl-zoom" role="img" aria-label="Zoomed view of arrow space"></canvas>
+            <p class="rf-status" id="hl-field-status">The survey data load when you reach this section.</p>
+          </div>
+          <figcaption id="hl-zoom-count"></figcaption>
+        </figure>
+        <div>
+          <p class="ro-hover hl-hover" id="hl-zoom-hover" aria-live="off">Point at an arrow to identify it.</p>
+          <div class="rf-explain">
+            <p><b>Reading it.</b> The zoom shows the arrows in the red box. Each dot is one tracklet’s position, as seen from the Sun, propagated to the reference time; its line shows its motion. Coloured by true object, the tracklets of each asteroid collapse into a tight group of parallel arrows. The dashed circle is the cluster radius used in section 3.</p>
+            <p><b>Focus.</b> Move the γ̇ slider and watch groups come into and out of focus: each is tightest at the γ̇ closest to its own (H18 Figure 4).</p>
+            <p><b>The data.</b> The orbits are real, from the Minor Planet Center’s MPCORB file; the observations are simulated, exactly as in the <a href={notebook} target="_blank" rel="noopener noreferrer">notebook</a>. An 8° × 8° field at opposition on the ecliptic is observed every third night for 24 nights around the new moon of 2026 June 15, with three detections 20 minutes apart per tracklet, 0.1″ astrometric noise and a limiting magnitude of about 21.5. {fmt(meta.nFindable)} objects appear on three or more nights.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab ro-lab-map" id="hl-link-section">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">3</p>
+        <div><h2>Link them</h2><p>The whole search: transform, cluster, and score against the truth.</p></div>
+      </div>
+      <div class="ro-compute">
+        <label>Cluster radius d
+          <select id="hl-d">
+            {meta.notebook.dGrid.map((d) => <option value={d} selected={Math.abs(d - 1e-3) < 1e-12}>{sci(d)} rad</option>)}
+          </select>
+        </label>
+        <label>Velocity weighting dₜ
+          <select id="hl-dt">
+            {meta.notebook.dts.map((dt) => <option value={dt} selected={dt === 5}>{dt} days</option>)}
+          </select>
+        </label>
+        <label>Hypotheses
+          <select id="hl-grid">
+            <option value="nominal" selected>γ = 0.4; five γ̇ (the paper’s)</option>
+            <option value="four-gamma">four γ; five γ̇</option>
+            <option value="nine-gammadot">γ = 0.4; nine γ̇</option>
+            <option value="both">four γ; nine γ̇</option>
+          </select>
+        </label>
+        <label>False tracklets
+          <select id="hl-false">
+            <option value="0" selected>None</option>
+            <option value="1">One per real tracklet</option>
+            <option value="3">Three per real tracklet</option>
+          </select>
+        </label>
+        <button type="button" class="rf-button" id="hl-link" disabled>Link the tracklets</button>
+        <p class="ro-progress" id="hl-link-status" role="status">Waiting for the survey data…</p>
+      </div>
+      <dl class="rf-readout hl-results">
+        <div><dt>Findable objects (3+ nights)</dt><dd>{fmt(meta.nFindable)}</dd></div>
+        <div><dt>Found in pure clusters</dt><dd id="hl-r-pure">–</dd></div>
+        <div><dt>Found in pure or valid clusters</dt><dd id="hl-r-valid">–</dd></div>
+        <div><dt>Erroneous clusters</dt><dd id="hl-r-err">–</dd></div>
+        <div><dt>All clusters</dt><dd id="hl-r-clusters">–</dd></div>
+      </dl>
+      <div class="hl-charts">
+        <div class="ro-stage hl-stage-chart"><canvas id="hl-chart-pure" role="img" aria-label="Objects found in pure clusters against cluster radius"></canvas></div>
+        <div class="ro-stage hl-stage-chart"><canvas id="hl-chart-err" role="img" aria-label="Erroneous clusters against cluster radius"></canvas></div>
+      </div>
+      <p class="ro-hover" id="hl-chart-note"></p>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>What to look for</h2>
+      <ul>
+        <li><b>The cluster radius.</b> Run the search at several radii. Too small, and only the tightest clusters are found. Too large, and clusters swallow arrows from other objects: pure clusters fall and erroneous ones rise steeply (H18 Figure 5). With the paper’s grid and d<sub>t</sub> = 5 days, the best radius here is 10⁻³ rad, where {fmt(nb5.pure_objects)} of {fmt(meta.nFindable)} objects ({(100 * nb5.pure_objects / meta.nFindable).toFixed(1)}%) are found in pure clusters. H18 adopted 2 × 10⁻³ rad for their training data; the best value depends on how crowded the data are.</li>
+        <li><b>The velocity weighting.</b> Smaller d<sub>t</sub> finds more at small radii; larger d<sub>t</sub> rejects arrows that are not parallel. H18 found the best value comparable to the time span of the observations.</li>
+        <li><b>More hypotheses</b> help only a little, and each adds chances for unrelated arrows to line up (H18 Figure 6).</li>
+        <li><b>False tracklets</b> are not in the paper, which left them for future work. Real surveys produce many. Here they are placed at random, with realistic motions; watch the erroneous clusters.</li>
+        <li><b>Linking result colours.</b> After a run, colour section 2 by the result: <span class="hl-key hl-key-pure">teal</span> tracklets are in pure clusters, <span class="hl-key hl-key-valid">amber</span> in clusters with interlopers, <span class="hl-key hl-key-err">red</span> only in erroneous clusters, and grey in none.</li>
+      </ul>
+
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>The transformation</b> is H18 Eq. (6): for an assumed (γ, γ̇), each detection’s position as seen from the Sun is computed from its observed direction and the Earth’s position, and a straight line in time is fitted to each tracklet’s detections. Gravity is H18’s second option, keeping only the dominant term g<sub>z</sub> = −GM<sub>⊙</sub>γ³t²/2. The Earth’s position comes from the JPL approximate elements of Standish &amp; Williams.</li>
+        <li><b>Clustering</b> uses the H18 metric d² = Δα² + Δβ² + d<sub>t</sub>²(Δα̇² + Δβ̇²): for every arrow, all arrows within d form a candidate, and a group of three or more is a cluster. Clusters from all hypotheses are merged, and any that is a proper subset of another is dropped. H18 use a KD-tree; this page uses a grid of cells, which finds the same neighbours. Clusters are scored with H18’s dispositions: pure (one object), valid (three or more tracklets of one object, plus interlopers) or erroneous.</li>
+        <li><b>The data</b> are the notebook’s simulated survey, exported by the site’s <code>tools/export_heliolinc_data.py</code>: real MPCORB orbits propagated as two-body orbits with light-travel time, observed from the Earth–Moon barycentre, with magnitudes in the IAU H, G system (<a href={ads('1989aste.conf..524B')} target="_blank" rel="noopener noreferrer">Bowell et al. 1989</a>).</li>
+        <li><b>Validation.</b> This page’s code (<code>src/scripts/heliolinc/</code>) is a port of the notebook’s Python module. On the same data, its arrows agree with the notebook’s to 10⁻¹⁰ rad, and in seven tests of the full search (several radii, weightings and grids) it finds exactly the same numbers of pure, valid and erroneous clusters (<code>tools/validate_heliolinc/</code>). The survey is stored at slightly reduced precision (about 0.002″), which changes the notebook’s total of {fmt(nb5.clusters)} clusters at the standard settings by two, and none of the counts of objects found.</li>
+        <li><b>Limitations.</b> This is a teaching tool. The survey is idealised: one field at opposition, every object observed on every night, no weather or trailing losses, and no orbit fitting to verify the clusters (H18 Section 5). The scaling advantage of HelioLinC, a cost growing as N log N rather than N³ (<a href={ads('2018Icar..303..181J')} target="_blank" rel="noopener noreferrer">Jones et al. 2018</a>), is measured in the notebook.</li>
+      </ul>
+
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+        <li>Minor Planet Center, MPCORB.DAT. <a href="https://minorplanetcenter.net/iau/MPCORB.html" target="_blank" rel="noopener noreferrer">minorplanetcenter.net</a></li>
+        <li>Standish, E. M. &amp; Williams, J. G., Approximate Positions of the Planets. <a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html" target="_blank" rel="noopener noreferrer">JPL</a></li>
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import meta from '../../data/heliolinc.json';
+    import { startHelioLinC } from '../../scripts/heliolinc/app.js';
+    startHelioLinC(meta, import.meta.env.BASE_URL);
+  </script>
+</BaseLayout>

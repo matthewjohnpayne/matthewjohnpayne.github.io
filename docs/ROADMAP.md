@@ -14,6 +14,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
   - the theme summaries in `src/data/research.json` (titles approved; summaries written from paper titles);
   - the Jupiter copy on the reference-frames page;
   - the resonance-overlap notebook text.
+- [ ] **Review the HelioLinC interactive page** (`/teaching/heliolinc/`): wording, and whether to add the population or false-tracklet views of the notebook.
 - [ ] **Review the resonance-overlap interactive page** (`/teaching/resonance-overlap/`): wording, and whether the map should offer more starting phases or the Figure 9 (phase against period ratio) maps.
 
 ## Next up
@@ -34,7 +35,7 @@ Each idea comes from one of Matthew's refereed papers. Pair each notebook with a
 | Resonance overlap and the stability of close planet pairs | Deck, Payne & Holman 2013 (ApJ 774, 129) | **Done:** notebook in science-notebooks; interactive page at `/teaching/resonance-overlap/`. |
 | Transit timing variations: a two-planet TTV explorer | Payne et al. 2010 (ApJL 712, L86); Payne & Ford 2011 (ApJ 729, 98); Veras, Ford & Payne 2011 (ApJ 727, 74) | Near-resonant TTV signal against period ratio and mass. Inclined and retrograde cases. |
 | Stellar wobble to radial-velocity curve | Nelson et al. 2014, RUN DMC (ApJS 210, 11) | Ties to the Sun-wobble inset on the reference-frames page. N-body versus Keplerian RV fits for interacting planets. |
-| HelioLinC: linking detections by guessing the distance | Holman et al. 2018 (AJ 156, 135) | **Notebook written** (science-notebooks abbaaa0, 2026-10-14; not yet pushed): simulated survey of real MPCORB orbits. Next: Matthew's review, then a browser interactive (a γ̇ slider bringing clusters into focus). |
+| HelioLinC: linking detections by guessing the distance | Holman et al. 2018 (AJ 156, 135) | **Done:** notebook in science-notebooks (abbaaa0); interactive page at `/teaching/heliolinc/`. |
 | Shift-and-stack on detection catalogues | Stetzler et al. 2025 (AJ 170, 352) | Synthetic catalogue: recover a faint mover by stacking along trial velocities. |
 | Exomoons freed by white dwarf mass loss | Payne et al. 2016 (MNRAS 457, 217), 2017 (MNRAS 464, 2557) | Hill-sphere growth and loss as the star loses mass. |
 | Planet Nine and TNO orbits | Li, Hadden, Payne & Holman 2018 (AJ 156, 263); Hadden et al. 2018 (AJ 155, 249) | Secular and chaotic dynamics of distant TNOs. |
@@ -52,6 +53,8 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 - **Cross-links:** link each research theme to its software, tutorials and interactive pages, and each collaborator to the themes you share.
 
 ## Done
+
+- 2026-10-14: HelioLinC notebook pushed (science-notebooks abbaaa0) and interactive page `/teaching/heliolinc/` (Matthew: "push, and then work on the browser version"): Crocco's arrows under the reader's guess, the notebook's survey in arrow space with a γ̇ focus slider, and the full linking search in a worker. Validated by `tools/validate_heliolinc/`: identical cluster counts to the notebook module in 7 of 7 settings. Linked from Teaching and the Research detection theme.
 
 - 2026-10-14: **Site published** at https://matthewjohnpayne.github.io/ (Matthew's go-ahead). Pages source switched to GitHub Actions; `deploy.yml` builds and deploys on every push to `main`.
 

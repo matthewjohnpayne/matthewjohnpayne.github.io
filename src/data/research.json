@@ -56,6 +56,14 @@
       "summary": "Finding and characterising small bodies in survey data: HelioLinC, digest2, machine learning for near-Earth objects, shift-and-stack, the ASSIST integrator and IAWN timing campaigns.",
       "links": [
         {
+          "label": "Interactive: linking asteroids by guessing their distance (HelioLinC)",
+          "href": "/teaching/heliolinc/"
+        },
+        {
+          "label": "Notebook: HelioLinC (Holman, Payne et al. 2018)",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/heliolinc/heliolinc.ipynb"
+        },
+        {
           "label": "digest2 code",
           "href": "https://github.com/Smithsonian/mpc-public/tree/main/digest2"
         },
