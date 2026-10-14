@@ -14,12 +14,13 @@ Open work, ideas for future content, and a short log of what is done. Update thi
   - the theme summaries in `src/data/research.json` (titles approved; summaries written from paper titles);
   - the Jupiter copy on the reference-frames page;
   - the resonance-overlap notebook text.
-- [ ] **Science-notebooks repo:** approve creating `matthewjohnpayne/science-notebooks` on GitHub.
+- [ ] **Resonance-overlap notebook:** Matthew to review and refine it before the interactive version is started.
 
 ## Next up
 
-- [ ] **Link the resonance-overlap notebook** from Research (theme 2) and Teaching once it is public.
-- [ ] **Interactive resonance-overlap page** on this site. A browser version could show resonance widths and spacing against ε, with the overlap and Hill lines, plus a small two-planet integration with a chaos indicator. Validate against the notebook.
+- [ ] **Link the resonance-overlap notebook** (https://github.com/matthewjohnpayne/science-notebooks) from Research (theme 2) and Teaching once Matthew is happy with it.
+- [ ] **Render science-notebooks to GitHub Pages** (Jupyter Book or similar) at `matthewjohnpayne.github.io/science-notebooks/`.
+- [ ] **Interactive resonance-overlap page** on this site, after the notebook is final. A browser version could show resonance widths and spacing against ε, with the overlap and Hill lines, plus a small two-planet integration with a chaos indicator. Validate against the notebook.
 - [ ] **Featured papers:** set `featured: true` on a handful, and show them at the top of Publications and on the homepage.
 - [ ] **Replace the illustrative homepage card figures** (`src/components`) with real computed figures.
 - [ ] **Extend the reference-frames run to about 400 years**, so readers can see Kamoʻoalewa leave the quasi-satellite state around 2306 (about 0.7 s of compute).
@@ -32,7 +33,7 @@ Each idea comes from one of Matthew's refereed papers. Pair each notebook with a
 
 | Idea | Based on | Notes |
 |---|---|---|
-| Resonance overlap and the stability of close planet pairs | Deck, Payne & Holman 2013 (ApJ 774, 129) | **Done:** `science-notebooks/notebooks/resonance_overlap/`. |
+| Resonance overlap and the stability of close planet pairs | Deck, Payne & Holman 2013 (ApJ 774, 129) | **In review:** `science-notebooks/notebooks/resonance_overlap/`, at the paper's resolution. |
 | Transit timing variations: a two-planet TTV explorer | Payne et al. 2010 (ApJL 712, L86); Payne & Ford 2011 (ApJ 729, 98); Veras, Ford & Payne 2011 (ApJ 727, 74) | Near-resonant TTV signal against period ratio and mass. Inclined and retrograde cases. |
 | Stellar wobble to radial-velocity curve | Nelson et al. 2014, RUN DMC (ApJS 210, 11) | Ties to the Sun-wobble inset on the reference-frames page. N-body versus Keplerian RV fits for interacting planets. |
 | HelioLinC: linking detections by guessing the distance | Holman et al. 2018 (AJ 156, 135) | Propagate tracklets to a common epoch under an assumed heliocentric distance and watch real objects cluster. Strong browser demo. |

@@ -49,13 +49,14 @@ Matthew planned the concept in a ChatGPT conversation ("Website concept planning
 
 ## Related repository: science notebooks
 
-`~/git_repos/science-notebooks` (local only, no GitHub remote yet) holds research-based notebooks that do not belong on the MPC tutorial site. The first is "Resonance Overlap", reproducing Deck, Payne & Holman (2013). The plan is a public repo, `matthewjohnpayne/science-notebooks`, rendered to `matthewjohnpayne.github.io/science-notebooks/`, which this site would link from Research and Teaching. Creating it needs Matthew's go-ahead.
+[`matthewjohnpayne/science-notebooks`](https://github.com/matthewjohnpayne/science-notebooks) (public; local copy `~/git_repos/science-notebooks`) holds research-based notebooks that do not belong on the MPC tutorial site. The first is "Resonance Overlap", reproducing Deck, Payne & Holman (2013) at the paper's own resolution: Lyapunov-time maps from about half a million REBOUND integrations, cached in the repo. Matthew wants to refine that notebook before an interactive web version is built. Rendering the repo to `matthewjohnpayne.github.io/science-notebooks/` (for example with Jupyter Book) is still to do.
 
 ## Decisions log
 
 - **2026-10-13: Repository.** The site lives in Matthew's existing `matthewjohnpayne/matthewjohnpayne.github.io` repo and is served at the root, so there is no `base` in `astro.config.mjs`.
 - **2026-10-13: License.** Code is MIT (`LICENSE`); text and images are © Matthew Payne, all rights reserved. The footer and README say so.
 - **2026-10-13: Commits.** Local commits are fine. **Nothing has been pushed.** Publishing needs Matthew's go-ahead: push `main`, then set Settings → Pages → Source to "GitHub Actions" (it is currently "Deploy from branch").
+- **2026-10-14: GitHub.** Matthew asked for `matthewjohnpayne/science-notebooks` to be created; it is public. He removed the first Software list, as it was old or unfinished.
 - **2026-10-14: Content approvals.**
   - Publications come from the ADS query above.
   - The six research themes are approved as worded "for now".
