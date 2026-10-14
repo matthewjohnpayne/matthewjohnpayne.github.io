@@ -1,0 +1,11 @@
+{
+ "fetched": "2026-10-14",
+ "count": 65,
+ "query": "author:\"Payne, Matthew\" year:2006-",
+ "filters": [
+  "(database:astronomy OR database:physics) NOT database:\"physics\"",
+  "property:\"refereed\"",
+  "*:* NOT author_facet_hier:\"1/Payne, M/Payne, M  C\" NOT author_facet_hier:\"1/Payne, M/Payne, M  G\" NOT author_facet_hier:\"1/Payne, M/Payne, M  R\" NOT author_facet_hier:\"1/Payne, M/Payne, M  M\" NOT author_facet_hier:\"1/Payne, M/Payne, M  E\" NOT author_facet_hier:\"1/Payne, M/Payne, M  Janie\" NOT author_facet_hier:\"1/Payne, M/Payne, M  Jordan\" NOT author_facet_hier:\"1/Payne, M/Payne, Matthew A\" NOT author_facet_hier:\"1/Payne, M/Payne, Matthew P\""
+ ],
+ "adsUrl": "https://ui.adsabs.harvard.edu/search/q=author%3A%22Payne%2C+Matthew%22+year%3A2006-&fq=%28database%3Aastronomy+OR+database%3Aphysics%29+NOT+database%3A%22physics%22&fq=property%3A%22refereed%22&fq=%2A%3A%2A+NOT+author_facet_hier%3A%221%2FPayne%2C+M%2FPayne%2C+M++C%22+NOT+author_facet_hier%3A%221%2FPayne%2C+M%2FPayne%2C+M++G%22+NOT+author_facet_hier%3A%221%2FPayne%2C+M%2FPayne%2C+M++R%22+NOT+author_facet_hier%3A%221%2FPayne%2C+M%2FPayne%2C+M++M%22+NOT+author_facet_hier%3A%221%2FPayne%2C+M%2FPayne%2C+M++E%22+NOT+author_facet_hier%3A%221%2FPayne%2C+M%2FPayne%2C+M++Janie%22+NOT+author_facet_hier%3A%221%2FPayne%2C+M%2FPayne%2C+M++Jordan%22+NOT+author_facet_hier%3A%221%2FPayne%2C+M%2FPayne%2C+Matthew+A%22+NOT+author_facet_hier%3A%221%2FPayne%2C+M%2FPayne%2C+Matthew+P%22&sort=date+desc%2C+bibcode+desc"
+}

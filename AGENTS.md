@@ -22,12 +22,13 @@ This repository is a **personal scientific website** for Matthew Payne. Preserve
   - `src/content/tutorials/`: notebooks, linking to the authoritative MPC tutorial pages.
   - `src/content/courses/`: courses written or taught.
   - `src/content/software/`: public repositories, described in their own words.
-  - `src/content/publications/`: verified bibliographic records only. Copy `_TEMPLATE.yaml`.
+  - `src/content/publications/`: verified bibliographic records only. Refereed papers are generated from NASA ADS by `tools/fetch_publications.py` (needs `ADS_API_TOKEN`); do not hand-edit generated files except to set `featured: true`, which regeneration keeps. The ADS query is one Matthew Payne confirmed; change it only with his approval. For anything ADS misses, copy `_TEMPLATE.yaml`.
   - `src/content/people/`: mentees and collaborators, each requiring `approvedByPerson: true`. Copy `_TEMPLATE.yaml`.
   The build fails if a record does not match its schema. Files starting with `_` are ignored.
 - Homepage: `src/pages/index.astro`.
 - Shared site elements: `src/layouts/BaseLayout.astro`.
 - Simulation: `public/js/orbital-lab.js`.
+- Reference-frames tutorial: `src/pages/teaching/reference-frames.astro` and `src/scripts/frames/`. Initial conditions come from `tools/fetch_frames_ic.py`; re-run `tools/validate_frames/` after changing the integrator, step or initial conditions, and update any numbers quoted in the page copy.
 - Styles: `src/styles/global.css`.
 
 If you update the homepage presentation, regenerate the standalone review package using `python tools/make_demo.py` *and* manually check whether the preview generator needs to mirror those layout changes. The Astro source is authoritative, not the preview HTML.

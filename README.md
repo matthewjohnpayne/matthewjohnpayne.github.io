@@ -68,6 +68,7 @@ Put an image you have permission to publish at `public/assets/matthew.jpg`, then
 - Update sections, descriptions and curated resource links in `src/data/pages.json`.
 - Change the featured research themes in `src/data/features.json`.
 - Keep descriptions of publications and people factual and user-approved; do not infer relationships from coauthorship alone.
+- Refresh the publication list from NASA ADS with `ADS_API_TOKEN=... python3 tools/fetch_publications.py` (token from https://ui.adsabs.harvard.edu/user/settings/token). It rewrites `src/content/publications/*.yaml` and `src/data/publications-meta.json`, keeping any `featured: true`.
 
 Long-term content collections (Markdown and structured metadata) can replace or augment these starter JSON files once the publication and people records are curated.
 
@@ -96,6 +97,5 @@ This is **an educational gravitational model, not real-orbit propagation**. The 
 
 - Replace portrait placeholder with an approved photo.
 - Review/approve homepage wording and refine spacing after seeing the site on your own browser.
-- Add verified publication records, research projects, collaborators and mentees.
-- Embed curated MPC notebooks and create the first reference-frame demonstration.
+- Add research projects, collaborators and mentees (with consent).
 - Add the hidden Blastroids game at a later stage.
