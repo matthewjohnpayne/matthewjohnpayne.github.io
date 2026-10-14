@@ -41,7 +41,9 @@ const join = (...parts: (string | undefined)[]) => parts.filter(Boolean).join(' 
             <li>
               {m.url
                 ? <a href={m.url} target="_blank" rel="noopener noreferrer"><span class="people-name">{m.name}</span><span class="people-meta">{join(m.role, m.period)}</span></a>
-                : <div class="people-row"><span class="people-name">{m.name}</span><span class="people-meta">{join(m.role, m.period)}</span></div>}
+                : <div class="people-row"><span class="people-name">{m.name}</span><span class="people-meta">{m.roleUrl
+                    ? <><a class="people-role-link" href={m.roleUrl} target="_blank" rel="noopener noreferrer">{m.role}</a>{m.period && ` · ${m.period}`}</>
+                    : join(m.role, m.period)}</span></div>}
             </li>
           ))}
         </ul>

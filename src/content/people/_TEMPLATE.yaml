@@ -5,6 +5,7 @@
 name: ""
 relationship: mentee   # mentee | collaborator
 role: ""
+roleUrl: ""   # optional link for the role text, e.g. a programme page
 affiliation: ""
 period: ""
 url: ""

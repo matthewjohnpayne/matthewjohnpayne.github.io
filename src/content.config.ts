@@ -78,6 +78,7 @@ const people = defineCollection({
     name: z.string(),
     relationship: z.enum(['mentee', 'collaborator']),
     role: z.string().optional(),
+    roleUrl: z.url().optional(),         // links the role text, e.g. to a programme page
     affiliation: z.string().optional(),
     period: z.string().optional(),
     url: z.url().optional(),
