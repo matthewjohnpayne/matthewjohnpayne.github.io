@@ -1,0 +1,7 @@
+title: Resonance Overlap and the Stability of Close Planet Pairs
+summary: When do two closely spaced planets become chaotic? Reproduces the overlap criterion and chaos maps of Deck, Payne & Holman (2013) with REBOUND.
+topic: science
+url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/resonance_overlap/resonance_overlap.ipynb
+tools: [REBOUND, NumPy, Matplotlib]
+order: 1
+interactive: teaching/resonance-overlap/

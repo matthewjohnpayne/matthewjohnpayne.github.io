@@ -10,6 +10,7 @@ const tutorials = (await getCollection('tutorials')).sort((a, b) => a.data.order
 const courses = (await getCollection('courses')).sort((a, b) => a.data.order - b.data.order);
 // Compact groups are rendered as a dense list rather than cards.
 const groups = [
+  { topic: 'science', heading: 'Science notebooks', intro: 'Results from my own papers, reproduced step by step in Jupyter notebooks, each with an interactive version here.', compact: false },
   { topic: 'orbits', heading: 'Working with orbits', intro: 'Retrieve MPC orbits, integrate them, and look at the results from different points of view.', compact: false },
   { topic: 'animations', heading: 'Orbit animations', intro: 'Animated explanations of how small bodies move near Earth.', compact: false },
   { topic: 'iod', heading: 'Initial orbit determination', intro: 'How the MPC classifies short-arc tracklets with digest2, and how its population model works.', compact: false },
@@ -64,7 +65,7 @@ const groups = [
           )}
         </div>
       ))}
-      <div class="editorial-note"><div><span class="status-dot"></span> Source</div><p>I wrote these notebooks for the Minor Planet Center's public documentation. They are published in the <a href="https://docs.minorplanetcenter.net/tutorials/" target="_blank" rel="noopener noreferrer">MPC tutorials</a>, which remain the authoritative versions. Interactive browser adaptations will be linked here as they are built.</p></div>
+      <div class="editorial-note"><div><span class="status-dot"></span> Source</div><p>The science notebooks are in my <a href="https://github.com/matthewjohnpayne/science-notebooks" target="_blank" rel="noopener noreferrer">science-notebooks</a> repository. I wrote the other notebooks for the Minor Planet Center's public documentation. They are published in the <a href="https://docs.minorplanetcenter.net/tutorials/" target="_blank" rel="noopener noreferrer">MPC tutorials</a>, which remain the authoritative versions. Interactive browser adaptations are linked here as they are built.</p></div>
       <p class="back-row"><a href={root}>← Return to homepage</a></p>
     </div>
   </section>

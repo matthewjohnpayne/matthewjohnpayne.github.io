@@ -12,7 +12,7 @@ const tutorials = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
-    topic: z.enum(['orbits', 'animations', 'iod', 'submission', 'api']),
+    topic: z.enum(['science', 'orbits', 'animations', 'iod', 'submission', 'api']),
     url: z.url(),
     tools: z.array(z.string()).default([]),
     // Site-relative path of an interactive adaptation, once one exists.

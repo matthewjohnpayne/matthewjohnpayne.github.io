@@ -15,13 +15,11 @@ Open work, ideas for future content, and a short log of what is done. Update thi
   - the theme summaries in `src/data/research.json` (titles approved; summaries written from paper titles);
   - the Jupiter copy on the reference-frames page;
   - the resonance-overlap notebook text.
-- [ ] **Resonance-overlap notebook:** Matthew to review and refine it before the interactive version is started.
+- [ ] **Review the resonance-overlap interactive page** (`/teaching/resonance-overlap/`): wording, and whether the map should offer more starting phases or the Figure 9 (phase against period ratio) maps.
 
 ## Next up
 
-- [ ] **Link the resonance-overlap notebook** (https://github.com/matthewjohnpayne/science-notebooks) from Research (theme 2) and Teaching once Matthew is happy with it.
 - [ ] **Render science-notebooks to GitHub Pages** (Jupyter Book or similar) at `matthewjohnpayne.github.io/science-notebooks/`.
-- [ ] **Interactive resonance-overlap page** on this site, after the notebook is final. A browser version could show resonance widths and spacing against ε, with the overlap and Hill lines, plus a small two-planet integration with a chaos indicator. Validate against the notebook.
 - [ ] **Featured papers:** set `featured: true` on a handful, and show them at the top of Publications and on the homepage.
 - [ ] **Replace the illustrative homepage card figures** (`src/components`) with real computed figures.
 - [ ] **Extend the reference-frames run to about 400 years**, so readers can see Kamoʻoalewa leave the quasi-satellite state around 2306 (about 0.7 s of compute).
@@ -34,7 +32,7 @@ Each idea comes from one of Matthew's refereed papers. Pair each notebook with a
 
 | Idea | Based on | Notes |
 |---|---|---|
-| Resonance overlap and the stability of close planet pairs | Deck, Payne & Holman 2013 (ApJ 774, 129) | **In review:** `science-notebooks/notebooks/resonance_overlap/`, at the paper's resolution. |
+| Resonance overlap and the stability of close planet pairs | Deck, Payne & Holman 2013 (ApJ 774, 129) | **Done:** notebook in science-notebooks; interactive page at `/teaching/resonance-overlap/`. |
 | Transit timing variations: a two-planet TTV explorer | Payne et al. 2010 (ApJL 712, L86); Payne & Ford 2011 (ApJ 729, 98); Veras, Ford & Payne 2011 (ApJ 727, 74) | Near-resonant TTV signal against period ratio and mass. Inclined and retrograde cases. |
 | Stellar wobble to radial-velocity curve | Nelson et al. 2014, RUN DMC (ApJS 210, 11) | Ties to the Sun-wobble inset on the reference-frames page. N-body versus Keplerian RV fits for interacting planets. |
 | HelioLinC: linking detections by guessing the distance | Holman et al. 2018 (AJ 156, 135) | Propagate tracklets to a common epoch under an assumed heliocentric distance and watch real objects cluster. Strong browser demo. |
@@ -70,3 +68,4 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
   - Added the project notes (this file and `CONTEXT.md`).
   - Wrote the resonance-overlap notebook in science-notebooks.
   - 2026-10-14: full-resolution version pushed (science-notebooks 7576a3c): DPH13 Lyapunov estimator, analogues of Figs. 4, 5, 9, 10 and 14, results cached in `cache/`.
+  - 2026-10-14: interactive page `/teaching/resonance-overlap/` (Matthew: "go ahead with the interactive version"). The analytic overlap diagram, the notebook's Figure 5 maps, maps computed in the browser at four masses, and single orbits. Validated by `tools/validate_overlap/`: 747 of 750 notebook pixels agree on chaotic vs regular. Linked from Teaching (new "Science notebooks" group) and the Research exoplanet-dynamics theme.

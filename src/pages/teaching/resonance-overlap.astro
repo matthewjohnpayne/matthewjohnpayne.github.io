@@ -1,0 +1,215 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import maps from '../../data/overlap-maps.json';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/resonance_overlap/resonance_overlap.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2013ApJ...774..129D/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+
+// Total planet mass relative to the star. Masses from IAU 2015 nominal values:
+// Earth 3.003e-6, Neptune 5.15e-5 and Jupiter 9.546e-4 solar masses.
+const presets = [
+  { eps: 6.0e-6, label: 'Two Earths' },
+  { eps: 2e-5, label: 'Two super-Earths' },
+  { eps: 1.03e-4, label: 'Two Neptunes' },
+  { eps: 1.91e-3, label: 'Two Jupiters' }
+];
+const mapMasses = [
+  { eps: 1e-6, label: '1 × 10⁻⁶' },
+  { eps: 2e-5, label: '2 × 10⁻⁵ (notebook map)' },
+  { eps: 2e-4, label: '2 × 10⁻⁴' },
+  { eps: 2e-3, label: '2 × 10⁻³' }
+];
+// The colour scale of the notebook and of DPH13
+const stops = ['#03030f', '#0b1f55', '#2f6f80', '#4f9a6a', '#3a7f2e', '#7a2a12', '#c4160c', '#d9662a', '#eaa53a', '#f7ec4a'];
+const references = [
+  ['Chirikov, B. V. (1979), Phys. Rep. 52, 263', '1979PhR....52..263C'],
+  ['Deck, K. M., Payne, M. & Holman, M. J. (2013), ApJ 774, 129', '2013ApJ...774..129D'],
+  ['Gladman, B. (1993), Icarus 106, 247', '1993Icar..106..247G'],
+  ['Marchal, C. & Bozis, G. (1982), Celest. Mech. 26, 311', '1982CeMec..26..311M'],
+  ['Wisdom, J. (1980), AJ 85, 1122', '1980AJ.....85.1122W'],
+  ['Wisdom, J. & Holman, M. (1991), AJ 102, 1528', '1991AJ....102.1528W']
+];
+---
+<BaseLayout title="When do close planets become chaotic?" description="An interactive guide to resonance overlap for two planets, after Deck, Payne & Holman (2013), with chaos maps and orbits computed in your browser.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · RESONANCE OVERLAP</p>
+      <h1>When do close planets become chaotic?</h1>
+      <p>Two planets on nearby orbits tug on each other most strongly at mean-motion resonances, where their periods are in a ratio of small whole numbers. Each resonance is stable on its own. When neighbouring resonances are wide enough to overlap, there is no stable path between them, and the orbits become chaotic. This page follows <a href={paper} target="_blank" rel="noopener noreferrer">Deck, Payne &amp; Holman (2013)</a>, with every orbit computed in your browser.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="ro-theory">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>Resonances, and where they overlap</h2><p>The theory: instant, and analytic.</p></div>
+      </div>
+      <div class="rf-layout">
+        <div class="rf-figure">
+          <div class="ro-stage ro-stage-theory">
+            <canvas id="ro-theory-canvas" role="img" aria-label="First-order resonances in the plane of period ratio and eccentricity"></canvas>
+          </div>
+          <ul class="ro-key" aria-label="Key">
+            <li><span class="ro-swatch ro-swatch-res"></span>First-order resonance m+1:m, between its separatrices</li>
+            <li><span class="ro-swatch ro-swatch-dot"></span>Neighbours begin to overlap</li>
+            <li><span class="ro-swatch ro-swatch-overlap"></span>DPH13 overlap criterion</li>
+            <li><span class="ro-swatch ro-swatch-hill"></span>Hill stability boundary (e₁ = σ, e₂ = 0)</li>
+          </ul>
+        </div>
+        <div class="rf-side">
+          <div class="ro-control">
+            <label for="ro-eps">Total planet mass, as a fraction of the star’s: <output id="ro-eps-out" class="ro-eps-value">2 × 10⁻⁵</output></label>
+            <input id="ro-eps" type="range" min="-7" max="-2.5" step="0.01" value="-4.699" aria-describedby="ro-eps-help" />
+            <p id="ro-eps-help" class="ro-help"><span id="ro-eps-planets"></span></p>
+            <div class="ro-presets" role="group" aria-label="Examples">
+              {presets.map((p) => <button type="button" class="ro-chip" data-eps={p.eps}>{p.label}</button>)}
+            </div>
+          </div>
+          <dl class="rf-readout ro-readout">
+            <div><dt>Resonances overlap, circular orbits</dt><dd id="ro-overlap">–</dd></div>
+            <div><dt>Hill stable, circular orbits</dt><dd id="ro-hill">–</dd></div>
+            <div><dt>Hill-stable pairs inside the overlap zone</dt><dd id="ro-both">–</dd></div>
+          </dl>
+          <div class="rf-explain">
+            <p><b>Reading the figure.</b> Each shaded band is one first-order resonance, from 2:1 at the right to the crowded resonances near 1:1 at the left. Its edges are the separatrices of DPH13’s one-degree-of-freedom model. The bands widen as the eccentricity σ grows, and as the planets get heavier.</p>
+            <p><b>Overlap.</b> Towards 1:1 the bands get wider while the gaps between them shrink, so close enough to 1:1 they always overlap. DPH13 find that, for circular orbits, this happens for</p>
+            <p class="ro-equation">(a₂ − a₁)/a₁ ≲ 1.46 ε<sup>2/7</sup>, &nbsp;or &nbsp;P₂/P₁ ≲ 1 + 2.2 ε<sup>2/7</sup>.</p>
+            <p>For eccentric orbits, the dashed line follows their estimate P₂/P₁ ≈ 1 + 2.08 (εσ)<sup>1/5</sup>, which takes over above σ ≈ 1.33 ε<sup>3/7</sup>.</p>
+            <p><b>Hill stability</b> is a different guarantee: beyond Δ ≈ 2.4 ε<sup>1/3</sup> (circular orbits), the planets can never have a close encounter (<a href={ads('1993Icar..106..247G')} target="_blank" rel="noopener noreferrer">Gladman 1993</a>). It says nothing about chaos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab ro-lab-map" id="ro-map">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">2</p>
+        <div><h2>Map the chaos</h2><p>The test: numerical integrations, coloured by how quickly nearby orbits diverge.</p></div>
+      </div>
+      <div class="ro-map-controls">
+        <label>Total planet mass ε
+          <select id="ro-map-eps">
+            {mapMasses.map((m) => <option value={m.eps} selected={m.eps === maps.eps}>{m.label}</option>)}
+          </select>
+        </label>
+        <fieldset class="ro-segmented">
+          <legend>Inner planet’s starting mean anomaly M₁</legend>
+          {maps.M1.map((M1, k) => (
+            <label><input type="radio" name="ro-m1" value={k} checked={k === 0} /><span>{maps.M1Labels[k]}</span></label>
+          ))}
+        </fieldset>
+        <fieldset class="ro-segmented" id="ro-source">
+          <legend>Map</legend>
+          <label><input type="radio" name="ro-src" value="notebook" checked /><span>Notebook</span></label>
+          <label><input type="radio" name="ro-src" value="browser" /><span>Your browser</span></label>
+        </fieldset>
+        <label class="ro-check"><input type="checkbox" id="ro-seps" checked /> Separatrices</label>
+      </div>
+
+      <div class="ro-stage ro-stage-map">
+        <canvas id="ro-map-canvas" tabindex="0" role="img" aria-label="Map of Lyapunov time against initial period ratio and eccentricity. Use the arrow keys to move the cursor and Enter to integrate that orbit."></canvas>
+        <div class="ro-map-empty" id="ro-map-empty" hidden>
+          <p>No map yet for this mass and phase.</p>
+          <p>Compute one below: every pixel is an integration run in your browser.</p>
+        </div>
+      </div>
+      <div class="ro-under">
+        <div class="ro-colorbar">
+          <div class="ro-colorbar-bar" style={`background:linear-gradient(90deg,${stops.join(',')})`}></div>
+          <div class="ro-colorbar-ticks" aria-hidden="true">{[0.5, 1, 1.5, 2, 2.5].map((v) => <span style={`left:${((v - 0.5) / 2.26) * 100}%`}>{v.toFixed(1)}</span>)}</div>
+          <p class="ro-colorbar-label">log₁₀ of the Lyapunov time, in inner orbits. Dark: strongly chaotic. Red: weakly chaotic. Yellow: regular. <span class="ro-line-hill"></span> Hill boundary.</p>
+        </div>
+        <p class="ro-hover" id="ro-hover" aria-live="off">Point at the map to read it; select a point to integrate that orbit.</p>
+      </div>
+
+      <div class="ro-compute">
+        <label>Resolution
+          <select id="ro-res">
+            <option value="90x24">Coarse, 90 × 24</option>
+            <option value="150x40" selected>Medium, 150 × 40</option>
+            <option value="300x75">Fine, 300 × 75</option>
+          </select>
+        </label>
+        <button type="button" class="rf-button" id="ro-compute">Compute this map in your browser</button>
+        <p class="ro-progress" id="ro-progress" role="status"></p>
+      </div>
+
+      <div class="ro-orbit" id="ro-orbit">
+        <div class="ro-orbit-form">
+          <h3>Follow one orbit</h3>
+          <div class="ro-fields">
+            <label>ε <input id="ro-o-eps" type="number" min="1e-8" max="0.01" step="any" value="2e-5" /></label>
+            <label>P₂/P₁ <input id="ro-o-pr" type="number" min="1.005" max="3" step="0.0001" value="1.2" /></label>
+            <label>e₁ <input id="ro-o-e1" type="number" min="0" max="0.5" step="0.001" value="0.03" /></label>
+            <label>M₁ (°) <input id="ro-o-m1" type="number" min="-180" max="360" step="1" value="0" /></label>
+          </div>
+          <label class="ro-length">Run length
+            <select id="ro-o-len">
+              <option value="dph13" selected>DPH13: 10⁶ days, outer period 1 year</option>
+              <option value="1e5">100,000 inner orbits</option>
+            </select>
+          </label>
+          <button type="button" class="rf-button" id="ro-run">Integrate</button>
+          <p class="ro-verdict" id="ro-verdict" role="status">Select a point on the map, or set the values and press Integrate.</p>
+        </div>
+        <div class="ro-orbit-plots">
+          <figure>
+            <div class="ro-stage ro-stage-plot"><canvas id="ro-plot-lnd" role="img" aria-label="Growth of the separation between two nearby orbits against time"></canvas></div>
+            <figcaption>ln d: how far a neighbouring orbit has diverged</figcaption>
+          </figure>
+          <figure>
+            <div class="ro-stage ro-stage-plot"><canvas id="ro-plot-pr" role="img" aria-label="Period ratio against time"></canvas></div>
+            <figcaption>Period ratio P₂/P₁ (osculating)</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>What the maps show</h2>
+      <p>Each pixel is one pair of planets, started with the period ratio and inner eccentricity at that point, and integrated for a million days with the outer planet’s period set to one year: about 3,300 inner orbits. Alongside each orbit, the integrator follows a neighbour started a tiny distance away. The Lyapunov time is the time for their separation to grow by a factor e, averaged over the run.</p>
+      <ul>
+        <li><b>Complete overlap near 1:1.</b> Below P₂/P₁ ≈ 1.1, essentially every orbit is strongly chaotic, as the overlap criterion predicts for ε = 2 × 10⁻⁵.</li>
+        <li><b>A chaotic web beyond it.</b> Further out, chaos follows the separatrices of individual resonances, which widen with eccentricity and merge where they cross.</li>
+        <li><b>Phase matters in detail.</b> Compare M₁ = 0, where the planets start in conjunction, with π/10 and π/2. The edges move, and so do the regular islands.</li>
+        <li><b>Other masses.</b> Choose another ε and compute its map. The axes scale with the overlap criterion, so the zone of complete overlap always fills the left of the map, and at low eccentricity it ends close to where the criterion predicts. At ε = 10⁻⁶ the chaos there is milder, with Lyapunov times of tens of orbits rather than a few. At ε = 2 × 10⁻³, two Jupiters, the chaotic zone at low eccentricity reaches P₂/P₁ ≈ 1.4, beyond the criterion’s 1.37.</li>
+      </ul>
+
+      <h2>Hill stable, yet chaotic</h2>
+      <p>For a small enough total mass, ε ≲ (1.46/2.4)<sup>21</sup> ≈ 3 × 10⁻⁵, the overlap zone reaches beyond the Hill boundary. Planets there can never collide, yet their orbits are chaotic. At ε = 10⁻⁶, the Hill boundary for circular orbits is at Δ = 0.024 and the overlap edge at Δ ≈ 0.028.</p>
+      <p>Integrate <button type="button" class="rf-inline" data-orbit="1e-6,0.026">a pair at Δ = 0.026</button>, inside the overlap zone: within a few tens of thousands of orbits its period ratio wanders far from where it started. A pair at <button type="button" class="rf-inline" data-orbit="1e-6,0.034">Δ = 0.034</button>, outside it, stays put. This is the paper’s Figure 14.</p>
+
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>Integrator.</b> A Wisdom–Holman map in Jacobi coordinates (<a href={ads('1991AJ....102.1528W')} target="_blank" rel="noopener noreferrer">Wisdom &amp; Holman 1991</a>), 50 steps per inner orbit, with a universal-variable Kepler solver. Units have G = 1, a star of mass 1, and the inner planet at a = 1. The two planets have equal masses and move in one plane.</li>
+        <li><b>Chaos indicator.</b> A second, shadow orbit starts 10⁻⁹ away in a random direction. Whenever its separation d grows past 10⁻⁶ it is scaled back, and the growth is accumulated, so ln d follows the linearised dynamics. Then T<sub>Ly</sub> = t / ln d, as in DPH13. Orbits that escape plot black.</li>
+        <li><b>The notebook map</b> is from the <a href={notebook} target="_blank" rel="noopener noreferrer">science notebook</a>, at its full resolution of 600 × 150, computed with REBOUND’s WHFast integrator and variational equations. The analytic curves are the notebook’s, ported directly.</li>
+        <li><b>Validation.</b> For 750 randomly chosen pixels of the notebook’s maps, at three masses and many starting phases, this page’s integrator agrees with the notebook on whether the orbit is chaotic (T<sub>Ly</sub> below 100 inner orbits) for 747. The other three lie at the boundary, with T<sub>Ly</sub> between 10<sup>1.9</sup> and 10<sup>2.1</sup> orbits. The median difference in log T<sub>Ly</sub> is 0.03. The separatrices and Hill boundary agree with the notebook to rounding error.</li>
+        <li><b>Limitations.</b> A Lyapunov time from a finite run is an estimate: longer runs reveal a few more weakly chaotic orbits. The analytic theory assumes small eccentricities. This is a teaching tool, not a stability verdict for any real system.</li>
+      </ul>
+
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import maps from '../../data/overlap-maps.json';
+    import { startResonanceOverlap } from '../../scripts/overlap/app.js';
+    startResonanceOverlap(maps, import.meta.env.BASE_URL);
+  </script>
+</BaseLayout>

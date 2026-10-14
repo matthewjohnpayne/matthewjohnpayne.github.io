@@ -13,7 +13,16 @@
       "title": "Exoplanet dynamics, TTVs and radial velocities",
       "summary": "Resonances and stability in multi-planet systems, transit timing variations, and N-body modelling of radial-velocity data, from resonance overlap and 55 Cancri to Gliese 876 and RUN DMC.",
       "bibcodes": ["2009MNRAS.393.1219P", "2010ApJ...712L..86P", "2011AJ....141...16J", "2011ApJ...727...74V", "2011ApJ...729...98P", "2012ApJ...754...57B", "2012ApJ...761...46W", "2012MNRAS.426..187R", "2013ApJ...774..129D", "2013ApJ...777..101T", "2014ApJS..210...11N", "2014MNRAS.441..442N", "2015ApJ...799...89G", "2015ApJ...803...49Q", "2016MNRAS.455.2484N", "2019AJ....157..142G", "2019AJ....158..146H", "2020AJ....160..106H", "2021AJ....162..154D", "2022AJ....163..168W", "2024ApJS..271...16D", "2025AJ....169..248C"],
-      "links": []
+      "links": [
+        {
+          "label": "Interactive: when do close planets become chaotic?",
+          "href": "/teaching/resonance-overlap/"
+        },
+        {
+          "label": "Notebook: resonance overlap (Deck, Payne & Holman 2013)",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/resonance_overlap/resonance_overlap.ipynb"
+        }
+      ]
     },
     {
       "id": "exomoons",
