@@ -1,0 +1,69 @@
+{
+  "description": "Research themes, each with the ADS bibcodes of its papers (see src/content/publications/). Theme titles approved by Matthew Payne on 2026-10-14. Every refereed paper should appear in exactly one theme or in `other`; the Research page build warns about any that do not.",
+  "themes": [
+    {
+      "id": "formation",
+      "title": "Planet formation in binaries and disks",
+      "summary": "Forming planets around brown dwarfs, in binary star systems and in gravitationally unstable disks.",
+      "bibcodes": ["2007MNRAS.381.1597P", "2009MNRAS.400.1936P", "2009PhDT.......268P", "2010ApJ...724.1153X", "2011ApJ...735...10X", "2011ApJ...735...30B"],
+      "links": []
+    },
+    {
+      "id": "exoplanet-dynamics",
+      "title": "Exoplanet dynamics, TTVs and radial velocities",
+      "summary": "Resonances and stability in multi-planet systems, transit timing variations, and N-body modelling of radial-velocity data, from resonance overlap and 55 Cancri to Gliese 876 and RUN DMC.",
+      "bibcodes": ["2009MNRAS.393.1219P", "2010ApJ...712L..86P", "2011AJ....141...16J", "2011ApJ...727...74V", "2011ApJ...729...98P", "2012ApJ...754...57B", "2012ApJ...761...46W", "2012MNRAS.426..187R", "2013ApJ...774..129D", "2013ApJ...777..101T", "2014ApJS..210...11N", "2014MNRAS.441..442N", "2015ApJ...799...89G", "2015ApJ...803...49Q", "2016MNRAS.455.2484N", "2019AJ....157..142G", "2019AJ....158..146H", "2020AJ....160..106H", "2021AJ....162..154D", "2022AJ....163..168W", "2024ApJS..271...16D", "2025AJ....169..248C"],
+      "links": []
+    },
+    {
+      "id": "exomoons",
+      "title": "Exomoons and satellite stability",
+      "summary": "Whether moons survive in closely packed planetary systems and around white dwarfs.",
+      "bibcodes": ["2013ApJ...775L..44P", "2016MNRAS.457..217P", "2017MNRAS.464.2557P"],
+      "links": []
+    },
+    {
+      "id": "debris-disks",
+      "title": "Debris disks",
+      "summary": "Planetesimal belts and what they reveal about unseen planets, including ALMA observations of Fomalhaut and HD 141569.",
+      "bibcodes": ["2010MNRAS.402..657W", "2012ApJ...750L..21B", "2016ApJ...829....6W"],
+      "links": []
+    },
+    {
+      "id": "outer-solar-system",
+      "title": "The outer Solar System",
+      "summary": "Planet Nine, trans-Neptunian objects, Neptune Trojans, Centaurs and the DECam Ecliptic Exploration Project (DEEP).",
+      "links": [
+        {
+          "label": "Interactive: Jupiter’s Trojans and Hildas in five reference frames",
+          "href": "/teaching/reference-frames/#planet=jupiter&frame=corotating"
+        }
+      ],
+      "bibcodes": ["2016AJ....152...80H", "2016AJ....152...94H", "2016AJ....152..147L", "2016ApJ...827L..24C", "2018AJ....155..249H", "2018AJ....156..263L", "2018ApJ...855L...6H", "2021AJ....161...48B", "2024AJ....167..132T", "2024AJ....167..133T", "2024AJ....167..134B", "2024AJ....167..135S", "2024AJ....167..136S", "2024AJ....168..184S", "2025AJ....169...73K", "2025PSJ.....6..152H"]
+    },
+    {
+      "id": "detection",
+      "title": "Detection and linking methods",
+      "summary": "Finding and characterising small bodies in survey data: HelioLinC, digest2, machine learning for near-Earth objects, shift-and-stack, the ASSIST integrator and IAWN timing campaigns.",
+      "links": [
+        {
+          "label": "MPC tutorial: digest2",
+          "href": "https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_digest2/"
+        },
+        {
+          "label": "MPC tutorial: ASSIST",
+          "href": "https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_to_assist/"
+        },
+        {
+          "label": "Software",
+          "href": "/software/"
+        }
+      ],
+      "bibcodes": ["2018AJ....156....5V", "2018AJ....156..135H", "2019PASP..131f4501K", "2022PSJ.....3...71H", "2022PSJ.....3..156F", "2023PASP..135j4505V", "2023PSJ.....4...69H", "2023PSJ.....4..203F", "2025A&A...698A.242V", "2025AJ....170..352S", "2026ApJ..1001L..35C", "2026PSJ.....7..192A"]
+    }
+  ],
+  "other": {
+    "title": "Other refereed work",
+    "bibcodes": ["2006MNRAS.369..921M", "2019AJ....157..216W", "2026ApJ..1004..224W"]
+  }
+}

@@ -68,7 +68,8 @@ const publications = defineCollection({
   })
 });
 
-// Mentees and collaborators. Each record requires the person's approval.
+// Mentees, and collaborators whose role is described in words. Details come from
+// Matthew Payne. Co-authors are listed automatically from src/data/collaborators.json.
 const people = defineCollection({
   loader: glob({ pattern, base: './src/content/people' }),
   schema: z.object({
@@ -78,8 +79,7 @@ const people = defineCollection({
     affiliation: z.string().optional(),
     period: z.string().optional(),
     url: z.url().optional(),
-    summary: z.string().optional(),
-    approvedByPerson: z.literal(true)
+    summary: z.string().optional()
   })
 });
 

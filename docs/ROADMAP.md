@@ -1,0 +1,69 @@
+# Roadmap and ideas
+
+Open work, ideas for future content, and a short log of what is done. Update this file whenever you finish, start or think of something. Background is in `CONTEXT.md`.
+
+## Waiting on Matthew
+
+- [ ] **Publish the site.** Push `main` to `origin` and switch Pages to GitHub Actions. Not yet: Matthew said on 2026-10-14 not to push.
+- [ ] **Biography and CV details** for the homepage and an About section. Do not draft from public sources without his review.
+- [ ] **Portrait photo**, with permission (`public/assets/matthew.jpg`, then `site.json`).
+- [ ] **Software review:** which repos to feature, and any missing.
+- [ ] **Mentees:** names, roles and periods, from Matthew.
+- [ ] **An ADS API token** for future publication refreshes. Optionally, a GitHub Action could refresh them on a schedule, with the token stored as a repository secret.
+- [ ] **Review the new wording:**
+  - the theme summaries in `src/data/research.json` (titles approved; summaries written from paper titles);
+  - the Jupiter copy on the reference-frames page;
+  - the resonance-overlap notebook text.
+- [ ] **Science-notebooks repo:** approve creating `matthewjohnpayne/science-notebooks` on GitHub.
+
+## Next up
+
+- [ ] **Link the resonance-overlap notebook** from Research (theme 2) and Teaching once it is public.
+- [ ] **Interactive resonance-overlap page** on this site. A browser version could show resonance widths and spacing against ε, with the overlap and Hill lines, plus a small two-planet integration with a chaos indicator. Validate against the notebook.
+- [ ] **Featured papers:** set `featured: true` on a handful, and show them at the top of Publications and on the homepage.
+- [ ] **Replace the illustrative homepage card figures** (`src/components`) with real computed figures.
+- [ ] **Extend the reference-frames run to about 400 years**, so readers can see Kamoʻoalewa leave the quasi-satellite state around 2306 (about 0.7 s of compute).
+
+## Content ideas
+
+### Demo notebooks (for the science-notebooks repo)
+
+Each idea comes from one of Matthew's refereed papers. Pair each notebook with a browser interactive here when it suits one.
+
+| Idea | Based on | Notes |
+|---|---|---|
+| Resonance overlap and the stability of close planet pairs | Deck, Payne & Holman 2013 (ApJ 774, 129) | **Done:** `science-notebooks/notebooks/resonance_overlap/`. |
+| Transit timing variations: a two-planet TTV explorer | Payne et al. 2010 (ApJL 712, L86); Payne & Ford 2011 (ApJ 729, 98); Veras, Ford & Payne 2011 (ApJ 727, 74) | Near-resonant TTV signal against period ratio and mass. Inclined and retrograde cases. |
+| Stellar wobble to radial-velocity curve | Nelson et al. 2014, RUN DMC (ApJS 210, 11) | Ties to the Sun-wobble inset on the reference-frames page. N-body versus Keplerian RV fits for interacting planets. |
+| HelioLinC: linking detections by guessing the distance | Holman et al. 2018 (AJ 156, 135) | Propagate tracklets to a common epoch under an assumed heliocentric distance and watch real objects cluster. Strong browser demo. |
+| Shift-and-stack on detection catalogues | Stetzler et al. 2025 (AJ 170, 352) | Synthetic catalogue: recover a faint mover by stacking along trial velocities. |
+| Exomoons freed by white dwarf mass loss | Payne et al. 2016 (MNRAS 457, 217), 2017 (MNRAS 464, 2557) | Hill-sphere growth and loss as the star loses mass. |
+| Planet Nine and TNO orbits | Li, Hadden, Payne & Holman 2018 (AJ 156, 263); Hadden et al. 2018 (AJ 155, 249) | Secular and chaotic dynamics of distant TNOs. |
+| Satellites in closely packed systems | Payne, Deck, Holman & Perets 2013 (ApJL 775, L44) | How tightly packed planets limit moon stability. |
+| Laplace resonance in Gliese 876 | Nelson et al. 2016 (MNRAS 455, 2484) | Three-body resonance angles from an N-body fit. |
+| Interstellar objects detectable with LSST | Hoover et al. 2022 (PSJ 3, 71) | Population model and detectability. |
+
+Check author lists and bibcodes against `src/content/publications/` before quoting them on the site.
+
+### Other ideas
+
+- **More reference-frames planets:** Venus and Mars co-orbitals, which the notebook's "Going further" section mentions.
+- **Minimoons interactive**, from the MPC animation tutorial.
+- **The hidden Blastroids game**, from the original plan.
+- **Cross-links:** link each research theme to its software, tutorials and interactive pages, and each collaborator to the themes you share.
+
+## Done
+
+- **2026-10-13:**
+  - Imported v0.1 and made it build (Astro 7).
+  - Added validated content collections.
+  - Built the Teaching page (30 notebooks, PHYS 422) and the Software page.
+  - Built the reference-frames interactive (Kamoʻoalewa).
+- **2026-10-14:**
+  - Added the Jupiter mode (Hektor, Hilda) to the reference-frames page.
+  - Linked the homepage card to it.
+  - Built the Publications page from ADS (65 papers).
+  - Built the Research page (six themes).
+  - Built the People page (86 collaborators, with a co-author filter on Publications).
+  - Added the project notes (this file and `CONTEXT.md`).
+  - Wrote the resonance-overlap notebook in science-notebooks.

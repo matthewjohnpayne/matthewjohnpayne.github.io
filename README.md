@@ -93,9 +93,8 @@ For a custom domain, update `site` in `astro.config.mjs` and configure the domai
 
 This is **an educational gravitational model, not real-orbit propagation**. The visual scene is heliocentric; Jupiter's force contributes while its orbit lies outside the displayed inner-system view. Orbit traces on the homepage are real results of the numerical model, not hand-drawn decorations. Scientific figures on the three informational cards are illustrative and should later be replaced with verified output from your notebooks.
 
-## Next milestones
+## Project notes
 
-- Replace portrait placeholder with an approved photo.
-- Review/approve homepage wording and refine spacing after seeing the site on your own browser.
-- Add research projects, collaborators and mentees (with consent).
-- Add the hidden Blastroids game at a later stage.
+- `docs/CONTEXT.md`: why the site is built the way it is, data sources and decisions.
+- `docs/ROADMAP.md`: open work, content ideas (including demo notebooks) and a log of what is done.
+- `AGENTS.md`: rules for LLM editors.

@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
 import pages from '../data/pages.json';
 import meta from '../data/publications-meta.json';
+import collab from '../data/collaborators.json';
 
 const page = pages.find((p) => p.slug === 'publications')!;
 const root = import.meta.env.BASE_URL;
@@ -12,6 +13,8 @@ const pubs = (await getCollection('publications'))
   .sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
 const years = [...new Set(pubs.map((p) => p.year))];
 const firstAuthor = pubs.filter((p) => p.authorPosition === 1).length;
+// Co-author filter (#with=<ADS normalised name>), used by links from the People page.
+const withMap = Object.fromEntries(collab.collaborators.map((c) => [c.key, { name: c.name.split(/,\s*/).reverse().join(' '), bibcodes: c.bibcodes }]));
 const fetched = new Date(meta.fetched).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 // ADS titles can carry <SUB>, <SUP> and <i> markup; keep only those tags.
@@ -41,6 +44,7 @@ const ordinal = (n: number) => n + (suffix[(n % 100 - 20) % 10] || suffix[n % 10
           <label><input type="radio" name="pub-filter" value="all" checked /> All papers</label>
           <label><input type="radio" name="pub-filter" value="first" /> First author</label>
         </fieldset>
+        <p class="pub-with" id="pub-with" hidden><span id="pub-with-text"></span> <a href="#" id="pub-with-clear">Show all</a></p>
         <p class="pub-source">From <a href={meta.adsUrl} target="_blank" rel="noopener noreferrer">this NASA ADS search ↗</a>, last updated {fetched}. ADS also has citations and full texts.</p>
       </div>
 
@@ -52,7 +56,7 @@ const ordinal = (n: number) => n + (suffix[(n % 100 - 20) % 10] || suffix[n % 10
               {pubs.filter((p) => p.year === year).map((p) => {
                 const a = authorLine(p);
                 return (
-                  <li class="pub-item" data-first={p.authorPosition === 1 ? 'true' : 'false'}>
+                  <li class="pub-item" data-first={p.authorPosition === 1 ? 'true' : 'false'} data-bibcode={p.bibcode}>
                     <a class="pub-title" href={p.url} target="_blank" rel="noopener noreferrer" set:html={titleHtml(p.title)} />
                     <p class="pub-authors">
                       {a.shown.map((name, i) => (
@@ -77,18 +81,34 @@ const ordinal = (n: number) => n + (suffix[(n % 100 - 20) % 10] || suffix[n % 10
     </div>
   </section>
 
+  <script is:inline type="application/json" id="pub-with-data" set:html={JSON.stringify(withMap)} />
   <script>
     const list = document.getElementById('pub-list')!;
-    document.querySelectorAll<HTMLInputElement>('input[name="pub-filter"]').forEach((input) => {
-      input.addEventListener('change', () => {
-        const firstOnly = input.value === 'first' && input.checked;
-        list.querySelectorAll<HTMLElement>('.pub-item').forEach((li) => {
-          li.hidden = firstOnly && li.dataset.first !== 'true';
-        });
-        list.querySelectorAll<HTMLElement>('.pub-year').forEach((sec) => {
-          sec.hidden = !sec.querySelector('.pub-item:not([hidden])');
-        });
+    const withBox = document.getElementById('pub-with')!;
+    const withMap: Record<string, { name: string; bibcodes: string[] }> = JSON.parse(document.getElementById('pub-with-data')!.textContent || '{}');
+    const radios = [...document.querySelectorAll<HTMLInputElement>('input[name="pub-filter"]')];
+
+    function apply() {
+      const firstOnly = radios.find((r) => r.checked)?.value === 'first';
+      const key = new URLSearchParams(location.hash.slice(1)).get('with');
+      const person = key ? withMap[key] : undefined;
+      const allowed = person ? new Set(person.bibcodes) : null;
+      list.querySelectorAll<HTMLElement>('.pub-item').forEach((li) => {
+        li.hidden = (firstOnly && li.dataset.first !== 'true') || (allowed !== null && !allowed.has(li.dataset.bibcode || ''));
       });
+      list.querySelectorAll<HTMLElement>('.pub-year').forEach((sec) => {
+        sec.hidden = !sec.querySelector('.pub-item:not([hidden])');
+      });
+      withBox.hidden = !person;
+      if (person) document.getElementById('pub-with-text')!.textContent = `Showing ${person.bibcodes.length} papers with ${person.name}.`;
+    }
+    radios.forEach((r) => r.addEventListener('change', apply));
+    window.addEventListener('hashchange', apply);
+    document.getElementById('pub-with-clear')!.addEventListener('click', (e) => {
+      e.preventDefault();
+      history.replaceState(null, '', location.pathname);
+      apply();
     });
+    apply();
   </script>
 </BaseLayout>
