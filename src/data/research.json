@@ -47,8 +47,12 @@
       "summary": "Finding and characterising small bodies in survey data: HelioLinC, digest2, machine learning for near-Earth objects, shift-and-stack, the ASSIST integrator and IAWN timing campaigns.",
       "links": [
         {
-          "label": "MPC tutorial: digest2",
-          "href": "https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_digest2/"
+          "label": "digest2 code",
+          "href": "https://github.com/Smithsonian/mpc-public/tree/main/digest2"
+        },
+        {
+          "label": "MPC tutorials: initial orbit determination with digest2",
+          "href": "https://docs.minorplanetcenter.net/tutorials/iod_tutorials/"
         },
         {
           "label": "MPC tutorial: ASSIST",

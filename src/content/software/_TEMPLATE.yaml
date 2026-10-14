@@ -7,3 +7,4 @@ repo: https://github.com/
 language: ""         # optional
 featured: false      # featured entries appear first, under "Selected projects"
 order: 100
+links: []           # optional: [{label: "...", href: https://...}]

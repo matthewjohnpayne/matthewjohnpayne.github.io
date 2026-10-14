@@ -25,7 +25,7 @@ Matthew planned the concept in a ChatGPT conversation ("Website concept planning
 |---|---|---|
 | Research | `src/data/research.json` | Six themes; each paper assigned by ADS bibcode. Titles approved 2026-10-14. |
 | People | `src/data/collaborators.json` (generated) plus `src/content/people/` | Co-authors from ADS. Mentees to be added with details from Matthew. |
-| Software | `src/content/software/` | Empty since 2026-10-14: Matthew removed the first list (old or unfinished repos) and will supply a curated, current one. Add only entries he chooses. |
+| Software | `src/content/software/` | Curated by Matthew. On 2026-10-14 he removed the first list (old or unfinished repos) and is adding entries one at a time, starting with digest2. Add only entries he chooses. |
 | Teaching | `src/content/tutorials/`, `src/content/courses/` | All 30 MPC tutorial notebooks are Matthew's. PHYS 422 (Bridgewater State) is a course he wrote, teaching Python to undergraduates with no programming background. |
 | MPC | `src/data/pages.json` | Links to MPC services and documentation. |
 | Publications | `src/content/publications/` (generated) | Refereed papers from an ADS query Matthew confirmed. |

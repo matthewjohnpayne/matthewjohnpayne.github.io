@@ -7,7 +7,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 - [ ] **Publish the site.** Push `main` to `origin` and switch Pages to GitHub Actions. Not yet: Matthew said on 2026-10-14 not to push.
 - [ ] **Biography and CV details** for the homepage and an About section. Do not draft from public sources without his review.
 - [ ] **Portrait photo**, with permission (`public/assets/matthew.jpg`, then `site.json`).
-- [ ] **Software list:** Matthew will supply a curated, up-to-date list. The page is empty until then; copy `src/content/software/_TEMPLATE.yaml` for each entry.
+- [ ] **Software list:** Matthew is supplying a curated, up-to-date list, one entry at a time; so far digest2 (2026-10-14). Copy `src/content/software/_TEMPLATE.yaml` for each entry.
 - [ ] **Mentees:** names, roles and periods, from Matthew.
 - [ ] **An ADS API token** for future publication refreshes. Optionally, a GitHub Action could refresh them on a schedule, with the token stored as a repository secret.
 - [ ] **Review the new wording:**

@@ -34,7 +34,7 @@ const courses = defineCollection({
   })
 });
 
-// Public repositories, described in their own words (GitHub description).
+// Software chosen by Matthew Payne, described in its own words (README or repo description).
 const software = defineCollection({
   loader: glob({ pattern, base: './src/content/software' }),
   schema: z.object({
@@ -42,6 +42,8 @@ const software = defineCollection({
     summary: z.string(),
     repo: z.url(),
     language: z.string().optional(),
+    // Further links, such as tutorials or documentation.
+    links: z.array(z.object({ label: z.string(), href: z.url() })).default([]),
     featured: z.boolean().default(false),
     order: z.number().default(100)
   })
