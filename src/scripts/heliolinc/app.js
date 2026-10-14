@@ -349,6 +349,12 @@ export function startHelioLinC(meta, base) {
     const nightsJD = meta.nightsFromCentre.map((t) => t + meta.windowCentreJD);
     worker.postMessage({ type: 'init', det: field.det, obj: field.obj,
       field: { tRef: meta.windowCentreJD, lam0: meta.oppositionLongitudeDeg * DEG, half: Math.tan(meta.fieldHalfWidthDeg * DEG), nightsJD } });
+    worker.onerror = () => {
+      busy = false;
+      $('hl-link').disabled = false;
+      $('hl-link-status').textContent = 'The linking code failed to run in this browser. Please reload the page to try again.';
+      worker = null;
+    };
     worker.onmessage = ({ data }) => {
       if (data.id !== runId) return;
       if (data.type === 'progress') { $('hl-link-status').textContent = `Linking… ${Math.round(100 * data.f)}% of the hypotheses done`; return; }
@@ -387,6 +393,7 @@ export function startHelioLinC(meta, base) {
   }
   $('hl-link').addEventListener('click', () => {
     if (!field || busy) return;
+    if (!worker) startWorker();
     busy = true;
     $('hl-link').disabled = true;
     const c = current();
