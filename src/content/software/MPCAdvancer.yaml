@@ -1,6 +1,0 @@
-name: MPCAdvancer
-summary: "The MPC's wrapper and handler of methods to advance orbital initial conditions."
-repo: https://github.com/matthewjohnpayne/MPCAdvancer
-language: Python
-featured: false
-order: 8

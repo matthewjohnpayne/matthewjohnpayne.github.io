@@ -1,0 +1,9 @@
+# Copy to a new file (e.g. assist.yaml) — files starting with "_" are ignored.
+# The Software page lists only entries Matthew Payne has chosen. Do not add
+# repositories on your own initiative.
+name: ""
+summary: ""          # one or two sentences, in Matthew's words or the repo's own description
+repo: https://github.com/
+language: ""         # optional
+featured: false      # featured entries appear first, under "Selected projects"
+order: 100

@@ -1,6 +1,0 @@
-name: orbit_checker
-summary: "Orbit-checking code that cycles through the back catalogue to find and categorize orbit standards."
-repo: https://github.com/matthewjohnpayne/orbit_checker
-language: Python
-featured: false
-order: 6

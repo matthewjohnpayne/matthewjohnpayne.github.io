@@ -1,6 +1,0 @@
-name: mpc_nbody
-summary: "N-body wrapper for MPC orbit propagation."
-repo: https://github.com/matthewjohnpayne/mpc_nbody
-language: Python
-featured: true
-order: 2

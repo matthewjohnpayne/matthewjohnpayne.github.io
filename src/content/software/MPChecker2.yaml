@@ -1,6 +1,0 @@
-name: MPChecker2
-summary: "A new version of the MPChecker code that lists the minor planets that are likely in your field of view."
-repo: https://github.com/matthewjohnpayne/MPChecker2
-language: Jupyter Notebook
-featured: true
-order: 1

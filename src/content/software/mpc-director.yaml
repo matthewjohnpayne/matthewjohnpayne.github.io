@@ -1,6 +1,0 @@
-name: mpc-director
-summary: "Code intended to centralize decisions, criteria and configurations for parts of the MPC's automated pipelines."
-repo: https://github.com/matthewjohnpayne/mpc-director
-language: Python
-featured: false
-order: 5

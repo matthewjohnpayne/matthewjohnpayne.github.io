@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
 import pages from '../data/pages.json';
-import site from '../data/site.json';
 
 const page = pages.find((p) => p.slug === 'software')!;
 const root = import.meta.env.BASE_URL;
@@ -32,7 +31,7 @@ const sections = [
           </div>
         </div>
       ))}
-      <div class="editorial-note"><div><span class="status-dot"></span> More on GitHub</div><p>Descriptions are taken from each repository. See <a href={site.github} target="_blank" rel="noopener noreferrer">my GitHub profile</a> for every public repository.</p></div>
+      {software.length === 0 && <div class="editorial-note"><div><span class="status-dot"></span> In preparation</div><p>A curated list of current software is being prepared.</p></div>}
       <p class="back-row"><a href={root}>← Return to homepage</a></p>
     </div>
   </section>

@@ -53,10 +53,6 @@
         {
           "label": "MPC tutorial: ASSIST",
           "href": "https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_to_assist/"
-        },
-        {
-          "label": "Software",
-          "href": "/software/"
         }
       ],
       "bibcodes": ["2018AJ....156....5V", "2018AJ....156..135H", "2019PASP..131f4501K", "2022PSJ.....3...71H", "2022PSJ.....3..156F", "2023PASP..135j4505V", "2023PSJ.....4...69H", "2023PSJ.....4..203F", "2025A&A...698A.242V", "2025AJ....170..352S", "2026ApJ..1001L..35C", "2026PSJ.....7..192A"]

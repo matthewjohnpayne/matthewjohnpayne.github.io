@@ -1,6 +1,0 @@
-name: kepcart
-summary: "Coordinate conversion to and from Keplerian and Cartesian coordinate systems."
-repo: https://github.com/matthewjohnpayne/kepcart
-language: Python
-featured: false
-order: 9

@@ -27,7 +27,7 @@ This repository is a **personal scientific website** for Matthew Payne, astrophy
 - Structured records (one YAML file each, validated by `src/content.config.ts`):
   - `src/content/tutorials/`: notebooks, linking to the authoritative MPC tutorial pages.
   - `src/content/courses/`: courses written or taught.
-  - `src/content/software/`: public repositories, described in their own words.
+  - `src/content/software/`: a curated list chosen by Matthew. Do not add repositories on your own initiative.
   - `src/content/publications/`: refereed papers generated from NASA ADS by `tools/fetch_publications.py` (needs `ADS_API_TOKEN`). Do not hand-edit generated files except to set `featured: true`, which regeneration keeps. The ADS query is one Matthew confirmed; change it only with his approval. For anything ADS misses, copy `_TEMPLATE.yaml`.
   - `src/content/people/`: mentees, and collaborators whose role is described in words, using only details Matthew supplies. Copy `_TEMPLATE.yaml`.
   The build fails if a record does not match its schema. Files starting with `_` are ignored.
