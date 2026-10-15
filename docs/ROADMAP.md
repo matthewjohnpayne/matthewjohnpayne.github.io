@@ -16,6 +16,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
   - the resonance-overlap notebook text.
 - [ ] **Review the HelioLinC interactive page** (`/teaching/heliolinc/`): wording, and whether to add the population or false-tracklet views of the notebook.
 - [ ] **Review the resonance-overlap interactive page** (`/teaching/resonance-overlap/`): wording, and whether the map should offer more starting phases or the Figure 9 (phase against period ratio) maps.
+- [ ] **Review the interstellar-objects interactive page** (`/teaching/interstellar-objects/`) and notebook (`iso_lsst`): wording, and the notebook's account of where it differs from Hoover, Seligman & Payne (2022).
 
 ## Next up
 
@@ -44,7 +45,7 @@ Each idea comes from one of Matthew's refereed papers. Pair each notebook with a
 | Planet Nine and TNO orbits | Li, Hadden, Payne & Holman 2018 (AJ 156, 263); Hadden et al. 2018 (AJ 155, 249) | Secular and chaotic dynamics of distant TNOs. |
 | Satellites in closely packed systems | Payne, Deck, Holman & Perets 2013 (ApJL 775, L44) | How tightly packed planets limit moon stability. |
 | Laplace resonance in Gliese 876 | Nelson et al. 2016 (MNRAS 455, 2484) | Three-body resonance angles from an N-body fit. |
-| Interstellar objects detectable with LSST | Hoover et al. 2022 (PSJ 3, 71) | Population model and detectability. |
+| Interstellar objects detectable with LSST | Hoover, Seligman & Payne 2022 (PSJ 3, 71) | **Done:** notebook in science-notebooks (`iso_lsst`); interactive page at `/teaching/interstellar-objects/`. Differences from the paper (whole-night visibility test, ecliptic concentration, Δv convention) are explained in the notebook. |
 
 Check author lists and bibcodes against `src/content/publications/` before quoting them on the site.
 

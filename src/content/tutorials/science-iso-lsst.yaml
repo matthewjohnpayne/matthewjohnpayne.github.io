@@ -1,0 +1,7 @@
+title: "Interstellar Objects in the LSST Era: Which Will Rubin See?"
+summary: Reproduces the Monte Carlo of Hoover, Seligman & Payne (2022) — a million ʻOumuamua-like visitors drawn from the kinematics of nearby stars, followed night by night — to find which the LSST could detect and which a spacecraft could reach.
+topic: science
+url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/iso_lsst/iso_lsst.ipynb
+tools: [NumPy, Matplotlib, REBOUND]
+order: 4
+interactive: teaching/interstellar-objects/

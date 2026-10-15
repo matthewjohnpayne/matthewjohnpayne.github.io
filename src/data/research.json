@@ -72,6 +72,14 @@
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/heliolinc/heliolinc.ipynb"
         },
         {
+          "label": "Interactive: which interstellar visitors will Rubin see?",
+          "href": "/teaching/interstellar-objects/"
+        },
+        {
+          "label": "Notebook: interstellar objects and the LSST (Hoover, Seligman & Payne 2022)",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/iso_lsst/iso_lsst.ipynb"
+        },
+        {
           "label": "digest2 code",
           "href": "https://github.com/Smithsonian/mpc-public/tree/main/digest2"
         },

@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/iso_lsst/iso_lsst.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2022PSJ.....3...71H/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const quantities = [
+  ['dmin', 'Closest approach'], ['wait', 'Warning time'], ['vinf', 'Speed v∞'],
+  ['q', 'Perihelion'], ['inc', 'Inclination'], ['b', 'Offset b']
+];
+const references = [
+  ['Binney, J. & Merrifield, M. (1998), Galactic Astronomy, Princeton University Press', '1998gaas.book.....B'],
+  ['Chandler, C. O. et al. (2026), ApJL 1001, L35', '2026ApJ..1001L..35C'],
+  ['Dehnen, W. & Binney, J. J. (1998), MNRAS 298, 387', '1998MNRAS.298..387D'],
+  ['Guzik, P. et al. (2020), Nature Astronomy 4, 53', '2020NatAs...4...53G'],
+  ['Hoover, D. J., Seligman, D. Z. & Payne, M. J. (2022), PSJ 3, 71', '2022PSJ.....3...71H'],
+  ['Mamajek, E. (2017), RNAAS 1, 21', '2017RNAAS...1...21M'],
+  ['Meech, K. J. et al. (2017), Nature 552, 378', '2017Natur.552..378M'],
+  ['Schönrich, R., Binney, J. & Dehnen, W. (2010), MNRAS 403, 1829', '2010MNRAS.403.1829S'],
+  ['Seligman, D. & Laughlin, G. (2018), AJ 155, 217', '2018AJ....155..217S'],
+  ['Seligman, D. Z. et al. (2025), ApJL 989, L36', '2025ApJ...989L..36S']
+];
+---
+<BaseLayout title="Which interstellar visitors will Rubin see?" description="An interactive guide to the interstellar objects the Vera C. Rubin Observatory should find, after Hoover, Seligman & Payne (2022), with every orbit computed in your browser.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · INTERSTELLAR OBJECTS</p>
+      <h1>Which interstellar visitors will Rubin see?</h1>
+      <p>Three objects from other planetary systems have been seen passing through the Solar System: 1I/ʻOumuamua in 2017, 2I/Borisov in 2019 and 3I/ATLAS in 2025. The Vera C. Rubin Observatory’s Legacy Survey of Space and Time (LSST) should find many more. This page follows <a href={paper} target="_blank" rel="noopener noreferrer">Hoover, Seligman &amp; Payne (2022)</a>: where interstellar objects come from, which of them Rubin could see, and which a spacecraft could reach. Every orbit is computed in your browser.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="iso-arrivals">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>Where they come from</h2><p>If interstellar objects move like the stars around the Sun, from which directions do they arrive?</p></div>
+      </div>
+      <div class="ro-map-controls iso-controls-row">
+        <fieldset class="ro-segmented">
+          <legend>Move like nearby</legend>
+          <label><input type="radio" name="iso-pop" value="M" /><span>M dwarfs</span></label>
+          <label><input type="radio" name="iso-pop" value="G" checked /><span>G dwarfs</span></label>
+          <label><input type="radio" name="iso-pop" value="O/B" /><span>O and B stars</span></label>
+        </fieldset>
+        <label class="tt-mass">The Sun’s own motion
+          <select id="iso-solar">
+            <option value="Schönrich et al. (2010)" selected>Schönrich et al. (2010)</option>
+            <option value="Dehnen & Binney (1998)">Dehnen &amp; Binney (1998)</option>
+          </select>
+        </label>
+        <label class="iso-check"><input type="checkbox" id="iso-focus" checked /> Weight for the Sun’s gravitational focusing</label>
+      </div>
+      <div class="ro-stage iso-stage-sky"><canvas id="iso-sky" role="img" aria-label="All-sky map of the probability that an interstellar object arrives from each direction, brightest around the solar apex, with the radiants of 1I, 2I and 3I marked"></canvas></div>
+      <div class="ro-under">
+        <p class="ro-hover" id="iso-sky-read" aria-live="off">Point at the map to read it.</p>
+        <p class="ro-hover" id="iso-apex"></p>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>Reading the map.</b> Brighter means more likely. The paper assumes interstellar objects share the random motions of nearby stars (a Schwarzschild velocity distribution), so, seen from the Sun, they stream towards us from the <i>solar apex</i>, the direction in which the Sun moves through its neighbourhood. Slow objects are bent towards the Sun by its gravity, and a weight for this “gravitational focusing” makes them more common still. The white line is the ecliptic, the dashed line the Galactic plane.</p>
+        <p><b>The three known visitors.</b> ʻOumuamua came from about 15° from the apex. Borisov and 3I/ATLAS came from far from it, and were faster (32 and 58 km/s, against 26 km/s): the kinematics of older, “hotter” stellar populations (try M dwarfs) spread the arrivals more widely.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="iso-visitor">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">2</p>
+        <div><h2>Follow one visitor</h2><p>Each visitor starts 5 au from the Sun, heading inwards. Night by night: how bright is it, and can Rubin see it?</p></div>
+      </div>
+      <div class="tt-presets">
+        <button type="button" class="rf-button" id="iso-draw">Draw a random visitor</button>
+        <button type="button" class="rf-button" id="iso-close">Draw until Rubin could see one</button>
+        <span class="tt-presets-label">Real orbits:</span>
+        <button type="button" class="ro-chip" data-known="1I/ʻOumuamua">1I/ʻOumuamua</button>
+        <button type="button" class="ro-chip" data-known="2I/Borisov">2I/Borisov</button>
+        <button type="button" class="ro-chip" data-known="3I/ATLAS">3I/ATLAS</button>
+      </div>
+      <div class="tt-layout">
+        <div class="tt-controls">
+          <div class="ro-control"><label for="iso-v">Speed far from the Sun: <output id="iso-v-out" class="hl-value"></output></label>
+            <input id="iso-v" type="range" min="1" max="100" step="0.5" value="25" /></div>
+          <div class="ro-control"><label for="iso-b">Offset from a head-on path, on the 5 au sphere: <output id="iso-b-out" class="hl-value"></output></label>
+            <input id="iso-b" type="range" min="0" max="5" step="0.01" value="1" /></div>
+          <div class="ro-control"><label for="iso-psi">Direction of that offset: <output id="iso-psi-out" class="hl-value"></output></label>
+            <input id="iso-psi" type="range" min="0" max="359" step="1" value="0" /></div>
+          <div class="ro-control"><label for="iso-day">Start date (sets where the Earth is): <output id="iso-day-out" class="hl-value"></output></label>
+            <input id="iso-day" type="range" min="0" max="364" step="1" value="0" /></div>
+          <details class="tt-more">
+            <summary>Size and survey depth</summary>
+            <div class="ro-control"><label for="iso-H">Absolute magnitude: <output id="iso-H-out"></output></label><input id="iso-H" type="range" min="18" max="26" step="0.1" value="22.4" /></div>
+            <div class="ro-control"><label for="iso-lim">Faintest detectable: <output id="iso-lim-out"></output></label><input id="iso-lim" type="range" min="19" max="25" step="0.1" value="24" /></div>
+            <p class="ro-help">H = 22.4 is ʻOumuamua’s absolute magnitude. For the same reflectivity, each step of 1 in H is a factor of 1.6 in size. Rubin reaches about m = 24.</p>
+          </details>
+          <p class="ro-progress" id="iso-summary" role="status"></p>
+        </div>
+        <div>
+          <div class="iso-plots">
+            <div class="ro-stage iso-stage-orbit"><canvas id="iso-orbit" role="img" aria-label="The visitor's path through the inner Solar System seen from above, with the Earth's orbit; the path is orange where Rubin could detect it"></canvas></div>
+            <div class="ro-stage iso-stage-lc"><canvas id="iso-lc" role="img" aria-label="The visitor's apparent magnitude night by night, with the nights it is observable from Rubin marked"></canvas></div>
+          </div>
+          <div class="ro-control iso-time"><label for="iso-t">Move through time: <output id="iso-t-out"></output></label>
+            <input id="iso-t" type="range" min="0" max="1096" step="1" value="0" /></div>
+          <dl class="iso-facts" id="iso-facts"></dl>
+        </div>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>When can Rubin see it?</b> As in the paper, on a given night the visitor counts as detectable if it is fainter than magnitude 16 (brighter objects saturate) but no fainter than the survey limit, more than 30° above the horizon at Rubin while the Sun is more than 18° below it, and south of declination +12°, the northern edge of Rubin’s main survey. Many visitors brighten while they are close to the Sun in the sky, where no telescope can look.</p>
+        <p><b>Could a spacecraft get there?</b> The paper’s rough scale for the change of velocity needed is the visitor’s closest distance from the Earth divided by the warning time before it gets there. Under 20 km/s counts as reachable; a few km/s, roughly the capability the paper attributes to ESA’s <i>Comet Interceptor</i>, is very rarely enough.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab ro-lab-map" id="iso-population">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">3</p>
+        <div><h2>A million visitors</h2><p>The notebook’s full population, recounted as you change the assumptions.</p></div>
+      </div>
+      <div class="tt-layout">
+        <div class="tt-controls">
+          <div class="ro-control"><label for="iso-pH">Every object’s absolute magnitude: <output id="iso-pH-out" class="hl-value"></output></label>
+            <input id="iso-pH" type="range" min="22.4" max="25.4" step="0.5" value="22.4" /></div>
+          <div class="ro-control"><label for="iso-plim">Faintest detectable: <output id="iso-plim-out" class="hl-value"></output></label>
+            <input id="iso-plim" type="range" min="19" max="24" step="0.5" value="24" /></div>
+          <div class="ro-control"><label for="iso-pdv">A spacecraft that can manage: <output id="iso-pdv-out" class="hl-value"></output></label>
+            <input id="iso-pdv" type="range" min="0" max="7" step="1" value="4" /></div>
+          <div class="ro-control"><label for="iso-pn0">Number of such objects in space: <output id="iso-pn0-out" class="hl-value"></output></label>
+            <input id="iso-pn0" type="range" min="0.02" max="0.3" step="0.01" value="0.1" /></div>
+          <dl class="iso-facts iso-pop-out" id="iso-pop-out" aria-live="polite"></dl>
+          <p class="ro-hover" id="iso-pop-status" role="status">The population loads when you reach this section.</p>
+        </div>
+        <div>
+          <fieldset class="ro-segmented iso-quant">
+            <legend>Show</legend>
+            {quantities.map(([v, l], k) => <label><input type="radio" name="iso-quant" value={v} checked={k === 0} /><span>{l}</span></label>)}
+          </fieldset>
+          <div class="ro-stage tt-stage-plot"><canvas id="iso-hist" role="img" aria-label="Histogram of the detectable population"></canvas></div>
+        </div>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>From fractions to rates.</b> Following the paper, a density of 0.1 objects per cubic au puts about 52 inside the 5 au sphere at any moment. Each crosses it in roughly 0.8 to 1.6 years, at a typical 20 to 40 km/s, so about 33 to 66 new ones enter every year. Multiplying by the detectable fraction gives the yearly rate. For ʻOumuamua-like bodies the notebook finds 1.3 to 2.5 a year; the paper, which judged visibility at sampled instants rather than over each night, found 0.9 to 1.9.</p>
+        <p><b>Try fainter objects.</b> Each step of 1 in absolute magnitude roughly halves the detectable fraction, or more. But the known comets 2I and 3I were far brighter than an inert body of the same size, so active objects should push the numbers up.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>Velocities</b> come from the paper’s Schwarzschild distributions (its Table 1, after <a href={ads('1998gaas.book.....B')} target="_blank" rel="noopener noreferrer">Binney &amp; Merrifield 1998</a>), shifted by the Sun’s motion relative to the Local Standard of Rest and weighted for gravitational focusing. The paper does not say which solar motion it used; the default here is that of <a href={ads('2010MNRAS.403.1829S')} target="_blank" rel="noopener noreferrer">Schönrich et al. (2010)</a>.</li>
+        <li><b>Starting points.</b> As in the paper, each visitor starts on a sphere of radius 5 au, offset from a head-on path by a distance <i>b</i> drawn with probability rising as <i>b</i>², with its speed raised to allow for the energy gained in falling from infinity.</li>
+        <li><b>Orbits</b> are exact two-body hyperbolae about the Sun, from Kepler’s equation, sampled once a night for three years. The paper integrated the Sun, the Earth and each object with REBOUND; the Earth’s pull is negligible, and the notebook checks the two against each other. The Earth’s position uses the low-precision solar coordinates of <i>The Astronomical Almanac</i>.</li>
+        <li><b>Brightness</b> uses the paper’s formula for a sphere with a Lambert phase law, with ʻOumuamua’s absolute magnitude, <i>H</i> = 22.4, and no cometary activity.</li>
+        <li><b>The known visitors</b> follow their real orbits (JPL Small-Body Database elements, as two-body hyperbolae), but with the same inert-body brightness, so 2I and 3I appear much fainter than they really were.</li>
+        <li><b>Validation.</b> This page’s starting states, positions, magnitudes and night-by-night visibility were compared with the notebook’s for 57 objects: positions agree to 10⁻¹¹ au, magnitudes to 10⁻¹¹ mag, and visibility on all 62,472 nights (<code>tools/validate_iso/</code>).</li>
+        <li><b>Limitations.</b> Rubin is treated as covering the whole sky south of +12° every night, with no weather, Moon or cadence, and every object in reach as detected, as in the paper. The paper sampled each path at 100 instants and judged visibility at each; the notebook’s whole-night test finds about 1.4 times the paper’s detectable fraction, and shows that the assumed distribution of <i>b</i> matters even more.</li>
+      </ul>
+
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startISO } from '../../scripts/iso/app.js';
+    startISO(import.meta.env.BASE_URL);
+  </script>
+</BaseLayout>
