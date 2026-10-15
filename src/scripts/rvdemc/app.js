@@ -76,7 +76,7 @@ export function startRunDmc() {
     const F = frame(ctx, w, h, { x0: XR[0], x1: XR[1], y0: YR[0], y1: YR[1], xlabel: 'period of planet c (days)', ylabel: 'period of planet b (days)', left: 58 });
     F.clip();
     for (const [a, b] of target) dot(ctx, F.X(a), F.Y(b), 1.6, 'rgba(91,111,124,0.22)');
-    if (runs.de) for (const s of runs.de.pts) if (s[4] > BURN) dot(ctx, F.X(s[1]), F.Y(s[2]), 1.4, 'rgba(230,126,34,0.45)');
+    if (runs.de) for (const s of runs.de.pts) dot(ctx, F.X(s[1]), F.Y(s[2]), s[4] > BURN ? 1.4 : 1, s[4] > BURN ? 'rgba(230,126,34,0.45)' : 'rgba(150,90,40,0.18)');
     if (runs.rw) {
       ctx.strokeStyle = 'rgba(7,141,151,0.8)'; ctx.lineWidth = 1; ctx.beginPath();
       runs.rw.pts.forEach((s, k) => (k ? ctx.lineTo : ctx.moveTo).call(ctx, F.X(s[1]), F.Y(s[2]))); ctx.stroke();
@@ -88,8 +88,8 @@ export function startRunDmc() {
     ctx.beginPath(); ctx.moveTo(tx - 6, ty); ctx.lineTo(tx + 6, ty); ctx.moveTo(tx, ty - 6); ctx.lineTo(tx, ty + 6); ctx.stroke();
     ctx.restore();
     ctx.font = '11px system-ui, sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-    const leg = [['rgba(91,111,124,0.6)', 'the posterior (Gaussian approximation)'], [RW, 'random walk: its path'], [DE, `DEMCMC: all 36 chains after generation ${BURN}`], [COLORS.red, '+ true periods']];
-    leg.forEach(([c, t], k) => { ctx.fillStyle = c; ctx.fillText(t, F.L + F.pw - 250, F.T + 6 + 15 * k); });
+    const leg = [['rgba(91,111,124,0.6)', 'the posterior (Gaussian approximation)'], [RW, 'random walk: its path'], [DE, 'DEMCMC: all 36 chains'], ['rgba(150,90,40,0.6)', `(faint: burn-in, first ${BURN} generations)`], [COLORS.red, '+ true periods']];
+    leg.forEach(([c, t], k) => { ctx.fillStyle = c; ctx.fillText(t, F.L + F.pw - 260, F.T + 6 + 15 * k); });
 
     // traces: planet b's period against evaluations
     const T = fit($('rd-trace'));
@@ -100,6 +100,14 @@ export function startRunDmc() {
     if (runs.rw) tr(runs.rw.pts, RW, () => true);
     if (runs.de) tr(runs.de.pts, DE, (s) => s[3] === 0);
     T.ctx.restore();
+    // where DEMCMC's burn-in ends (36 evaluations per generation)
+    const xb = G.X(BURN * 36);
+    T.ctx.strokeStyle = 'rgba(150,90,40,0.7)'; T.ctx.setLineDash([4, 4]); T.ctx.beginPath(); T.ctx.moveTo(xb, G.T); T.ctx.lineTo(xb, G.T + G.ph); T.ctx.stroke(); T.ctx.setLineDash([]);
+    T.ctx.fillStyle = 'rgba(150,90,40,0.9)'; T.ctx.font = '11px system-ui, sans-serif'; T.ctx.textAlign = 'left'; T.ctx.textBaseline = 'top';
+    T.ctx.fillText('DEMCMC burn-in ends', xb + 4, G.T + 4);
+    T.ctx.textAlign = 'right';
+    T.ctx.fillStyle = DE; T.ctx.fillText('one DEMCMC chain', G.L + G.pw - 6, G.T + 4);
+    T.ctx.fillStyle = RW; T.ctx.fillText('random walk', G.L + G.pw - 6 - T.ctx.measureText('one DEMCMC chain').width - 14, G.T + 4);
 
     const read = (r, name) => {
       if (!r) return '';
