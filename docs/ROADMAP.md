@@ -25,7 +25,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 - [ ] **Extend the reference-frames run to about 400 years**, so readers can see Kamoʻoalewa leave the quasi-satellite state around 2306 (about 0.7 s of compute).
 
 - [ ] **Talks: public slides.** Matthew to create the public Drive folder and export PDFs (see `docs/TALKS.md` and the list in the 2026-10-15 done entry), then add their links. Then recover talks from before 2022.
-- [ ] **CV page.** Waiting for Matthew's CV files. Master as a data file in the site, generating the web page and a PDF; omit phone numbers, home address and personal email.
+- [ ] **CV:** Matthew to review `/cv/`, and to supply anything missing since 2024 (new grants, honours and awards, committee and service roles such as IAWN or SMPAG).
 
 ## Content ideas
 
@@ -56,6 +56,8 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 - **Cross-links:** link each research theme to its software, tutorials and interactive pages, and each collaborator to the themes you share.
 
 ## Done
+
+- 2026-10-15: CV page `/cv/` with a PDF download, generated from `src/data/cv.json` (from the 2021 and 2024 CVs) plus the site's publications, talks and people records. Workflow in `docs/CV.md`.
 
 - 2026-10-15: Talks page `/talks/` with 27 talks from 2022 onwards, from a read-only inventory of Drive MPC_Public (Matthew chose conferences, agency meetings, teaching and outreach, and co-authored talks). Links so far: ACM 2026 slides and video, and the 2025 House testimony record. Workflow in `docs/TALKS.md`. Transit-timing page published.
 

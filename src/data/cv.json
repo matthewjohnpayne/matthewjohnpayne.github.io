@@ -1,0 +1,83 @@
+{
+  "_about": "Master copy of Matthew Payne's CV. The web page (src/pages/cv.astro) and the LaTeX/PDF version (src/pages/cv/matthew-payne-cv.tex.ts, built by tools/build_cv_pdf.sh) are both generated from this file, plus the site's publications, talks and people records. Edit here, then follow docs/CV.md. Sources: Matthew's CVs of 2021 and 2024; appointment dates confirmed by Matthew on 2026-10-15. Do not add phone numbers, home addresses, personal email, date of birth or immigration status.",
+  "updated": "2026-10-15",
+  "name": "Matthew J. Payne",
+  "position": "Director of the Minor Planet Center",
+  "institution": "Smithsonian Astrophysical Observatory, Center for Astrophysics | Harvard & Smithsonian",
+  "address": "60 Garden Street, MS 16, Cambridge, MA 02138, USA",
+  "email": "mpayne@cfa.harvard.edu",
+  "website": "https://matthewjohnpayne.github.io/",
+  "orcid": "0000-0001-5133-6303",
+  "github": "https://github.com/matthewjohnpayne",
+  "summary": "I am an astrophysicist with research interests in the observations and dynamics of exoplanets and Solar System bodies. I am interested in the development of algorithms and open-source software for the efficient processing of large astronomical data sets, and I am enthused by the cross-disciplinary work of the planetary defense community.",
+  "specializations": ["Dynamics", "Formation and evolution of small-body populations", "Planetary defense", "Orbit fitting", "Software development for astrophysics", "Data processing and distribution"],
+  "appointments": [
+    {
+      "dates": "2022–present",
+      "title": "Director, Minor Planet Center",
+      "place": "Smithsonian Astrophysical Observatory, Cambridge, MA",
+      "details": [
+        "I lead a team of 12 astronomers and software developers at the Minor Planet Center (MPC), the single worldwide location for the receipt and distribution of positional measurements of minor planets, comets and outer irregular natural satellites of the major planets, and for the identification, designation and orbit computation of all of these objects.",
+        "I lead the design and delivery of advanced tools for processing and cataloguing near-Earth objects, asteroids, comets and the natural satellites of the major planets, and manage the collection and analysis of data from a worldwide network of observatories.",
+        "I write grant proposals to fund both new research and the expansion of the MPC’s activities, and I carry out research on the observations and dynamics of Solar System bodies."
+      ]
+    },
+    { "dates": "2021–2022", "title": "Acting Director, Minor Planet Center", "place": "Smithsonian Astrophysical Observatory, Cambridge, MA", "details": [] },
+    {
+      "dates": "2017–2021",
+      "title": "Project Scientist, Minor Planet Center",
+      "place": "Smithsonian Astrophysical Observatory, Cambridge, MA",
+      "details": ["Led the MPC’s efforts to design and deliver new software tools for processing and cataloguing astrometric observations of Solar System objects."]
+    },
+    {
+      "dates": "2014–2017",
+      "title": "Research Scientist",
+      "place": "Smithsonian Astrophysical Observatory, Cambridge, MA",
+      "details": ["Research on the observation and dynamics of exoplanets and Solar System objects."]
+    },
+    {
+      "dates": "2012–2014",
+      "title": "Postdoctoral Researcher (theory)",
+      "place": "Harvard-Smithsonian Center for Astrophysics, Cambridge, MA",
+      "details": ["Research on the observation and dynamics of exoplanets and Solar System objects."]
+    },
+    {
+      "dates": "2009–2012",
+      "title": "Postdoctoral Researcher (theory)",
+      "place": "University of Florida, Gainesville, FL",
+      "details": ["Research on the observation and dynamics of exoplanets."]
+    },
+    { "dates": "2005", "title": "Predoctoral Researcher", "place": "Institute of Astronomy, University of Cambridge, UK", "details": ["Globular cluster analysis."] },
+    { "dates": "2001–2004", "title": "Management Consultant", "place": "Mars & Co, London, UK", "details": ["Quantitative analysis for a large telecommunications client."] }
+  ],
+  "education": [
+    { "dates": "2005–2009", "degree": "PhD in Astronomy", "place": "Institute of Astronomy, University of Cambridge, UK", "details": "Thesis: On the Formation and Evolution of Planetary Systems" },
+    { "dates": "2004–2005", "degree": "Certificate of Advanced Study in Mathematics (Part III Mathematics)", "place": "DAMTP, University of Cambridge, UK", "details": "Theoretical physics and astrophysics" },
+    { "dates": "1997–2001", "degree": "BA and MPhys in Physics", "place": "University of Oxford, UK", "details": "" }
+  ],
+  "grants": [
+    { "dates": "2023–2026", "role": "Co-I", "program": "NASA Opportunities for Research in Planetary Defense", "title": "A statistically sound model for astrometric uncertainties", "amount": "$445,911" },
+    { "dates": "2021–2026", "role": "PI", "program": "NASA Cooperative Agreement", "title": "Minor Planet Center Augmentation", "amount": "$938,661" },
+    { "dates": "2021–2026", "role": "PI", "program": "NASA Cooperative Agreement", "title": "Minor Planet Center Operations and Development", "amount": "$15,859,297" },
+    { "dates": "2020–2024", "role": "PI", "program": "NASA TESS Guest Investigator grant", "title": "A TESS Search for Distant Solar System Objects", "amount": "$250,000" },
+    { "dates": "2019–2023", "role": "Co-I", "program": "NASA Solar System Workings grant", "title": "Dynamical Processes in the Outer Solar System", "amount": "$517,584" },
+    { "dates": "2017–2021", "role": "PI", "program": "NASA Solar System Observations grant", "title": "Developing the Pan-STARRS Outer Solar System Pipeline for NEO Detection", "amount": "$270,999" },
+    { "dates": "2016–2021", "role": "PI", "program": "NASA Solar System Observations grant", "title": "Magellan-IMACS Occultation Survey", "amount": "$318,528" },
+    { "dates": "2017–2018", "role": "PI", "program": "Smithsonian Scholarly Studies", "title": "Observational Constraints on Planet Nine", "amount": "$59,100" },
+    { "dates": "2017–2018", "role": "Co-I", "program": "Smithsonian Scholarly Studies", "title": "PANIC Survey: The Pan-STARRS Isotropic Centaur Survey", "amount": "$59,100" },
+    { "dates": "2016–2017", "role": "Joint PI", "program": "Smithsonian CGPS/Pell Grant", "title": "The IMACS Occultation Survey for Sub-km KBOs", "amount": "$27,766" },
+    { "dates": "2015–2016", "role": "Co-I", "program": "Smithsonian IR&D Grant", "title": "A Novel Technique for Discovering Near Earth Objects", "amount": "$47,363" },
+    { "dates": "2014–2016", "role": "Co-I", "program": "Magellan-IMACS observing time", "title": "Magellan-IMACS Occultation Survey (2014B, 2015A & B, 2016A & B)", "amount": "" },
+    { "dates": "2013–2017", "role": "Joint PI", "program": "Bi-National Science Foundation Grant", "title": "Novel Model for the Origin of Irregular Moons", "amount": "$250,000" },
+    { "dates": "2013–2017", "role": "Joint PI", "program": "Royal Society International Exchange Grant", "title": "Stability of Planetary Satellites in White Dwarf Systems", "amount": "$10,000" },
+    { "dates": "2013–2015", "role": "PI", "program": "HARPS-N observing time", "title": "HARPS-N observations (2013B, 2014A & B, 2015A)", "amount": "" },
+    { "dates": "2013–2014", "role": "PI", "program": "Keck-HIRES observing time", "title": "Keck-HIRES observations (2013A & B)", "amount": "$27,000" },
+    { "dates": "2013–2014", "role": "Co-I", "program": "Smithsonian CGPS/Pell Grant", "title": "Discovering and Characterizing Circumbinary Planets and Their Satellites", "amount": "$60,594" }
+  ],
+  "service": [
+    "Referee for ApJ, ApJL, MNRAS, A&A and other journals.",
+    "Reviewer on national peer-review panels for NASA (TESS, Kepler/K2, WFIRST, SSO, XRP and ATP) and the NSF.",
+    "Member of departmental committees, including the Fellowship Selection Committee and the Scientific Computation Committee."
+  ],
+  "skills": ["Python", "LaTeX", "Bash", "C, C++ and Fortran", "Git, GitHub and continuous integration", "Docker"]
+}

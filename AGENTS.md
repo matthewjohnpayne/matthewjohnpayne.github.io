@@ -30,6 +30,7 @@ This repository is a **personal scientific website** for Matthew Payne, astrophy
   - `src/content/software/`: a curated list chosen by Matthew. Do not add repositories on your own initiative.
   - `src/content/publications/`: refereed papers generated from NASA ADS by `tools/fetch_publications.py` (needs `ADS_API_TOKEN`). Do not hand-edit generated files except to set `featured: true`, which regeneration keeps. The ADS query is one Matthew confirmed; change it only with his approval. For anything ADS misses, copy `_TEMPLATE.yaml`.
   - `src/content/people/`: students and postdocs Matthew has supervised (`relationship: mentee`), using only details Matthew supplies or his CV; record where each came from in `source`. Copy `_TEMPLATE.yaml`. To find their current positions and pages, follow `docs/UPDATING_PEOPLE.md`.
+- CV: master copy `src/data/cv.json`; page `src/pages/cv.astro`, PDF built by `tools/build_cv_pdf.sh`. Follow `docs/CV.md`. Never add phone numbers, home addresses, personal email, date of birth or immigration status.
 - Talks: `src/content/talks/`, one YAML file per talk, shown on `/talks/`. Follow `docs/TALKS.md`: link only public copies (PDF exports without speaker notes, or official records), never budget or personnel material.
 - MPC staff: `src/data/mpc-staff.json`, from the MPC About page and its archived copies. Keep roles exactly as the MPC states them. Former staff are only those Matthew worked with directly; ask him before adding any.
   The build fails if a record does not match its schema. Files starting with `_` are ignored.
