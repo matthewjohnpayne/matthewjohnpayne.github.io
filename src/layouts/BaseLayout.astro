@@ -2,8 +2,8 @@
 import '../styles/global.css';
 import site from '../data/site.json';
 
-interface Props { title?: string; description?: string; }
-const { title = site.name, description = site.introduction } = Astro.props;
+interface Props { title?: string; description?: string; noindex?: boolean; }
+const { title = site.name, description = site.introduction, noindex = false } = Astro.props;
 const root = import.meta.env.BASE_URL;
 const year = new Date().getFullYear();
 const asset = (path: string) => `${root}${path.replace(/^\//, '')}`;
@@ -19,6 +19,7 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0a1723" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <title>{title === site.name ? `${site.name} — Astrophysicist` : `${title} — ${site.name}`}</title>
     <link rel="icon" type="image/svg+xml" href={asset('assets/favicon.svg')} />
   </head>

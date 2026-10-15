@@ -53,7 +53,7 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 
 - **More reference-frames planets:** Venus and Mars co-orbitals, which the notebook's "Going further" section mentions.
 - **Minimoons interactive**, from the MPC animation tutorial.
-- **The hidden Blastroids game**, from the original plan.
+- **Blastroids** (2026-10-15): an Asteroids-style game in which everything orbits the Sun (`src/scripts/blastroids/game.js`). It replaces the Orbital Laboratory in the homepage hero (`src/components/HomeBlastroids.astro`), in a small window with an Expand button for a large one, and also has an unlinked, unindexed full page at `/blastroids/`. The old Orbital Laboratory (`src/components/OrbitLab.astro`, `public/js/orbital-lab.js`) is no longer used but has been kept.
 - **Cross-links:** link each research theme to its software, tutorials and interactive pages, and each collaborator to the themes you share.
 
 ## Done

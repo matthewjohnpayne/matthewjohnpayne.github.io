@@ -1,0 +1,38 @@
+---
+// The homepage game: Blastroids in a small window in the hero, which can be expanded into a
+// large window (the same game, moved, so play carries on). Nothing starts until the visitor
+// presses Start; keys only reach the game once it has focus.
+---
+<div class="orbit-lab home-game">
+  <div class="orbit-topline"><span class="lab-label"><span class="signal-dot"></span> BLASTROIDS</span><span class="lab-subtitle">A game in which everything orbits the Sun</span></div>
+  <div class="home-game-slot"><div id="home-blastroids"></div></div>
+  <p class="model-note">Your ship, the asteroids and every shot move under the Sun’s gravity, so thrusting changes your orbit. Press Expand for a bigger window.</p>
+</div>
+<div class="bl-modal" id="bl-modal" hidden>
+  <div class="bl-modal-inner" role="dialog" aria-modal="true" aria-label="Blastroids, in a large window"></div>
+</div>
+<script>
+  import { startBlastroids } from '../scripts/blastroids/game.js';
+  const mount = document.getElementById('home-blastroids');
+  const slot = mount.parentElement;
+  const modal = document.getElementById('bl-modal');
+  const inner = modal.querySelector('.bl-modal-inner');
+  let expanded = false, opener = null;
+  const game = startBlastroids(mount, { compact: true, onToggleSize: toggle });
+  function toggle() {
+    expanded = !expanded;
+    if (expanded) {
+      opener = document.activeElement;
+      inner.appendChild(mount);
+      modal.hidden = false;
+      document.body.classList.add('bl-modal-open');
+    } else {
+      slot.appendChild(mount);
+      modal.hidden = true;
+      document.body.classList.remove('bl-modal-open');
+    }
+    game.setExpanded(expanded);
+  }
+  // clicking the dimmed area around the large window shrinks it again
+  modal.addEventListener('click', (ev) => { if (ev.target === modal) toggle(); });
+</script>
