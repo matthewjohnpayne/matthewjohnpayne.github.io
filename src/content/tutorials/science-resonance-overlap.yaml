@@ -5,3 +5,4 @@ url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/r
 tools: [REBOUND, NumPy, Matplotlib]
 order: 1
 interactive: teaching/resonance-overlap/
+area: exoplanets

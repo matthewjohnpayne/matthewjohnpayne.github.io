@@ -5,3 +5,4 @@ url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/t
 tools: [REBOUND, NumPy, Matplotlib]
 order: 3
 interactive: teaching/transit-timing/
+area: exoplanets

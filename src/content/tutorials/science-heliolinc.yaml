@@ -5,3 +5,4 @@ url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/h
 tools: [NumPy, SciPy, Matplotlib]
 order: 2
 interactive: teaching/heliolinc/
+area: detection

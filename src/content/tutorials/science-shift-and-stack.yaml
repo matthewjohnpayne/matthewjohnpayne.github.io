@@ -5,3 +5,4 @@ url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/s
 tools: [NumPy, SciPy, Matplotlib]
 order: 6
 interactive: teaching/shift-and-stack/
+area: detection

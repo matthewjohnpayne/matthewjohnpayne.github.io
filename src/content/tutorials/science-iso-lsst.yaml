@@ -5,3 +5,4 @@ url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/i
 tools: [NumPy, Matplotlib, REBOUND]
 order: 4
 interactive: teaching/interstellar-objects/
+area: detection

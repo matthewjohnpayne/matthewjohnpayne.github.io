@@ -5,3 +5,4 @@ url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/r
 tools: [REBOUND, NumPy, SciPy, Matplotlib]
 order: 8
 interactive: teaching/run-dmc/
+area: exoplanets

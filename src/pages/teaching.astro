@@ -17,6 +17,13 @@ const groups = [
   { topic: 'submission', heading: 'Submitting observations', intro: 'From formatting and validating observations to submitting them and tracking their status.', compact: true },
   { topic: 'api', heading: 'MPC APIs', intro: 'Programmatic access to MPC data and services, one notebook per interface.', compact: true }
 ] as const;
+// Science notebooks are further grouped by research area, as on the Research page.
+const areas = [
+  { area: 'exoplanets', heading: 'Exoplanet dynamics' },
+  { area: 'moons', heading: 'Moons' },
+  { area: 'solar-system', heading: 'The outer Solar System' },
+  { area: 'detection', heading: 'Finding small bodies' }
+] as const;
 ---
 <BaseLayout title={page.title} description={page.summary}>
   <SectionHero eyebrow={page.eyebrow} title={page.title} lead={page.lead} />
@@ -48,6 +55,25 @@ const groups = [
                 <li><a href={data.url} target="_blank" rel="noopener noreferrer">{data.title} ↗</a><p>{data.summary}</p></li>
               ))}
             </ul>
+          ) : group.topic === 'science' ? (
+            areas.filter((a) => tutorials.some((t) => t.data.topic === 'science' && t.data.area === a.area)).map((a) => (
+              <div class="area-group">
+                <h3 class="area-heading">{a.heading}</h3>
+                <div class="resource-grid">
+                  {tutorials.filter((t) => t.data.topic === 'science' && t.data.area === a.area).map(({ data }) => (
+                    <article class="resource-item">
+                      <h4>{data.title}</h4>
+                      <p>{data.summary}</p>
+                      {data.tools.length > 0 && <ul class="tag-list" aria-label="Tools used">{data.tools.map((tool) => <li>{tool}</li>)}</ul>}
+                      <div class="item-links">
+                        {data.interactive && <a class="text-link" href={`${root}${data.interactive.replace(/^\//, '')}`}>Interactive version →</a>}
+                        <a class="text-link" href={data.url} target="_blank" rel="noopener noreferrer">Open notebook ↗</a>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            ))
           ) : (
             <div class="resource-grid">
               {tutorials.filter((t) => t.data.topic === group.topic).map(({ data }) => (

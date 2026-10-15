@@ -17,6 +17,8 @@ const tutorials = defineCollection({
     tools: z.array(z.string()).default([]),
     // Site-relative path of an interactive adaptation, once one exists.
     interactive: z.string().optional(),
+    // Research area of a science notebook, for grouping on the Teaching page.
+    area: z.enum(['exoplanets', 'moons', 'solar-system', 'detection']).optional(),
     order: z.number().default(100)
   })
 });

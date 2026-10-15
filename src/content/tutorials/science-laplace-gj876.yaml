@@ -5,3 +5,4 @@ url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/l
 tools: [REBOUND, NumPy, Matplotlib]
 order: 7
 interactive: teaching/laplace-resonance/
+area: exoplanets
