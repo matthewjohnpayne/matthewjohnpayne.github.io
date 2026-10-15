@@ -1,10 +1,15 @@
 ---
 import { resonanceSeparatrix, overlapPeriodRatio } from '../scripts/overlap/physics.js';
+import { integrate } from '../scripts/frames/nbody.js';
+import { buildFrames } from '../scripts/frames/frames.js';
+import ic from '../data/frames-ic.json';
+import cards from '../data/card-figures.json';
 interface Props { kind?: string; }
 const { kind = 'orbit' } = Astro.props;
 const caption = kind === 'scatter'
-  ? 'Illustrative scatter-plot of a small-body population'
-  : kind === 'loops' ? 'Illustrative looping trajectory'
+  ? 'Semi-major axis against eccentricity for 3,000 asteroids from the Minor Planet Center orbit database, showing the gaps and groups of the asteroid belt, the Hildas and the Jupiter Trojans'
+  : kind === 'loops' ? 'The path of the minimoon 2006 RH120 around the Earth during its temporary capture in 2006 and 2007, in a frame that keeps the Sun in a fixed direction, with the Moon’s orbit for scale'
+  : kind === 'orbit' ? 'The path of the quasi-satellite Kamoʻoalewa over 12 years, in a frame rotating with the Earth, looping around the Earth once a year'
   : kind === 'resonance' ? 'First-order resonance widths for two planets of about five Earth masses each, crowding together and overlapping at small period ratios'
   : 'Illustrative orbital trajectories';
 
@@ -30,22 +35,46 @@ const resonance = kind === 'resonance' ? (() => {
   }
   return { bands, overlapX: X(overlapPeriodRatio(eps)), L, R, T, B };
 })() : null;
+// 'scatter': a random sample of MPCORB (tools/export_card_figures.py), a from 1.6 to 5.6 au
+const scatter = kind === 'scatter' ? (() => {
+  const X = (a: number) => 30 + ((a - 1.6) / 4.0) * 306, Y = (e: number) => 140 - (e / 0.42) * 122;
+  return { pts: cards.population.a_e.filter(([a, e]: number[]) => e <= 0.42).map(([a, e]: number[]) => [X(a), Y(e)]), jup: [X(5.2026), Y(0.0489)] };
+})() : null;
+// 'loops': 2006 RH120 relative to the Earth, Sun kept along -x (JPL Horizons)
+const loops = kind === 'loops' ? (() => {
+  const S = 7000, cx = 180, cy = 86;
+  const d = cards.minimoon.xy.map(([x, y]: number[]) => `${(cx + x * S).toFixed(1)},${(cy - y * S).toFixed(1)}`);
+  return { d: 'M' + d.join('L'), cx, cy, moon: 0.002570 * S };
+})() : null;
+// 'orbit': Kamo'oalewa in the frame co-rotating with the Earth, integrated here at build time
+// with the reference-frames page's own integrator and initial conditions (12 years)
+const orbit = kind === 'orbit' ? (() => {
+  const run = integrate(ic, { years: 12, dt: 0.5, sampleDays: 2 });
+  const nk = run.keys.length, N = run.t.length;
+  const series = (key: string) => { const j = run.keys.indexOf(key), out = new Float64Array(2 * N); for (let k = 0; k < N; k++) { out[2 * k] = run.xyz[(k * nk + j) * 3]; out[2 * k + 1] = run.xyz[(k * nk + j) * 3 + 1]; } return out; };
+  const { frames } = buildFrames({ t: run.t, sun: series('sun'), planet: series('earth'), targets: { kamooalewa: series('kamooalewa') } });
+  const k = frames.corotating.kamooalewa, e = frames.corotating.planet;
+  const ex = e[0], ey = e[1];
+  let mx = 1e-9, my = 1e-9;
+  for (let i = 0; i < N; i++) { mx = Math.max(mx, Math.abs(k[2 * i] - ex)); my = Math.max(my, Math.abs(k[2 * i + 1] - ey)); }
+  const S = Math.min(160 / mx, 74 / my), cx = 180, cy = 86;   // fit the loops, centred on the Earth
+  const pts: string[] = [];
+  for (let i = 0; i < N; i++) pts.push(`${(cx + (k[2 * i] - ex) * S).toFixed(1)},${(cy - (k[2 * i + 1] - ey) * S).toFixed(1)}`);
+  return { d: 'M' + pts.join('L'), cx, cy };
+})() : null;
 ---
 <svg viewBox="0 0 360 170" xmlns="http://www.w3.org/2000/svg" class="science-art" role="img" aria-label={caption}>
-  {kind === 'loops' && <g>
-    <line x1="30" y1="85" x2="334" y2="85" stroke="#d8e4e7" stroke-width="1"/>
-    <line x1="178" y1="14" x2="178" y2="153" stroke="#d8e4e7" stroke-width="1"/>
-    <path d="M44 92 C58 35 109 27 132 79 C145 130 170 138 185 80 C199 30 251 22 287 77 S316 143 321 97" fill="none" stroke="#11949b" stroke-width="2"/>
-    <circle cx="178" cy="85" r="6" fill="#ed9956"/><circle cx="284" cy="72" r="4" fill="#098f98"/>
+  {loops && <g>
+    <defs><clipPath id="loops-clip"><rect x="10" y="6" width="340" height="158"/></clipPath></defs>
+    <circle cx={loops.cx} cy={loops.cy} r={loops.moon} fill="none" stroke="#d8e4e7" stroke-width="1" stroke-dasharray="3 3"/>
+    <path d={loops.d} fill="none" stroke="#11949b" stroke-width="1.5" clip-path="url(#loops-clip)"/>
+    <circle cx={loops.cx} cy={loops.cy} r="5" fill="#ec9d58"/>
   </g>}
-  {kind === 'scatter' && <g>
-    <line x1="34" y1="137" x2="336" y2="137" stroke="#cad8dc" stroke-width="1"/>
-    <line x1="34" y1="20" x2="34" y2="137" stroke="#cad8dc" stroke-width="1"/>
-    {Array.from({length:75},(_,i) => {
-      const x=43+((i*71)%285), y=30+((i*37+i*i*3)%95);
-      return <circle cx={x} cy={y} r={1+(i%3)*.25} fill={i%5===0?'#e4945b':'#008b98'} opacity={0.3+(i%6)*.11}/>;
-    })}
-    <path d="M43 111 C113 91 162 78 225 71 S307 58 332 42" stroke="#1c7886" stroke-width="1.4" fill="none"/>
+  {scatter && <g>
+    <line x1="30" y1="140" x2="336" y2="140" stroke="#cad8dc" stroke-width="1"/>
+    <line x1="30" y1="16" x2="30" y2="140" stroke="#cad8dc" stroke-width="1"/>
+    {scatter.pts.map(([x, y]) => <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r="0.9" fill="#008b98" opacity="0.45"/>)}
+    <circle cx={scatter.jup[0]} cy={scatter.jup[1]} r="3.5" fill="#e4945b"/>
   </g>}
   {resonance && <g>
     <defs><clipPath id="resonance-clip"><rect x={resonance.L} y={resonance.T} width={resonance.R - resonance.L} height={resonance.B - resonance.T}/></clipPath></defs>
@@ -55,10 +84,8 @@ const resonance = kind === 'resonance' ? (() => {
       <line x1={resonance.overlapX} y1={resonance.T} x2={resonance.overlapX} y2={resonance.B} stroke="#e4945b" stroke-width="1.8" stroke-dasharray="5 4"/>
     </g>
   </g>}
-  {kind !== 'loops' && kind !== 'scatter' && kind !== 'resonance' && <g>
-    <ellipse cx="180" cy="87" rx="118" ry="49" transform="rotate(-22 180 87)" stroke="#128f9c" stroke-width="1.8" fill="none"/>
-    <ellipse cx="180" cy="87" rx="86" ry="31" transform="rotate(23 180 87)" stroke="#81b3be" stroke-width="1.4" fill="none"/>
-    <circle cx="180" cy="87" r="6" fill="#ec9d58"/>
-    <circle cx="273" cy="51" r="4" fill="#11949b"/>
+  {orbit && <g>
+    <path d={orbit.d} fill="none" stroke="#11949b" stroke-width="1.1" opacity="0.85"/>
+    <circle cx={orbit.cx} cy={orbit.cy} r="6" fill="#ec9d58"/>
   </g>}
 </svg>
