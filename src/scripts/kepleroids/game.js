@@ -126,6 +126,24 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
       size: rock.size + 1, shape: rockShape(rock.size + 1), spin: (rnd() - 0.5) * 3, rot: 0 }));
   }
 
+  // the part of the world currently on screen, in world units
+  const inView = (x, y, pad = 0) => Math.abs(x) < view.cx / view.s + pad && Math.abs(y) < view.cy / view.s + pad;
+  const energy = (b) => 0.5 * (b.vx * b.vx + b.vy * b.vy) - GM / Math.hypot(b.x, b.y);
+  /** Seconds until a body re-enters the view, by integrating a copy of its orbit (up to 60 s). */
+  function returnTime(b) {
+    const c = { x: b.x, y: b.y, vx: b.vx, vy: b.vy }, h = 1 / 30;
+    for (let t = h; t < 60; t += h) {
+      stepBody(c, h);
+      if (inView(c.x, c.y)) return t;
+    }
+    return Infinity;
+  }
+  function flash(text, ms = 1800) {
+    message = text;
+    setTimeout(() => { if (message === text) message = ''; }, ms);
+  }
+  let lookahead = 0;
+
   function update(dt) {
     if (ship.alive) {
       if (keys.left) ship.ang -= SHIP.turn * dt;
@@ -145,7 +163,19 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     for (const s of shots) { stepBody(s, dt); s.life -= dt; }
     shots = shots.filter((s) => s.life > 0 && Math.hypot(s.x, s.y) > SUN_R);
     for (const k of rocks) { stepBody(k, dt); k.rot += k.spin * dt; }
-    rocks = rocks.filter((k) => { const r = Math.hypot(k.x, k.y); if (r < SUN_R + SIZES[k.size].r * 0.5) { burst(k.x, k.y, 0, 0, 10, '#ffcf66'); return false; } return r < ESCAPE_R; });
+    rocks = rocks.filter((k) => {
+      const r = Math.hypot(k.x, k.y);
+      if (r < SUN_R + SIZES[k.size].r * 0.5) { burst(k.x, k.y, 0, 0, 10, '#ffcf66'); return false; }
+      // off-screen, unbound and heading out: it is never coming back, so remove it now
+      if (!inView(k.x, k.y, SIZES[k.size].r) && energy(k) > 0 && k.x * k.vx + k.y * k.vy > 0) { flash('An asteroid escaped the Sun’s gravity'); return false; }
+      if (r >= ESCAPE_R) { flash('An asteroid drifted out of range'); return false; }
+      return true;
+    });
+    // every half second, estimate when each off-screen asteroid will be back in view
+    if ((lookahead -= dt) <= 0) {
+      lookahead = 0.5;
+      for (const k of rocks) k.back = inView(k.x, k.y, SIZES[k.size].r) ? 0 : returnTime(k);
+    }
     for (const p of sparks) { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; }
     sparks = sparks.filter((p) => p.life > 0);
 
@@ -214,6 +244,25 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
       ctx.beginPath();
       k.shape.forEach((p, i) => { const a = p.a + k.rot, x = X(k.x + p.r * Math.cos(a)), y = Y(k.y + p.r * Math.sin(a)); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
       ctx.closePath(); ctx.stroke();
+    }
+    // off-screen asteroids: an arrow at the edge pointing to each, with the time until it is back
+    const hx = view.cx / s - 14 / s, hy = view.cy / s - 14 / s;
+    ctx.font = '12px system-ui, sans-serif'; ctx.textBaseline = 'middle';
+    for (const k of rocks) {
+      if (inView(k.x, k.y, SIZES[k.size].r)) continue;
+      const f = Math.min(hx / Math.abs(k.x || 1e-9), hy / Math.abs(k.y || 1e-9));
+      const ex = X(k.x * f), ey = Y(k.y * f), ang = Math.atan2(k.y, k.x), z = 9 - 1.5 * k.size;
+      ctx.fillStyle = 'rgba(216,195,165,0.85)'; ctx.beginPath();
+      ctx.moveTo(ex + z * Math.cos(ang), ey + z * Math.sin(ang));
+      ctx.lineTo(ex + z * Math.cos(ang + 2.5), ey + z * Math.sin(ang + 2.5));
+      ctx.lineTo(ex + z * Math.cos(ang - 2.5), ey + z * Math.sin(ang - 2.5));
+      ctx.closePath(); ctx.fill();
+      if (k.back > 0 && Number.isFinite(k.back)) {
+        const label = `back in ${Math.max(1, Math.round(k.back))} s`;
+        ctx.fillStyle = 'rgba(216,195,165,0.8)';
+        ctx.textAlign = ex > view.cx ? 'right' : 'left';
+        ctx.fillText(label, ex - 18 * Math.cos(ang), ey - 18 * Math.sin(ang));
+      }
     }
     ctx.fillStyle = '#ffffff';
     for (const sh of shots) { ctx.beginPath(); ctx.arc(X(sh.x), Y(sh.y), 1.8, 0, 2 * Math.PI); ctx.fill(); }
@@ -318,5 +367,6 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     resize();
     canvas.focus();
   }
-  return { destroy, setExpanded };
+  // _debug: access to the game's state, for automated tests only
+  return { destroy, setExpanded, _debug: () => ({ rocks, ship, view }) };
 }
