@@ -6,3 +6,4 @@ tools: [NumPy, SciPy, Matplotlib]
 order: 2
 interactive: teaching/heliolinc/
 area: detection
+papers: ["2018AJ....156..135H"]

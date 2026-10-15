@@ -6,3 +6,4 @@ tools: [REBOUND, NumPy, Matplotlib]
 order: 3
 interactive: teaching/transit-timing/
 area: exoplanets
+papers: ["2010ApJ...712L..86P"]

@@ -6,3 +6,4 @@ tools: [REBOUND, NumPy, Matplotlib]
 order: 1
 interactive: teaching/resonance-overlap/
 area: exoplanets
+papers: ["2013ApJ...774..129D"]

@@ -6,3 +6,4 @@ tools: [REBOUND, NumPy, Matplotlib]
 order: 7
 interactive: teaching/laplace-resonance/
 area: exoplanets
+papers: ["2016MNRAS.455.2484N"]

@@ -6,3 +6,4 @@ tools: [NumPy, Matplotlib, REBOUND]
 order: 4
 interactive: teaching/interstellar-objects/
 area: detection
+papers: ["2022PSJ.....3...71H"]

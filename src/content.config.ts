@@ -19,6 +19,8 @@ const tutorials = defineCollection({
     interactive: z.string().optional(),
     // Research area of a science notebook, for grouping on the Teaching page.
     area: z.enum(['exoplanets', 'moons', 'solar-system', 'detection']).optional(),
+    // Bibcodes of the papers a science notebook reproduces, for links from those papers.
+    papers: z.array(z.string()).default([]),
     order: z.number().default(100)
   })
 });
