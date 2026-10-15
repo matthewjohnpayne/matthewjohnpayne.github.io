@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/laplace_gj876/laplace_gj876.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2016MNRAS.455.2484N/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const references = [
+  ['Nelson, B. E., Robertson, P. M., Payne, M. J. et al. (2016), MNRAS 455, 2484', '2016MNRAS.455.2484N'],
+  ['Rivera, E. J., Laughlin, G., Butler, R. P. et al. (2010), ApJ 719, 890', '2010ApJ...719..890R'],
+  ['Yoshida, H. (1990), Physics Letters A 150, 262', '1990PhLA..150..262Y']
+];
+---
+<BaseLayout title="Three planets in step: the Laplace resonance of GJ 876" description="An interactive guide to the Laplace resonance of the GJ 876 planets, after Nelson et al. (2016): the resonant angles of the fitted orbits, integrated in your browser.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · RESONANCES</p>
+      <h1>Three planets in step: the Laplace resonance of GJ 876</h1>
+      <p>The red dwarf GJ 876 has four known planets. The middle three, c, b and e, orbit in periods close to 30, 61 and 124 days, a 1:2:4 chain like that of Jupiter’s moons Io, Europa and Ganymede. <a href={ads('2010ApJ...719..890R')} target="_blank" rel="noopener noreferrer">Rivera et al. (2010)</a> found them in a <i>Laplace configuration</i>; fitting the star’s radial velocities with full <i>N</i>-body orbits, <a href={paper} target="_blank" rel="noopener noreferrer">Nelson et al. (2016)</a> measured how tightly the three are locked together. Here you can integrate their fitted orbits in your browser and see how the lock depends on the outermost planet’s mass.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="gj-lab">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>The resonant angles</h2><p>A <i>resonant angle</i> combines the planets’ mean longitudes λ and the longitudes of their pericentres ϖ. If the planets were not in resonance it would sweep all the way round; in resonance it stays near one value (it <i>librates</i>).</p></div>
+      </div>
+      <div class="ro-map-controls iso-controls-row">
+        <fieldset class="ro-segmented">
+          <legend>Mass of planet e</legend>
+          {[0.2, 0.5, 1, 2, 5].map((v) => <label><input type="radio" name="gj-emass" value={v} checked={v === 1} /><span>{v === 1 ? 'as fitted' : `${v}×`}</span></label>)}
+        </fieldset>
+        <div class="ro-control em-time"><label for="gj-window">Show the first: <output id="gj-window-out" class="hl-value"></output></label>
+          <input id="gj-window" type="range" min="5" max="60" step="5" value="60" /></div>
+      </div>
+      <p class="ro-progress em-read" id="gj-status" role="status"></p>
+      <div class="ro-stage gj-stage-angles"><canvas id="gj-angles" role="img" aria-label="Four resonant angles of the GJ 876 planets plotted against time over 60 years"></canvas></div>
+      <div class="gj-table-wrap">
+        <table class="gj-table">
+          <caption>Libration amplitudes: √2 × the angle’s root-mean-square variation, as Nelson et al. measure them</caption>
+          <thead><tr><th scope="col">Angle</th><th scope="col">This integration</th><th scope="col">Nelson et al. 2016 (68% range)</th><th scope="col">Within it?</th></tr></thead>
+          <tbody id="gj-table"></tbody>
+        </table>
+      </div>
+
+      <div class="ro-head ss-step2">
+        <p class="ro-step">2</p>
+        <div><h2>Where the planets meet</h2><p>Each time an inner planet overtakes its outer neighbour, they are at <i>conjunction</i>. The dots mark where every conjunction happens, as planet b’s longitude measured from its own (slowly turning) pericentre.</p></div>
+      </div>
+      <div class="tt-layout">
+        <div class="ro-stage em-stage-sq"><canvas id="gj-conj" role="img" aria-label="Positions of the planets' conjunctions around planet b's orbit, relative to its pericentre"></canvas></div>
+        <div>
+          <p class="ro-progress em-read" id="gj-conj-read" role="status"></p>
+          <div class="rf-explain hl-explain">
+            <p><b>Reading the picture.</b> At a conjunction of c and b, the angle φ<sub>b</sub><sup>cb</sup> is minus b’s longitude from its pericentre, and at a conjunction of b and e, so is φ<sub>b</sub><sup>be</sup>. Both angles librate about zero, so both kinds of conjunction happen near b’s pericentre, scattered by as much as each angle librates. The Laplace angle is the difference of the two, φ<sub>b</sub><sup>cb</sup> − φ<sub>b</sub><sup>be</sup>: it measures how far apart the two pairs’ meeting places are. When it librates, all three planets are locked together, not just two pairs.</p>
+          </div>
+        </div>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>What to try.</b> Make planet e lighter or heavier. At about 17 Earth masses it is far lighter than c (266) and b (845), yet the lock between the two pairs changes with its mass. Shorten the window to see single libration cycles: with planet e as fitted, φ<sub>b</sub><sup>cb</sup>, φ<sub>b</sub><sup>be</sup> and the Laplace angle each take 10 to 12 years.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>The orbits</b> are Nelson et al.’s median coplanar solution (their Table 3): a 0.37 solar-mass star and four planets on orbits inclined 53.19° to the sky, set up from Jacobi orbital elements.</li>
+        <li><b>The integration</b> uses a sixth-order symplectic integrator (Yoshida 1990) with a 0.03-day step, about 0.7 million steps for 60 years. It agrees with REBOUND’s IAS15 on the star’s radial velocity to 10<sup>−4</sup> m/s over 200 days, and on every libration amplitude to within 0.1° for all three of the notebook’s masses of planet e (<code>tools/validate_rvlaplace/</code>).</li>
+        <li><b>The notebook</b> goes further: it draws orbits from the paper’s quoted uncertainties, independently for each parameter. Those draws give larger amplitudes, and the Laplace angle circulates in about one in five of them, because drawing parameters independently ignores the correlations in Nelson et al.’s posterior.</li>
+      </ul>
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startLaplace } from '../../scripts/rvlaplace/app.js';
+    startLaplace();
+  </script>
+</BaseLayout>

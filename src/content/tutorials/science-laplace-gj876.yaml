@@ -1,0 +1,7 @@
+title: "The Laplace Resonance of GJ 876"
+summary: Integrates the four-planet GJ 876 system from the N-body radial-velocity fit of Nelson et al. (2016), measures the libration amplitudes of its resonant angles against the paper's, and asks how the three-planet lock depends on the outer planet's mass.
+topic: science
+url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/laplace_gj876/laplace_gj876.ipynb
+tools: [REBOUND, NumPy, Matplotlib]
+order: 7
+interactive: teaching/laplace-resonance/

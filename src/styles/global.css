@@ -266,3 +266,9 @@ body.bl-modal-open{overflow:hidden}
 .bl-overlay .bl-sub{font-style:italic;color:#9fe7ea;font-size:15px;margin:-4px 0 14px}
 .ss-step2{margin-top:34px}
 .ss-stage-cat{aspect-ratio:1/1;max-width:640px;margin-top:10px}
+.gj-stage-angles{height:560px;margin-top:10px}
+.gj-table-wrap{overflow-x:auto;margin-top:16px}
+.gj-table{border-collapse:collapse;font-size:.9rem;min-width:520px}
+.gj-table caption{text-align:left;color:var(--muted,#5b6f7c);font-size:.85rem;padding-bottom:6px}
+.gj-table th,.gj-table td{padding:6px 12px;border-bottom:1px solid #e7eff1;text-align:left;font-weight:400}
+.gj-table thead th{font-weight:600}

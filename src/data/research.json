@@ -29,6 +29,14 @@
         {
           "label": "Notebook: resonance overlap (Deck, Payne & Holman 2013)",
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/resonance_overlap/resonance_overlap.ipynb"
+        },
+        {
+          "label": "Interactive: three planets in step, the Laplace resonance of GJ 876",
+          "href": "/teaching/laplace-resonance/"
+        },
+        {
+          "label": "Notebook: the Laplace resonance of GJ 876 (Nelson et al. 2016)",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/laplace_gj876/laplace_gj876.ipynb"
         }
       ]
     },
