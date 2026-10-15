@@ -7,7 +7,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 - [ ] **Biography and CV details** for the homepage and an About section. Do not draft from public sources without his review.
 - [ ] **Portrait photo**, with permission (`public/assets/matthew.jpg`, then `site.json`).
 - [ ] **Software list:** Matthew is supplying a curated, up-to-date list, one entry at a time; so far digest2 (2026-10-14). Copy `src/content/software/_TEMPLATE.yaml` for each entry.
-- [ ] **Students and postdocs:** Matthew to provide fuller details (current positions, links, end dates, anyone since 2021). Ten names are in from his 2021 CV, plus three he supplied on 2026-10-14 (Kim Armas, Amanda Fanale, Milagros Tamara Giraldo).
+- [ ] **Students and postdocs:** current positions and links added 2026-10-14 (see `docs/UPDATING_PEOPLE.md`; repeat yearly). Still open: pages for the current students (Kim Armas, Amanda Fanale, Milagros Tamara Giraldo) once they have them, and Tyler Valentine's current position.
 - [ ] **MPC staff:** Matthew to check the former-staff list (from archived MPC pages, 2013 onwards), add roles where blank, and add earlier staff.
 - [ ] **An ADS API token** for future publication refreshes. Optionally, a GitHub Action could refresh them on a schedule, with the token stored as a repository secret.
 - [ ] **Review the new wording:**

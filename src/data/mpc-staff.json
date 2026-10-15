@@ -1,5 +1,5 @@
 {
-  "description": "Minor Planet Center staff. `current` follows the MPC About page (https://minorplanetcenter.net/about) as fetched on 2026-10-14; roles and start dates are as stated there, and are left blank where the page gives none. `former` lists people shown on archived copies of that page (Internet Archive) but no longer listed; `listed` gives the years of the archived copies that show them, which is evidence of when they were on staff, not their exact dates of employment. Matthew Payne himself is omitted. Earlier staff (before 2013, when the page moved to /about) are not covered yet. Mike Alexandersen's start year is 2022, not the page's 2020, and David Bell and Peter Veres are listed as former at Matthew Payne's instruction (2026-10-14), although the About page still showed them. Former staff are limited to people Matthew Payne worked with directly; on 2026-10-14 he removed Tim Spahr, José Luis Galache and James Davies on that basis.",
+  "description": "Minor Planet Center staff. `current` follows the MPC About page (https://minorplanetcenter.net/about) as fetched on 2026-10-14; roles and start dates are as stated there, and are left blank where the page gives none. `former` lists people shown on archived copies of that page (Internet Archive) but no longer listed; `listed` gives the years of the archived copies that show them, which is evidence of when they were on staff, not their exact dates of employment. Matthew Payne himself is omitted. Earlier staff (before 2013, when the page moved to /about) are not covered yet. Mike Alexandersen's start year is 2023, not the page's 2020, and David Bell and Peter Veres are listed as former at Matthew Payne's instruction (2026-10-14), although the About page still showed them. Former staff are limited to people Matthew Payne worked with directly; on 2026-10-14 he removed Tim Spahr, José Luis Galache and James Davies on that basis.",
   "source": "https://minorplanetcenter.net/about",
   "fetched": "2026-10-14",
   "current": [
@@ -16,8 +16,8 @@
     {
       "name": "Mike Alexandersen",
       "role": "Astronomer",
-      "since": "2022",
-      "note": "The MPC About page gives 2020; set to 2022, when his postdoc ended, at Matthew Payne's instruction (2026-10-14)."
+      "since": "2023",
+      "note": "The MPC About page gives 2020 (when he joined as an MPC Fellow); his CfA profile says Astronomer since October 2023. Set to 2023 at Matthew Payne's instruction (2026-10-14)."
     },
     {
       "name": "Brian Burt",

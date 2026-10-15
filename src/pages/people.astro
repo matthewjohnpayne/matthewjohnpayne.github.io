@@ -42,10 +42,11 @@ const join = (...parts: (string | undefined)[]) => parts.filter(Boolean).join(' 
             const meta = <span class="people-meta">{lines.map((l) => <span class="people-meta-line">{l.roleUrl && !m.url
               ? <a class="people-role-link" href={l.roleUrl} target="_blank" rel="noopener noreferrer">{l.role}</a>
               : l.role}{l.role && l.period && ' · '}{l.period && <span class="people-period">{l.period}</span>}</span>)}</span>;
+            const who = <span class="people-who"><span class="people-name">{m.name}{m.url && <span class="people-ext" aria-hidden="true"> ↗</span>}</span>{m.now && <span class="people-now">Now: {m.now}</span>}</span>;
             return <li>
               {m.url
-                ? <a href={m.url} target="_blank" rel="noopener noreferrer"><span class="people-name">{m.name}</span>{meta}</a>
-                : <div class="people-row"><span class="people-name">{m.name}</span>{meta}</div>}
+                ? <a href={m.url} target="_blank" rel="noopener noreferrer">{who}{meta}</a>
+                : <div class="people-row">{who}{meta}</div>}
             </li>;
           })}
         </ul>

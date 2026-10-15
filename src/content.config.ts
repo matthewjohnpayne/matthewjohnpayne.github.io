@@ -83,6 +83,7 @@ const people = defineCollection({
       role: z.string(), roleUrl: z.url().optional(), period: z.string().optional()
     })).default([]),
     affiliation: z.string().optional(),
+    now: z.string().optional(),          // where they are now, shown under the name
     period: z.string().optional(),
     url: z.url().optional(),
     summary: z.string().optional(),
