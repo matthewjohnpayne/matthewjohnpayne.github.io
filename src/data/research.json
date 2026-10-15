@@ -80,6 +80,14 @@
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/iso_lsst/iso_lsst.ipynb"
         },
         {
+          "label": "Interactive: finding moving objects hidden in the noise (shift-and-stack)",
+          "href": "/teaching/shift-and-stack/"
+        },
+        {
+          "label": "Notebook: shift-and-stack on detection catalogues (Stetzler et al. 2025)",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/shift_and_stack/shift_and_stack.ipynb"
+        },
+        {
           "label": "digest2 code",
           "href": "https://github.com/Smithsonian/mpc-public/tree/main/digest2"
         },

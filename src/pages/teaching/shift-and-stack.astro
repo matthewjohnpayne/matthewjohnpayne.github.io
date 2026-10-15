@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/shift_and_stack/shift_and_stack.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2025AJ....170..352S/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const references = [
+  ['Budavári, T., Szalay, A. S. & Loredo, T. J. (2017), ApJ 838, 52', '2017ApJ...838...52B'],
+  ['Portillo, S. K. N., Speagle, J. S. & Finkbeiner, D. P. (2020), AJ 159, 165', '2020AJ....159..165P'],
+  ['Stetzler, S., Jurić, M., Bernardinelli, P. H. et al. (2025), AJ 170, 352', '2025AJ....170..352S']
+];
+---
+<BaseLayout title="Finding moving objects hidden in the noise" description="An interactive guide to shift-and-stack on detection catalogues, after Stetzler et al. (2025): stack 30 noisy catalogues along a trial velocity, and search for faint moving objects, in your browser.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · SHIFT-AND-STACK</p>
+      <h1>Finding moving objects hidden in the noise</h1>
+      <p>Surveys normally keep only detections five times brighter than the noise, which throws away the faintest asteroids and Kuiper belt objects. <i>Shift-and-stack</i> finds them by adding up many images along a guessed trajectory. <a href={paper} target="_blank" rel="noopener noreferrer">Stetzler et al. (2025)</a> showed it can be done far faster by stacking <i>catalogues</i> of faint detections instead of pixels. Try it here.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="ss-lab">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>Thirty catalogues of a patch of sky</h2><p>Four hours, 30 images, every detection above a low threshold. Almost all of them are noise.</p></div>
+      </div>
+      <div class="ro-map-controls iso-controls-row">
+        <fieldset class="ro-segmented">
+          <legend>Detection threshold (S/N)</legend>
+          {[2, 2.5, 3, 3.5, 4].map((v) => <label><input type="radio" name="ss-th" value={v} checked={v === 2} /><span>{v}</span></label>)}
+        </fieldset>
+        <div class="ro-control em-time"><label for="ss-nu">Brightness of the highlighted object: <output id="ss-nu-out" class="hl-value"></output></label>
+          <input id="ss-nu" type="range" min="0.8" max="4" step="0.1" value="1.6" /></div>
+        <button type="button" class="rf-button" id="ss-new">New patch of sky</button>
+        <label class="iso-check"><input type="checkbox" id="ss-truth" /> Show the true tracks</label>
+      </div>
+      <div class="ro-stage ss-stage-cat"><canvas id="ss-cat" role="img" aria-label="All detections from the 30 catalogues, coloured by time"></canvas></div>
+      <p class="ro-progress em-read" id="ss-cat-read" role="status"></p>
+
+      <div class="ro-head ss-step2">
+        <p class="ro-step">2</p>
+        <div><h2>Stack along a guessed velocity</h2><p>Shift every detection back along your trial velocity to the time of the first image. If the guess is right, the object’s detections land on top of each other.</p></div>
+      </div>
+      <div class="tt-layout">
+        <div class="tt-controls">
+          <div class="ro-control"><label for="ss-vx">Trial velocity, x: <output id="ss-vx-out" class="hl-value"></output></label><input id="ss-vx" type="range" min="-21" max="21" step="0.1" value="0" /></div>
+          <div class="ro-control"><label for="ss-vy">Trial velocity, y: <output id="ss-vy-out" class="hl-value"></output></label><input id="ss-vy" type="range" min="-21" max="21" step="0.1" value="0" /></div>
+          <div class="ro-control"><label for="ss-dx">Bin size: <output id="ss-dx-out" class="hl-value"></output></label><input id="ss-dx" type="range" min="1" max="6" step="0.5" value="2" /></div>
+          <button type="button" class="ro-chip" id="ss-hint">Set it to the highlighted object’s true velocity</button>
+        </div>
+        <div>
+          <div class="ro-stage ss-stage-cat"><canvas id="ss-stack" role="img" aria-label="The detections shifted back along the trial velocity and counted in bins"></canvas></div>
+          <p class="ro-progress em-read" id="ss-stack-read" role="status"></p>
+        </div>
+      </div>
+
+      <div class="ro-head ss-step2">
+        <p class="ro-step">3</p>
+        <div><h2>Search every velocity</h2><p>The algorithm of Stetzler et al.: try every velocity on a grid fine enough that an object’s detections always share a bin, take the fullest bin of all, remove its detections, and repeat.</p></div>
+      </div>
+      <div class="ro-compute em-run">
+        <div class="ro-control em-time"><label for="ss-nmin">Report clusters of at least: <output id="ss-nmin-out" class="hl-value"></output></label><input id="ss-nmin" type="range" min="4" max="16" step="1" value="10" /></div>
+        <button type="button" class="rf-button" id="ss-search">Search</button>
+      </div>
+      <p class="ro-progress em-read" id="ss-found" role="status"></p>
+      <div class="rf-explain hl-explain">
+        <p><b>What to try.</b> At a threshold of 2, find the highlighted object by hand, then lower its brightness: below about 1 per image it sinks into the noise. Raise the threshold to 3 and the catalogue becomes far cleaner, but faint objects stop being detected often enough to stack. Larger bins catch more of an object’s scattered detections, but also more noise. Lowering the minimum cluster size finds fainter objects at the cost of false ones (thin orange tracks in section 1; bold teal tracks match real objects).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>The catalogues</b> are simulated statistically: noise peaks scattered at random with the densities measured in the notebook’s simulated images (a 256-pixel field, a Gaussian PSF of 2 pixels, white noise), and twelve moving objects, each detected in a given image with Stetzler et al.’s probability and placed with their positional error, √2·a/S/N (after <a href={ads('2020AJ....159..165P')} target="_blank" rel="noopener noreferrer">Portillo et al. 2020</a>).</li>
+        <li><b>The search</b> is Stetzler et al.’s algorithm, with trial velocities spaced by the bin size divided by the time span. Each cluster is fitted with a straight line (the paper uses a robust fit; the notebook implements it) and matched to an object if they agree within 4 pixels in half the images. The page’s search gives exactly the same clusters as the notebook’s on the same catalogue (<code>tools/validate_sns/</code>).</li>
+        <li><b>The notebook</b> works with simulated images rather than catalogues, compares the catalogue search with stacking the images themselves (about 20 times slower here, for almost the same depth), and finds that the published formula for noise-peak densities does not match its simulations.</li>
+      </ul>
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startShiftAndStack } from '../../scripts/sns/app.js';
+    startShiftAndStack();
+  </script>
+</BaseLayout>
