@@ -20,7 +20,16 @@ const papersFor = (bibcodes: string[]) => bibcodes
   .map((b) => pubs.get(b))
   .filter((p) => p !== undefined)
   .sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
-const themes = research.themes.map((t) => ({ ...t, papers: papersFor(t.bibcodes) }));
+type Link = { label: string; href: string; group?: string };
+// Consecutive links that share a group (a topic, usually an interactive page and its notebook)
+// are shown together under the group's name.
+const groupLinks = (links: Link[]) => links.reduce((out: { group?: string; links: Link[] }[], l) => {
+  const last = out[out.length - 1];
+  if (last && l.group && last.group === l.group) last.links.push(l);
+  else out.push({ group: l.group, links: [l] });
+  return out;
+}, []);
+const themes = research.themes.map((t) => ({ ...t, papers: papersFor(t.bibcodes), linkGroups: groupLinks(t.links as Link[]) }));
 const other = papersFor(research.other.bibcodes);
 const years = (ps: { year: number }[]) => `${Math.min(...ps.map((p) => p.year))}–${Math.max(...ps.map((p) => p.year))}`;
 
@@ -51,9 +60,18 @@ const external = (h: string) => h.startsWith('http');
             <p>{t.summary}</p>
             {t.links.length > 0 && (
               <div class="item-links">
-                {t.links.map((l) => (
+                {t.linkGroups.map((g) => g.group ? (
+                  <div class="link-group">
+                    <h3 class="link-group-title">{g.group}</h3>
+                    <ul>
+                      {g.links.map((l) => (
+                        <li><a class="text-link" href={href(l.href)} target={external(l.href) ? '_blank' : undefined} rel={external(l.href) ? 'noopener noreferrer' : undefined}>{l.label} {external(l.href) ? '↗' : '→'}</a></li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : g.links.map((l) => (
                   <a class="text-link" href={href(l.href)} target={external(l.href) ? '_blank' : undefined} rel={external(l.href) ? 'noopener noreferrer' : undefined}>{l.label} {external(l.href) ? '↗' : '→'}</a>
-                ))}
+                )))}
               </div>
             )}
           </div>

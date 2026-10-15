@@ -16,34 +16,42 @@
       "links": [
         {
           "label": "Interactive: can a planet hide from transit timing?",
+          "group": "Transit timing variations",
           "href": "/teaching/transit-timing/"
         },
         {
           "label": "Notebook: TTVs from inclined and retrograde companions (Payne, Ford & Veras 2010)",
+          "group": "Transit timing variations",
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/ttv_inclined/ttv_inclined.ipynb"
         },
         {
           "label": "Interactive: when do close planets become chaotic?",
+          "group": "Resonance overlap",
           "href": "/teaching/resonance-overlap/"
         },
         {
           "label": "Notebook: resonance overlap (Deck, Payne & Holman 2013)",
+          "group": "Resonance overlap",
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/resonance_overlap/resonance_overlap.ipynb"
         },
         {
           "label": "Interactive: three planets in step, the Laplace resonance of GJ 876",
+          "group": "The Laplace resonance of GJ 876",
           "href": "/teaching/laplace-resonance/"
         },
         {
           "label": "Notebook: the Laplace resonance of GJ 876 (Nelson et al. 2016)",
+          "group": "The Laplace resonance of GJ 876",
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/laplace_gj876/laplace_gj876.ipynb"
         },
         {
           "label": "Interactive: fitting planets that pull on each other (RUN DMC)",
+          "group": "N-body radial-velocity fitting (RUN DMC)",
           "href": "/teaching/run-dmc/"
         },
         {
           "label": "Notebook: N-body radial velocities and DEMCMC (Nelson, Ford & Payne 2014)",
+          "group": "N-body radial-velocity fitting (RUN DMC)",
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/rv_demcmc/rv_demcmc.ipynb"
         }
       ]
@@ -69,6 +77,7 @@
       "links": [
         {
           "label": "Interactive: Jupiter’s Trojans and Hildas in five reference frames",
+          "group": "Reference frames",
           "href": "/teaching/reference-frames/#planet=jupiter&frame=corotating"
         }
       ],
@@ -81,38 +90,47 @@
       "links": [
         {
           "label": "Interactive: linking asteroids by guessing their distance (HelioLinC)",
+          "group": "HelioLinC",
           "href": "/teaching/heliolinc/"
         },
         {
           "label": "Notebook: HelioLinC (Holman, Payne et al. 2018)",
+          "group": "HelioLinC",
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/heliolinc/heliolinc.ipynb"
         },
         {
           "label": "Interactive: which interstellar visitors will Rubin see?",
+          "group": "Interstellar objects and the LSST",
           "href": "/teaching/interstellar-objects/"
         },
         {
           "label": "Notebook: interstellar objects and the LSST (Hoover, Seligman & Payne 2022)",
+          "group": "Interstellar objects and the LSST",
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/iso_lsst/iso_lsst.ipynb"
         },
         {
           "label": "Interactive: finding moving objects hidden in the noise (shift-and-stack)",
+          "group": "Shift-and-stack",
           "href": "/teaching/shift-and-stack/"
         },
         {
           "label": "Notebook: shift-and-stack on detection catalogues (Stetzler et al. 2025)",
+          "group": "Shift-and-stack",
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/shift_and_stack/shift_and_stack.ipynb"
         },
         {
           "label": "digest2 code",
+          "group": "digest2 and orbit tools",
           "href": "https://github.com/Smithsonian/mpc-public/tree/main/digest2"
         },
         {
           "label": "MPC tutorials: initial orbit determination with digest2",
+          "group": "digest2 and orbit tools",
           "href": "https://docs.minorplanetcenter.net/tutorials/iod_tutorials/"
         },
         {
           "label": "MPC tutorial: ASSIST",
+          "group": "digest2 and orbit tools",
           "href": "https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_to_assist/"
         }
       ],
