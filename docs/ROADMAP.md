@@ -24,6 +24,9 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 - [ ] **Replace the illustrative homepage card figures** (`src/components`) with real computed figures. (The fourth card, "Planetary chaos", already draws computed resonance separatrices.)
 - [ ] **Extend the reference-frames run to about 400 years**, so readers can see Kamoʻoalewa leave the quasi-satellite state around 2306 (about 0.7 s of compute).
 
+- [ ] **Talks: public slides.** Matthew to create the public Drive folder and export PDFs (see `docs/TALKS.md` and the list in the 2026-10-15 done entry), then add their links. Then recover talks from before 2022.
+- [ ] **CV page.** Waiting for Matthew's CV files. Master as a data file in the site, generating the web page and a PDF; omit phone numbers, home address and personal email.
+
 ## Content ideas
 
 ### Demo notebooks (for the science-notebooks repo)
@@ -53,6 +56,8 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 - **Cross-links:** link each research theme to its software, tutorials and interactive pages, and each collaborator to the themes you share.
 
 ## Done
+
+- 2026-10-15: Talks page `/talks/` with 27 talks from 2022 onwards, from a read-only inventory of Drive MPC_Public (Matthew chose conferences, agency meetings, teaching and outreach, and co-authored talks). Links so far: ACM 2026 slides and video, and the 2025 House testimony record. Workflow in `docs/TALKS.md`. Transit-timing page published.
 
 - 2026-10-14: TTV notebook pushed (science-notebooks 064795a) and interactive page `/teaching/transit-timing/` (Matthew: "push both, then build the browser version"): one system integrated in the browser (PFV10 Fig. 1 presets, four inclinations), the notebook's maps (clickable), and a detection-threshold view. Validated by `tools/validate_ttv/`: RMS TTVs agree with REBOUND to ~1e-4 (median) over 64 systems; one chaotic system diverges.
 

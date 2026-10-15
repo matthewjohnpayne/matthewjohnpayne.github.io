@@ -1,0 +1,10 @@
+# Copy to YYYY-MM-DD-short-name.yaml. Files starting with "_" are ignored. See docs/TALKS.md.
+title: ""
+date: "YYYY-MM-DD"        # or "YYYY-MM" if the day is not known
+event: ""
+location: ""              # optional
+kind: conference          # conference | colloquium | agency | teaching | outreach | testimony
+# presenter: ""           # only if someone else gave the talk
+# note: ""
+materials: []             # e.g. - label: "Slides (PDF)"  url: "https://drive.google.com/file/d/<id>/view"
+source: ""                # Drive folder, or where the details came from

@@ -5,7 +5,7 @@ import pages from '../data/pages.json';
 
 export function getStaticPaths() {
   // Sections with their own page in src/pages/ are excluded here.
-  const dedicated = ['teaching', 'software', 'publications', 'research', 'people'];
+  const dedicated = ['teaching', 'software', 'publications', 'research', 'people', 'talks'];
   return pages.filter((page) => !dedicated.includes(page.slug)).map((page) => ({params:{slug:page.slug}, props:{page}}));
 }
 const {page} = Astro.props;

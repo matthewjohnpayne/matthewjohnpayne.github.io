@@ -185,3 +185,9 @@
 @media(max-width:820px){.tt-layout{grid-template-columns:minmax(0,1fr)}.tt-stage-map{aspect-ratio:1.4/1}}
 .tt-controls .ro-progress{flex:none}
 [hidden]{display:none!important}
+/* Talks page */
+.talk-date{margin:0 0 4px;font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.talk-upcoming{margin-left:8px;padding:1px 7px;border-radius:9px;background:#e6f4f4;color:#0a5f66;font-size:11px}
+.talk-note{margin:4px 0 0;font-size:13px;color:var(--body)}.talk-links{margin-top:8px}
+@media(max-width:820px){#talk-filter{flex-direction:row;flex-wrap:wrap;gap:8px 18px}.talk-item .pub-title{overflow-wrap:anywhere}}
+.pub-layout>div{min-width:0}

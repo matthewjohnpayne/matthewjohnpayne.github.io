@@ -92,4 +92,23 @@ const people = defineCollection({
   })
 });
 
-export const collections = { tutorials, courses, software, publications, people };
+// Talks and presentations, one file per talk (see docs/TALKS.md).
+const talks = defineCollection({
+  loader: glob({ pattern, base: './src/content/talks' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.string().regex(/^\d{4}-\d{2}(-\d{2})?$/),   // YYYY-MM-DD, or YYYY-MM when the day is not known
+    event: z.string(),
+    location: z.string().optional(),
+    kind: z.enum(['conference', 'colloquium', 'agency', 'teaching', 'outreach', 'testimony']),
+    presenter: z.string().optional(),     // set when someone else gave the talk (Matthew a co-author)
+    note: z.string().optional(),
+    materials: z.array(z.object({
+      label: z.enum(['Slides (PDF)', 'Slides', 'Video', 'Abstract', 'Hearing record', 'Written testimony']),
+      url: z.url()
+    })).default([]),
+    source: z.string().optional()         // where the record came from, e.g. the Drive folder name; not shown
+  })
+});
+
+export const collections = { tutorials, courses, software, publications, people, talks };
