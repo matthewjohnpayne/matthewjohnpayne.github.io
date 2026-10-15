@@ -37,6 +37,14 @@
         {
           "label": "Notebook: the Laplace resonance of GJ 876 (Nelson et al. 2016)",
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/laplace_gj876/laplace_gj876.ipynb"
+        },
+        {
+          "label": "Interactive: fitting planets that pull on each other (RUN DMC)",
+          "href": "/teaching/run-dmc/"
+        },
+        {
+          "label": "Notebook: N-body radial velocities and DEMCMC (Nelson, Ford & Payne 2014)",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/rv_demcmc/rv_demcmc.ipynb"
         }
       ]
     },

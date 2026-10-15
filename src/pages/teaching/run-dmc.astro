@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/rv_demcmc/rv_demcmc.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2014ApJS..210...11N/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const references = [
+  ['Nelson, B., Ford, E. B. & Payne, M. J. (2014), ApJS 210, 11', '2014ApJS..210...11N'],
+  ['ter Braak, C. J. F. (2006), Statistics and Computing 16, 239', '2006S&C....16..239T'],
+  ['Yoshida, H. (1990), Physics Letters A 150, 262', '1990PhLA..150..262Y']
+];
+---
+<BaseLayout title="Fitting planets that pull on each other" description="An interactive guide to N-body radial-velocity fitting and differential-evolution MCMC, after Nelson, Ford & Payne (2014): race two samplers on a real N-body posterior in your browser.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · RADIAL VELOCITIES</p>
+      <h1>Fitting planets that pull on each other</h1>
+      <p>A planet makes its star wobble, and the star’s radial velocity is usually modelled as a sum of Keplerian orbits, one per planet. When planets are massive and close, as in a resonant pair, they pull on each other and those orbits change. <a href={paper} target="_blank" rel="noopener noreferrer">Nelson, Ford &amp; Payne (2014)</a> built RUN DMC to fit such systems with full <i>N</i>-body integrations, sampled by <i>differential-evolution</i> MCMC. This page uses the simulated resonant pair of the notebook, loosely modelled on GJ 876’s inner planets.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="rd-lab">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>Keplerian orbits are not enough</h2><p>Two planets on 30- and 61-day orbits, in a 2:1 resonance, around a 0.32 solar-mass star. Both models start from the same orbits; only the <i>N</i>-body model lets the planets interact.</p></div>
+      </div>
+      <div class="ro-control em-time"><label for="rd-mass">Planet masses: <output id="rd-mass-out" class="hl-value"></output></label>
+        <input id="rd-mass" type="range" min="0.1" max="2" step="0.1" value="1" /></div>
+      <div class="ro-stage rd-stage-rv"><canvas id="rd-rv" role="img" aria-label="The star's radial velocity from the N-body and Keplerian models, with the simulated data, and their difference"></canvas></div>
+      <p class="ro-progress em-read" id="rd-rv-read" role="status"></p>
+
+      <div class="ro-head ss-step2">
+        <p class="ro-step">2</p>
+        <div><h2>Race two samplers</h2><p>To measure the planets’ masses and orbits with uncertainties, one samples the posterior probability of the 12 parameters with Markov chain Monte Carlo. Each evaluation is a 1,500-day orbit integration, so evaluations are precious.</p></div>
+      </div>
+      <div class="ro-map-controls iso-controls-row">
+        <fieldset class="ro-segmented">
+          <legend>Random-walk step (× each parameter’s posterior width)</legend>
+          {[0.72, 0.3, 0.1, 0.03].map((v) => <label><input type="radio" name="rd-step" value={v} checked={v === 0.1} /><span>{v}</span></label>)}
+        </fieldset>
+        <fieldset class="ro-segmented">
+          <legend>Evaluations for each sampler</legend>
+          {[3600, 10800, 21600].map((v) => <label><input type="radio" name="rd-budget" value={v} checked={v === 10800} /><span>{v.toLocaleString('en')}</span></label>)}
+        </fieldset>
+        <button type="button" class="rf-button" id="rd-race">Start the race</button>
+      </div>
+      <div class="ro-stage em-stage-sq rd-stage-sq"><canvas id="rd-scatter" role="img" aria-label="Samples of the two planets' periods from both samplers, over the posterior"></canvas></div>
+      <div class="ro-stage rd-stage-trace"><canvas id="rd-trace" role="img" aria-label="Planet b's period in each sampler against the number of posterior evaluations"></canvas></div>
+      <p class="ro-progress em-read" id="rd-race-read" role="status"></p>
+      <div class="rf-explain hl-explain">
+        <p><b>What is going on.</b> The posterior is a long, thin ridge: the two periods trade off against each other (correlation −0.97), and some combinations of parameters are pinned down 40 times more tightly than others. A random walk proposes a jump in every parameter at once with fixed step sizes. Large steps almost always leave the ridge and are rejected; small ones are accepted but crawl along it. DEMCMC runs 36 chains together and proposes for each a jump along the difference between two others, <i>x</i>′ = <i>x</i> + γ(<i>x<sub>j</sub></i> − <i>x<sub>k</sub></i>). Once the chains have spread along the ridge, those differences point along it and have the right length, with no tuning. The page estimates how many evaluations each sampler needs per independent sample, from the autocorrelation time of its slowest parameter. Runs this short underestimate it; the notebook’s longer runs found at least about 2,700 for the best random walk, against about 94 for DEMCMC.</p>
+        <p><b>Fair to the random walk?</b> Its step sizes here are set from the posterior’s true widths, which in practice one would not know in advance. DEMCMC starts from a tiny cluster of states around the best fit, as in the notebook, and first has to spread out (its first 50 generations are not plotted or counted).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>The data</b> are the notebook’s: 120 radial velocities over 1,500 days with 3 m/s errors and 2 m/s of extra stellar “jitter”, regenerated with its random seed (<code>tools/export_rvdemc_data.py</code>).</li>
+        <li><b>The model and posterior</b> are the notebook’s, after Nelson et al.: an <i>N</i>-body integration of coplanar, edge-on planets set up from Jacobi orbital elements, Nelson et al.’s parameters and priors, and a likelihood that includes the jitter. Here the integration uses a sixth-order symplectic integrator (Yoshida 1990). It agrees with the notebook’s REBOUND model to 0.02 m/s, and the log posterior near the best fit agrees to 0.015 (<code>tools/validate_rvdemc/</code>).</li>
+        <li><b>The grey cloud</b> is the Gaussian approximation to the posterior at its peak, from the curvature of the log posterior. Its correlations match those the notebook measures from its DEMCMC samples (largest 0.967). The random walk’s step sizes are fractions of its widths.</li>
+        <li><b>The samplers</b> follow the notebook: Nelson et al.’s DEMCMC with 36 chains, a scale factor γ that adapts towards 25% acceptance and is set to 1 every hundredth generation, and a random-walk Metropolis sampler for comparison. Each runs in its own background thread, at about 2 ms per evaluation.</li>
+      </ul>
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startRunDmc } from '../../scripts/rvdemc/app.js';
+    startRunDmc();
+  </script>
+</BaseLayout>

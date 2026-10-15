@@ -272,3 +272,6 @@ body.bl-modal-open{overflow:hidden}
 .gj-table caption{text-align:left;color:var(--muted,#5b6f7c);font-size:.85rem;padding-bottom:6px}
 .gj-table th,.gj-table td{padding:6px 12px;border-bottom:1px solid #e7eff1;text-align:left;font-weight:400}
 .gj-table thead th{font-weight:600}
+.rd-stage-rv{height:440px;margin-top:10px}
+.rd-stage-sq{max-width:640px;margin-top:10px}
+.rd-stage-trace{height:200px;margin-top:10px}
