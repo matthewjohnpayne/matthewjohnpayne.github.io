@@ -1,11 +1,11 @@
-// Blastroids: an Asteroids-style game in which everything orbits the Sun.
+// Kepleroids: an Asteroids-style game in which everything orbits the Sun.
 //
 // The ship, the asteroids, the shots and the fragments all move under the Sun's
 // gravity (inverse-square, integrated with a kick-drift-kick leapfrog), so thrusting
 // changes your orbit rather than simply pushing you along. A dotted line shows the
 // path you are on. Shattered asteroids conserve momentum.
 //
-// startBlastroids(container, { onExit, compact, onToggleSize }) builds the game inside container
+// startKepleroids(container, { onExit, compact, onToggleSize }) builds the game inside container
 // and returns { destroy, setExpanded }. compact: a small window (shorter start text, larger ship
 // sprite); onToggleSize: shows an Expand/Shrink button and is called when it is pressed (or Esc
 // while expanded). Nothing moves until the player starts; the game pauses when the tab is
@@ -49,13 +49,13 @@ function stepBody(b, dt) {
   b.vx += 0.5 * dt * ax; b.vy += 0.5 * dt * ay;
 }
 
-export function startBlastroids(container, { onExit = null, compact = false, onToggleSize = null } = {}) {
+export function startKepleroids(container, { onExit = null, compact = false, onToggleSize = null } = {}) {
   let expanded = false;
   const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   container.classList.add('bl-root');
   container.classList.toggle('bl-compact', compact);
   container.innerHTML = `
-    <div class="bl-stage"><canvas class="bl-canvas" tabindex="0" role="application" aria-label="Blastroids game. Arrow keys or W A S D to steer and thrust, Space to fire, P to pause, O to show or hide your orbit, Escape to quit."></canvas>
+    <div class="bl-stage"><canvas class="bl-canvas" tabindex="0" role="application" aria-label="Kepleroids game. Arrow keys or W A S D to steer and thrust, Space to fire, P to pause, O to show or hide your orbit, Escape to quit."></canvas>
       <div class="bl-overlay" role="dialog" aria-live="polite"></div>
       <div class="bl-touch" aria-hidden="true">
         <button type="button" data-k="left">◀</button><button type="button" data-k="right">▶</button>
@@ -72,7 +72,7 @@ export function startBlastroids(container, { onExit = null, compact = false, onT
   const rnd = mulberry(Date.now() & 0xffffffff);
 
   let best = 0;
-  try { best = Number(localStorage.getItem('blastroids-best')) || 0; } catch (e) { /* storage unavailable */ }
+  try { best = Number(localStorage.getItem('kepleroids-best')) || 0; } catch (e) { /* storage unavailable */ }
   const stars = Array.from({ length: 160 }, () => ({ x: rnd() * 2 - 1, y: rnd() * 2 - 1, b: 0.3 + 0.7 * rnd() }));
 
   const keys = { left: false, right: false, thrust: false, fire: false };
@@ -173,7 +173,7 @@ export function startBlastroids(container, { onExit = null, compact = false, onT
   }
   function gameOver() {
     state = 'over';
-    if (score > best) { best = score; try { localStorage.setItem('blastroids-best', String(best)); } catch (e) { /* ignore */ } }
+    if (score > best) { best = score; try { localStorage.setItem('kepleroids-best', String(best)); } catch (e) { /* ignore */ } }
     showOverlay(`<h2>Game over</h2><p>Score ${score.toLocaleString('en')} · best ${best.toLocaleString('en')} · wave ${wave}</p><p><button type="button" class="bl-start">Play again</button></p>`);
   }
 
@@ -292,12 +292,12 @@ export function startBlastroids(container, { onExit = null, compact = false, onT
   ro.observe(canvas);
 
   const intro = compact
-    ? `<h2>Blastroids</h2><p>Everything here orbits the Sun, including you. Thrust to change your orbit; the dotted line shows where you are heading.</p>
+    ? `<h2>Kepleroids</h2><p class="bl-sub">Asteroids, if Kepler had designed it</p><p>Everything here orbits the Sun, including you. Thrust to change your orbit; the dotted line shows where you are heading.</p>
     <p class="bl-keys">← →: turn · ↑: thrust · Space: fire · P: pause</p>
     <p><button type="button" class="bl-start">Start (Enter)</button></p>`
     : null;
   if (intro) showOverlay(intro + (best ? `<p class="bl-best">Best on this device: ${best.toLocaleString('en')}</p>` : ''));
-  else showOverlay(`<h2>Blastroids</h2>
+  else showOverlay(`<h2>Kepleroids</h2><p class="bl-sub">Asteroids, if Kepler had designed it</p>
     <p>Everything here orbits the Sun, including you. Thrust along your direction of motion and the far side of your orbit rises; thrust against it and you fall inwards. Shots and fragments orbit too, so a shot fired ahead may come back round. The dotted line shows the path you are on.</p>
     <p class="bl-keys">← → or A D: turn · ↑ or W: thrust · Space: fire · P: pause · O: orbit line · Esc: quit</p>
     <p><button type="button" class="bl-start">Start (Enter)</button></p>

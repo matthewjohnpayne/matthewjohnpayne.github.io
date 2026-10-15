@@ -1,7 +1,7 @@
 ---
 // The homepage hero diagram: an eccentric Keplerian orbit, drawn exactly (the central mass at
 // one focus), in the style of the "Research at a glance" cards. It is also a button: pressing
-// it opens Blastroids in a large window, a not-very-hidden easter egg.
+// it opens Kepleroids in a large window, a not-very-hidden easter egg.
 const W = 400, H = 260;
 const a = 150, e = 0.7, b = a * Math.sqrt(1 - e * e), c = a * e;
 const cx = W / 2 + 10, cy = H / 2;
@@ -29,10 +29,10 @@ const wedgePath = `M${sun.x},${sun.y} ` + wedge.map((q) => `L${q.x.toFixed(1)},$
   </span>
 </button>
 <div class="bl-modal" id="bl-modal" hidden>
-  <div class="bl-modal-inner" role="dialog" aria-modal="true" aria-label="Blastroids"><div id="bl-mount"></div></div>
+  <div class="bl-modal-inner" role="dialog" aria-modal="true" aria-label="Kepleroids"><div id="bl-mount"></div></div>
 </div>
 <script>
-  import { startBlastroids } from '../scripts/blastroids/game.js';
+  import { startKepleroids } from '../scripts/kepleroids/game.js';
   const button = document.getElementById('hero-orbit');
   const modal = document.getElementById('bl-modal');
   const mount = document.getElementById('bl-mount');
@@ -47,7 +47,7 @@ const wedgePath = `M${sun.x},${sun.y} ` + wedge.map((q) => `L${q.x.toFixed(1)},$
     modal.hidden = false;
     document.body.classList.add('bl-modal-open');
     // Esc and the Quit button call onExit, after the game has removed itself
-    game = startBlastroids(mount, { onExit: () => { game = null; close(); } });
+    game = startKepleroids(mount, { onExit: () => { game = null; close(); } });
     mount.querySelector('.bl-start')?.focus();
   });
   modal.addEventListener('click', (ev) => { if (ev.target === modal) close(); });

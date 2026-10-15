@@ -16,7 +16,7 @@ Matthew planned the concept in a ChatGPT conversation ("Website concept planning
 - **Look:** inspired by [Seeing Theory](https://seeing-theory.brown.edu/), with R2D3 and Distill as secondary references. A dark hero section with an integrated, real orbital simulation sits above light content sections. The science provides the visual interest; see `DESIGN.md`.
 - **Six sections:** Research, People, Software, Teaching, MPC, Publications.
 - **Interactive explanations:** selected notebooks become browser-based interactive pages, each with real computed physics, no autoplay and full keyboard access.
-- **A hidden game, "Blastroids":** planned for a later stage.
+- **A hidden game, "Kepleroids"** (first planned as "Blastroids"): an Asteroids-style game in which everything orbits the Sun, opened by clicking the orbit diagram on the homepage.
 - **Hosting:** GitHub Pages, static, with no server.
 
 ## Sections and their data sources

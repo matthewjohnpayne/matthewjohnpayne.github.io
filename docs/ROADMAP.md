@@ -53,7 +53,7 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 
 - **More reference-frames planets:** Venus and Mars co-orbitals, which the notebook's "Going further" section mentions.
 - **Minimoons interactive**, from the MPC animation tutorial.
-- **Blastroids** (2026-10-15): an Asteroids-style game in which everything orbits the Sun (`src/scripts/blastroids/game.js`). The homepage hero now shows a static diagram of an eccentric Keplerian orbit, in the style of the Research-at-a-glance cards (`src/components/HomeOrbit.astro`); clicking it opens the game in a large window, with its instructions (a not-very-hidden easter egg). There is also an unlinked, unindexed full page at `/blastroids/`. The old Orbital Laboratory (`src/components/OrbitLab.astro`, `public/js/orbital-lab.js`) is no longer used but has been kept.
+- **Kepleroids** (2026-10-15): an Asteroids-style game in which everything orbits the Sun (`src/scripts/kepleroids/game.js`). The homepage hero now shows a static diagram of an eccentric Keplerian orbit, in the style of the Research-at-a-glance cards (`src/components/HomeOrbit.astro`); clicking it opens the game in a large window, with its instructions (a not-very-hidden easter egg). There is also an unlinked, unindexed full page at `/kepleroids/`. The old Orbital Laboratory (`src/components/OrbitLab.astro`, `public/js/orbital-lab.js`) is no longer used but has been kept.
 - **Cross-links:** link each research theme to its software, tutorials and interactive pages, and each collaborator to the themes you share.
 
 ## Done
