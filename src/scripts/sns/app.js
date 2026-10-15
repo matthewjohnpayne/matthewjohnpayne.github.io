@@ -77,14 +77,14 @@ export function startShiftAndStack() {
   const radio = (n) => document.querySelector(`input[name="${n}"]:checked`).value;
   const inp = { nu: $('ss-nu'), vx: $('ss-vx'), vy: $('ss-vy'), dx: $('ss-dx'), nmin: $('ss-nmin') };
   const out = { nu: $('ss-nu-out'), vx: $('ss-vx-out'), vy: $('ss-vy-out'), dx: $('ss-dx-out'), nmin: $('ss-nmin-out') };
-  const catCanvas = $('ss-cat'), stackCanvas = $('ss-stack');
+  const catCanvas = $('ss-cat'), stackCanvas = $('ss-stack'), resultCanvas = $('ss-result');
   let seed = 11, sky, cat, found = null;
 
   function rebuild() {
     sky = makeSky(seed, Number(inp.nu.value));
     cat = makeCatalogue(sky, Number(radio('ss-th')));
     found = null; $('ss-found').textContent = '';
-    showValues(); drawCat(); drawStack();
+    showValues(); drawCat(); drawStack(); drawFound();
   }
   function showValues() {
     out.nu.textContent = `S/N ${Number(inp.nu.value).toFixed(1)} per image`;
@@ -115,12 +115,6 @@ export function startShiftAndStack() {
         ctx.strokeStyle = j === 0 ? 'rgba(196,22,12,0.9)' : 'rgba(196,22,12,0.35)';
         ctx.beginPath(); ctx.moveTo(ox + q.x0 * s, oy + (SIZE - q.y0) * s); ctx.lineTo(ox + (q.x0 + q.vx * T_SPAN) * s, oy + (SIZE - (q.y0 + q.vy * T_SPAN)) * s); ctx.stroke();
       });
-    }
-    if (found) {
-      for (const f of found) {
-        ctx.strokeStyle = f.match.length ? '#078d97' : 'rgba(230,126,34,0.55)'; ctx.lineWidth = f.match.length ? 3 : 1;
-        ctx.beginPath(); ctx.moveTo(ox + f.track.x0 * s, oy + (SIZE - f.track.y0) * s); ctx.lineTo(ox + (f.track.x0 + f.track.vx * T_SPAN) * s, oy + (SIZE - (f.track.y0 + f.track.vy * T_SPAN)) * s); ctx.stroke();
-      }
     }
     ctx.fillStyle = COLORS.text; ctx.font = '11px system-ui, sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
     ctx.fillText('all 30 catalogues on one plot; colour = time (purple first, yellow last); red rings: the highlighted object', ox + 4, oy + 4);
@@ -164,6 +158,45 @@ export function startShiftAndStack() {
       + (err < dx / T_SPAN ? 'Your trial velocity is within one bin of its true velocity, so its detections pile up.' : `Your trial velocity is ${err.toFixed(1)} px/h from its true velocity: its detections smear along a ${(err * T_SPAN).toFixed(0)}-pixel line.`);
   }
 
+  function drawFound() {
+    const { ctx, w, h } = fit(resultCanvas);
+    const s = Math.min(w, h) / SIZE, ox = (w - SIZE * s) / 2, oy = (h - SIZE * s) / 2;
+    const P = (x, y) => [ox + x * s, oy + (SIZE - y) * s];
+    const seg = (x0, y0, vx, vy) => { ctx.beginPath(); ctx.moveTo(...P(x0, y0)); ctx.lineTo(...P(x0 + vx * T_SPAN, y0 + vy * T_SPAN)); ctx.stroke(); };
+    ctx.fillStyle = '#fbfdfd'; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = COLORS.axis; ctx.lineWidth = 1; ctx.strokeRect(ox, oy, SIZE * s, SIZE * s);
+    for (let k = 0; k < cat.x.length; k++) dot(ctx, ...P(cat.x[k], cat.y[k]), 1, 'rgba(91,111,124,0.25)');
+    ctx.font = '11px system-ui, sans-serif'; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    if (!found) {
+      ctx.fillStyle = COLORS.text; ctx.textAlign = 'center';
+      ctx.fillText('Press Search to look for moving objects in these detections', w / 2, h / 2);
+      return;
+    }
+    const hit = new Set(found.flatMap((f) => f.match));
+    // every injected object: found ones in teal, missed ones dashed red, labelled with S/N per image
+    sky.objs.forEach((o, j) => {
+      if (hit.has(j)) return;
+      ctx.strokeStyle = '#c4160c'; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]); seg(o.x0, o.y0, o.vx, o.vy); ctx.setLineDash([]);
+    });
+    for (const f of found) if (!f.match.length) { ctx.strokeStyle = '#e67e22'; ctx.lineWidth = 2; seg(f.track.x0, f.track.y0, f.track.vx, f.track.vy); }
+    for (const f of found) if (f.match.length) { ctx.strokeStyle = '#078d97'; ctx.lineWidth = 3.5; seg(f.track.x0, f.track.y0, f.track.vx, f.track.vy); }
+    sky.objs.forEach((o, j) => {
+      const [x, y] = P(o.x0 + o.vx * T_SPAN / 2, o.y0 + o.vy * T_SPAN / 2);
+      ctx.fillStyle = hit.has(j) ? '#05666d' : '#c4160c';
+      ctx.fillText(`${o.nu.toFixed(1)}${j === 0 ? ' ★' : ''}`, x + 6, y - 8);
+    });
+    // legend
+    const items = [['#078d97', 3.5, [], 'found: matches a real object'], ['#e67e22', 2, [], 'found: matches nothing (false)'], ['#c4160c', 1.5, [5, 4], 'real object that was missed']];
+    let ly = oy + 12;
+    ctx.fillStyle = 'rgba(251,253,253,0.9)'; ctx.fillRect(ox + 4, oy + 3, 220, 66);
+    for (const [c, lw, dash, label] of items) {
+      ctx.strokeStyle = c; ctx.lineWidth = lw; ctx.setLineDash(dash);
+      ctx.beginPath(); ctx.moveTo(ox + 10, ly); ctx.lineTo(ox + 34, ly); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = COLORS.ink; ctx.fillText(label, ox + 40, ly); ly += 16;
+    }
+    ctx.fillStyle = COLORS.text; ctx.fillText('numbers: each object’s S/N per image (★ highlighted)', ox + 10, ly);
+  }
+
   function runSearch() {
     const dx = Number(inp.dx.value) * A, nMin = Number(inp.nmin.value);
     const t0 = performance.now();
@@ -175,7 +208,7 @@ export function startShiftAndStack() {
     $('ss-found').textContent = `Searched ${fmt(nVelocities)} trial velocities in ${ms.toFixed(0)} ms: ${found.length} clusters of at least ${nMin}. `
       + `They recover ${hit.size} of the 12 objects (${hit.has(0) ? 'including' : 'but not'} the highlighted one); ${nFalse} match no object. `
       + `Undetected: ${sky.objs.map((o, j) => (hit.has(j) ? null : o.nu.toFixed(1))).filter(Boolean).join(', ') || 'none'} (S/N per image).`;
-    drawCat();
+    drawFound();
   }
 
   document.querySelectorAll('input[name="ss-th"]').forEach((r) => r.addEventListener('change', rebuild));
@@ -189,5 +222,5 @@ export function startShiftAndStack() {
   $('ss-hint').addEventListener('click', () => { const o = sky.objs[0]; inp.vx.value = String(o.vx.toFixed(1)); inp.vy.value = String(o.vy.toFixed(1)); showValues(); drawStack(); });
   rebuild();
   let rz = 0;
-  window.addEventListener('resize', () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { drawCat(); drawStack(); }); });
+  window.addEventListener('resize', () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { drawCat(); drawStack(); drawFound(); }); });
 }

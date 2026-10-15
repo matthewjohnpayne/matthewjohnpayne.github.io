@@ -65,8 +65,9 @@ const references = [
         <button type="button" class="rf-button" id="ss-search">Search</button>
       </div>
       <p class="ro-progress em-read" id="ss-found" role="status"></p>
+      <div class="ro-stage ss-stage-cat"><canvas id="ss-result" role="img" aria-label="The search results: tracks found, false tracks, and real objects that were missed, drawn over the detections"></canvas></div>
       <div class="rf-explain hl-explain">
-        <p><b>What to try.</b> At a threshold of 2, find the highlighted object by hand, then lower its brightness: below about 1 per image it sinks into the noise. Raise the threshold to 3 and the catalogue becomes far cleaner, but faint objects stop being detected often enough to stack. Larger bins catch more of an object’s scattered detections, but also more noise. Lowering the minimum cluster size finds fainter objects at the cost of false ones (thin orange tracks in section 1; bold teal tracks match real objects).</p>
+        <p><b>What to try.</b> At a threshold of 2, find the highlighted object by hand, then lower its brightness: below about 1 per image it sinks into the noise. Raise the threshold to 3 and the catalogue becomes far cleaner, but faint objects stop being detected often enough to stack. Larger bins catch more of an object’s scattered detections, but also more noise. Lowering the minimum cluster size finds fainter objects at the cost of false ones (orange tracks in the results plot).</p>
       </div>
     </div>
   </section>
