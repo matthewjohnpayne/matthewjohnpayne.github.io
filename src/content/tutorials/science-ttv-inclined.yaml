@@ -1,0 +1,7 @@
+title: "Transit Timing Variations from Inclined and Retrograde Companions"
+summary: Can an unseen planet hide from transit timing? Reproduces the TTV maps of Payne, Ford & Veras (2010) for inclined and retrograde companions, with REBOUND.
+topic: science
+url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/ttv_inclined/ttv_inclined.ipynb
+tools: [REBOUND, NumPy, Matplotlib]
+order: 3
+interactive: teaching/transit-timing/

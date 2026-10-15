@@ -33,7 +33,7 @@ Each idea comes from one of Matthew's refereed papers. Pair each notebook with a
 | Idea | Based on | Notes |
 |---|---|---|
 | Resonance overlap and the stability of close planet pairs | Deck, Payne & Holman 2013 (ApJ 774, 129) | **Done:** notebook in science-notebooks; interactive page at `/teaching/resonance-overlap/`. |
-| Transit timing variations: a two-planet TTV explorer | Payne et al. 2010 (ApJL 712, L86); Payne & Ford 2011 (ApJ 729, 98); Veras, Ford & Payne 2011 (ApJ 727, 74) | Near-resonant TTV signal against period ratio and mass. Inclined and retrograde cases. |
+| Transit timing variations: inclined and retrograde companions | Payne, Ford & Veras 2010 (ApJL 712, L86) | **Done:** notebook in science-notebooks (064795a); interactive page at `/teaching/transit-timing/`. Still to do: Payne & Ford 2011 (HAT-P-13) and Veras, Ford & Payne 2011. |
 | Stellar wobble to radial-velocity curve | Nelson et al. 2014, RUN DMC (ApJS 210, 11) | Ties to the Sun-wobble inset on the reference-frames page. N-body versus Keplerian RV fits for interacting planets. |
 | HelioLinC: linking detections by guessing the distance | Holman et al. 2018 (AJ 156, 135) | **Done:** notebook in science-notebooks (abbaaa0); interactive page at `/teaching/heliolinc/`. |
 | Shift-and-stack on detection catalogues | Stetzler et al. 2025 (AJ 170, 352) | Synthetic catalogue: recover a faint mover by stacking along trial velocities. |
@@ -53,6 +53,8 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 - **Cross-links:** link each research theme to its software, tutorials and interactive pages, and each collaborator to the themes you share.
 
 ## Done
+
+- 2026-10-14: TTV notebook pushed (science-notebooks 064795a) and interactive page `/teaching/transit-timing/` (Matthew: "push both, then build the browser version"): one system integrated in the browser (PFV10 Fig. 1 presets, four inclinations), the notebook's maps (clickable), and a detection-threshold view. Validated by `tools/validate_ttv/`: RMS TTVs agree with REBOUND to ~1e-4 (median) over 64 systems; one chaotic system diverges.
 
 - 2026-10-14: HelioLinC notebook pushed (science-notebooks abbaaa0) and interactive page `/teaching/heliolinc/` (Matthew: "push, and then work on the browser version"): Crocco's arrows under the reader's guess, the notebook's survey in arrow space with a γ̇ focus slider, and the full linking search in a worker. Validated by `tools/validate_heliolinc/`: identical cluster counts to the notebook module in 7 of 7 settings. Linked from Teaching and the Research detection theme.
 

@@ -171,3 +171,17 @@
 .hl-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
 .hl-key{font-weight:650}.hl-key-pure{color:#078d97}.hl-key-valid{color:#b06d0c}.hl-key-err{color:#c4160c}
 @media(max-width:820px){.hl-triple .hl-stage-sq{aspect-ratio:4/3}.hl-stage-wide{aspect-ratio:2/1}.hl-triple,.hl-field-layout,.hl-charts,.hl-controls{grid-template-columns:1fr}.hl-results{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Transit timing interactive (tt-) */
+.tt-presets{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:18px}.tt-presets-label{font-size:13px;color:var(--body);margin-right:4px}
+.tt-layout{display:grid;grid-template-columns:minmax(260px,1fr) minmax(0,1.7fr);gap:30px;align-items:start}
+.tt-controls{display:flex;flex-direction:column;gap:14px}.tt-controls .rf-button{align-self:flex-start}
+.tt-compare{font-size:13px;color:var(--body);display:flex;gap:8px;align-items:center}
+.tt-more{border:1px solid var(--line);border-radius:6px;padding:8px 12px;background:#fff}.tt-more summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink)}
+.tt-more[open]{display:flex;flex-direction:column;gap:10px}.tt-more .ro-control label{font-size:12px}.tt-more .ro-chip{align-self:flex-start}
+.tt-mass{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--body)}.tt-mass select{font:inherit;font-size:13px;color:var(--ink);background:#fff;border:1px solid #bcd0d6;border-radius:4px;padding:6px 8px}
+.tt-hill{margin:0;padding:8px 10px;border-radius:4px;background:#fdf3e1;color:#7a4a00;font-size:12px;line-height:1.5}
+.tt-stage-plot{aspect-ratio:16/9;min-height:260px}.tt-stage-map{aspect-ratio:2.6/1;min-height:280px}
+.tt-key{list-style:none;padding:0;margin:0 0 6px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--body)}.tt-key li{display:flex;align-items:center;gap:6px}.tt-key span{width:14px;height:10px;border-radius:2px;display:inline-block}
+@media(max-width:820px){.tt-layout{grid-template-columns:minmax(0,1fr)}.tt-stage-map{aspect-ratio:1.4/1}}
+.tt-controls .ro-progress{flex:none}
+[hidden]{display:none!important}

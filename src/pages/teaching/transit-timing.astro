@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/ttv_inclined/ttv_inclined.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2010ApJ...712L..86P/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const presets = ['(a) 2:1 resonance', '(b) 3:1 resonance', '(c) 5:1 resonance', '(d) next to 2:1', '(e) non-resonant', '(f) non-resonant, eccentric'];
+const binLabels = ['0–1', '1–3', '3–10', '10–30', '30–100', '100–300', '300–1000', '1000+'];
+const binColors = ['#440154', '#46327e', '#365c8d', '#277f8e', '#1fa187', '#4ac16d', '#a0da39', '#fde725'];
+const references = [
+  ['Agol, E., Steffen, J., Sari, R. & Clarkson, W. (2005), MNRAS 359, 567', '2005MNRAS.359..567A'],
+  ['Gladman, B. (1993), Icarus 106, 247', '1993Icar..106..247G'],
+  ['Holman, M. J. & Murray, N. W. (2005), Science 307, 1288', '2005Sci...307.1288H'],
+  ['Lithwick, Y., Xie, J. & Wu, Y. (2012), ApJ 761, 122', '2012ApJ...761..122L'],
+  ['Miralda-Escudé, J. (2002), ApJ 564, 1019', '2002ApJ...564.1019M'],
+  ['Payne, M. J., Ford, E. B. & Veras, D. (2010), ApJL 712, L86', '2010ApJ...712L..86P'],
+  ['Rein, H. & Spiegel, D. S. (2015), MNRAS 446, 1424', '2015MNRAS.446.1424R'],
+  ['Wisdom, J. & Holman, M. (1991), AJ 102, 1528', '1991AJ....102.1528W']
+];
+---
+<BaseLayout title="Can a planet hide from transit timing?" description="An interactive guide to transit timing variations from inclined and retrograde companions, after Payne, Ford & Veras (2010), with every system integrated in your browser.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · TRANSIT TIMING VARIATIONS</p>
+      <h1>Can a planet hide from transit timing?</h1>
+      <p>A planet that transits its star keeps time like a clock, unless another planet tugs on it. Then its transits come a little early or late, and these transit timing variations (TTVs) can reveal a planet too small to see any other way. But what if the hidden planet’s orbit is tilted, or even runs backwards? This page follows <a href={paper} target="_blank" rel="noopener noreferrer">Payne, Ford &amp; Veras (2010)</a>: a hot Jupiter and an Earth-mass companion, with every system integrated in your browser.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="tt-system">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>One system, ten years of transits</h2><p>A Jupiter-mass planet at 0.05 au, transiting a Sun-like star every 4.08 days, and an unseen companion.</p></div>
+      </div>
+      <div class="ro-presets tt-presets" role="group" aria-label="The paper’s examples (Figure 1)">
+        <span class="tt-presets-label">The paper’s examples, at four inclinations:</span>
+        {presets.map((p, k) => <button type="button" class="ro-chip" data-preset={k}>{p}</button>)}
+      </div>
+      <div class="tt-layout">
+        <div class="tt-controls">
+          <div class="ro-control"><label for="tt-pr">Companion’s orbit: <output id="tt-pr-out" class="hl-value"></output></label>
+            <input id="tt-pr" type="range" min="1.45" max="7" step="0.001" value="2.005" /></div>
+          <div class="ro-control"><label for="tt-e2">Its eccentricity: <output id="tt-e2-out" class="hl-value"></output></label>
+            <input id="tt-e2" type="range" min="0" max="0.6" step="0.005" value="0.02" /></div>
+          <div class="ro-control"><label for="tt-i2">Its inclination to the transiting planet’s orbit: <output id="tt-i2-out" class="hl-value"></output></label>
+            <input id="tt-i2" type="range" min="0" max="180" step="1" value="0" disabled /></div>
+          <label class="ro-check tt-compare"><input type="checkbox" id="tt-compare" checked /> Compare 0°, 45°, 90° and 180° (as in the paper)</label>
+          <details class="tt-more">
+            <summary>Orientation and mass</summary>
+            <div class="ro-control"><label for="tt-omega">Argument of pericentre: <output id="tt-omega-out"></output></label><input id="tt-omega" type="range" min="0" max="359" step="1" value="0" /></div>
+            <div class="ro-control"><label for="tt-Omega">Longitude of ascending node: <output id="tt-Omega-out"></output></label><input id="tt-Omega" type="range" min="0" max="359" step="1" value="0" /></div>
+            <div class="ro-control"><label for="tt-M">Starting mean anomaly: <output id="tt-M-out"></output></label><input id="tt-M" type="range" min="0" max="359" step="1" value="0" /></div>
+            <button type="button" class="ro-chip" id="tt-random">Random orientation</button>
+            <label class="tt-mass">Companion’s mass
+              <select id="tt-mass">
+                <option value="1" selected>1 Earth mass (the paper’s)</option>
+                <option value="10">10 Earth masses</option>
+                <option value="17.15">1 Neptune mass</option>
+              </select>
+            </label>
+          </details>
+          <p class="tt-hill" id="tt-hill" hidden></p>
+          <button type="button" class="rf-button" id="tt-run">Integrate 10 years</button>
+          <p class="ro-progress" id="tt-status" role="status">Choose an example, or set an orbit and press Integrate.</p>
+        </div>
+        <div>
+          <div class="ro-stage tt-stage-plot"><canvas id="tt-plot" role="img" aria-label="Transit timing variations against time"></canvas></div>
+          <p class="ro-hover">Each line is the deviation of the transit times from a perfectly regular clock, over about 895 transits.</p>
+        </div>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>Try the examples.</b> On the 2:1 resonance (a), prograde companions at any inclination shift the transits by a minute or more, while the same companion on a retrograde orbit (black) shifts them by about a second. On the 5:1 resonance (c), the signal is largest near 90° and small at both 0° and 180°. Away from resonance, the retrograde companion is always the quietest.</p>
+        <p><b>Orientation matters.</b> The companion’s other angles are not given in the paper; the examples set them to zero. Try <i>Random orientation</i>: the signal can change by a large factor, which is why the maps below take the median of five random orientations, as the paper did.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab ro-lab-map" id="tt-maps">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">2</p>
+        <div><h2>The flames of resonance</h2><p>About 100,000 integrations from the notebook. Select a point to integrate that system above.</p></div>
+      </div>
+      <div class="ro-map-controls">
+        <fieldset class="ro-segmented">
+          <legend>Map</legend>
+          <label><input type="radio" name="tt-view" value="flames" checked /><span>Separation and eccentricity</span></label>
+          <label><input type="radio" name="tt-view" value="closeup" /><span>Close-up of 2:1</span></label>
+          <label><input type="radio" name="tt-view" value="eccinc" /><span>Eccentricity and inclination</span></label>
+        </fieldset>
+        <fieldset class="ro-segmented" id="tt-inc-group">
+          <legend>Companion’s inclination</legend>
+          {[0, 30, 45, 90, 135, 180].map((i) => <label><input type="radio" name="tt-inc" value={i} checked={i === 0} /><span>{i}°</span></label>)}
+        </fieldset>
+        <label id="tt-a-group" hidden>Separation
+          <select id="tt-a-select">
+            <option value="0">a₂/a₁ = 1.59 (2:1 resonance)</option>
+            <option value="1">a₂/a₁ = 2.08 (3:1 resonance)</option>
+            <option value="2">a₂/a₁ = 2.92 (5:1 resonance)</option>
+            <option value="3">a₂/a₁ = 1.63 (next to 2:1)</option>
+            <option value="4">a₂/a₁ = 3.6 (non-resonant)</option>
+          </select>
+        </label>
+      </div>
+      <div class="ro-stage tt-stage-map"><canvas id="tt-map" role="img" aria-label="Map of median RMS TTV"></canvas>
+        <p class="rf-status" id="tt-map-status">The maps load when you reach this section.</p>
+      </div>
+      <div class="ro-under">
+        <ul class="tt-key" aria-label="Colour key: median RMS TTV in seconds">
+          {binLabels.map((l, k) => <li><span style={`background:${binColors[k]}`}></span>{l} s</li>)}
+          <li><span style="background:#d9d9d9"></span>not Hill stable, not simulated</li>
+        </ul>
+        <p class="ro-hover" id="tt-map-hover" aria-live="off">Point at the map to read it; select a point to integrate that system above.</p>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>Reading the maps.</b> Each cell is the median, over five random orientations, of the RMS TTV of the hot Jupiter over 10 years. With the companion in the same plane (0°), the TTVs are small over most of the map, but rise in tall “flames” at the mean-motion resonances and at high eccentricity, where the planets come close (Agol et al. 2005). Step through the inclinations: the flames shrink, and for a retrograde companion large signals survive only very near the resonances.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab ro-lab-map" id="tt-absence">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">3</p>
+        <div><h2>Absence of evidence</h2><p>How much of the map would a timing campaign detect?</p></div>
+      </div>
+      <div class="tt-layout">
+        <div class="tt-controls">
+          <div class="ro-control"><label for="tt-thr">Detection threshold (RMS TTV): <output id="tt-thr-out" class="hl-value"></output></label>
+            <input id="tt-thr" type="range" min="0" max="2.5" step="0.05" value="1" /></div>
+          <p class="ro-hover" id="tt-frac-read" role="status"></p>
+          <div class="rf-explain">
+            <p>For each inclination, the curve shows the fraction of the Hill-stable part of the separation–eccentricity map (section 2) where an Earth-mass companion gives an RMS TTV above the threshold. The threshold stands for what a campaign could detect, which depends on the timing precision and the number of transits.</p>
+            <p>The fraction falls with inclination and is smallest for retrograde orbits. In the paper’s words, if TTVs are used to rule out companions, “absence of evidence is not evidence of absence”.</p>
+          </div>
+        </div>
+        <div class="ro-stage tt-stage-plot"><canvas id="tt-frac" role="img" aria-label="Fraction of systems above the detection threshold against inclination"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>The system</b> is the paper’s: a hot Jupiter (one Jupiter mass, circular orbit at 0.05 au) and an Earth-mass companion. The paper does not give the star’s mass or radius, so, like the notebook, this page assumes a Sun-like star.</li>
+        <li><b>Transit times</b> are found as in the paper: after each step, a test for a minimum of the projected star–planet separation with the planet in front of the star; Newton iteration to the time of the minimum; a correction for the light travel time; and a straight-line fit to the transit times, whose residuals are the TTVs.</li>
+        <li><b>The integrator</b> is a Wisdom–Holman map in Jacobi coordinates (<a href={ads('1991AJ....102.1528W')} target="_blank" rel="noopener noreferrer">Wisdom &amp; Holman 1991</a>), 60 steps per orbit of the hot Jupiter, with a universal-variable Kepler solver. Ten years take about a twentieth of a second.</li>
+        <li><b>Validation.</b> For the paper’s 24 Figure 1 systems and 40 random Hill-stable systems, this page’s transit times were compared with the notebook’s, from REBOUND’s IAS15 integrator (<a href={ads('2015MNRAS.446.1424R')} target="_blank" rel="noopener noreferrer">Rein &amp; Spiegel 2015</a>). Individual transit times typically agree to a few tenths of a second, and the RMS TTVs to about one part in ten thousand (median). The exception is one strongly chaotic system with close approaches, where the two integrations diverge, as integrations of chaotic orbits must; this page’s own result for it changes with the step size (<code>tools/validate_ttv/</code>).</li>
+        <li><b>The maps</b> are the notebook’s, from about 100,000 REBOUND integrations. As in the paper, only orbits that are Hill stable for coplanar prograde orbits (<a href={ads('1993Icar..106..247G')} target="_blank" rel="noopener noreferrer">Gladman 1993</a>) were simulated.</li>
+        <li><b>Limitations.</b> This is a teaching tool, not a fit to any real system. Real TTV analyses also deal with timing noise, sparse and irregular sampling, and transit duration changes.</li>
+      </ul>
+
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startTTV } from '../../scripts/ttv/app.js';
+    startTTV(import.meta.env.BASE_URL);
+  </script>
+</BaseLayout>
