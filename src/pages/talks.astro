@@ -24,7 +24,7 @@ const counts = Object.fromEntries(Object.keys(KINDS).map((k) => [k, talks.filter
   <SectionHero eyebrow={page.eyebrow} title={page.title} lead={page.lead} />
   <section class="site-content page-content">
     <div class="content-width pub-layout">
-      <aside class="pub-summary">
+      <div class="pub-summary">
         <p><b>{talks.length} talks</b> since {years[years.length - 1]}, most recent first.</p>
         <fieldset class="pub-filter" id="talk-filter">
           <legend>Show</legend>
@@ -33,7 +33,7 @@ const counts = Object.fromEntries(Object.keys(KINDS).map((k) => [k, talks.filter
           ))}
         </fieldset>
         <p class="pub-source">Talks given by colleagues on work I co-authored are marked with the presenter’s name. Slides are linked where a public copy exists; more will be added. Older talks are being added gradually.</p>
-      </aside>
+      </div>
       <div>
         {years.map((y) => (
           <section class="pub-year" data-year={y}>

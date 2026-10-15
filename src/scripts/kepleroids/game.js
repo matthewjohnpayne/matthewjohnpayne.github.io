@@ -56,7 +56,7 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
   container.classList.toggle('bl-compact', compact);
   container.innerHTML = `
     <div class="bl-stage"><canvas class="bl-canvas" tabindex="0" role="application" aria-label="Kepleroids game. Arrow keys or W A S D to steer and thrust, Space to fire, P to pause, O to show or hide your orbit, Escape to quit."></canvas>
-      <div class="bl-overlay" role="dialog" aria-live="polite"></div>
+      <div class="bl-overlay" role="dialog" aria-label="Kepleroids" aria-live="polite"></div>
       <div class="bl-touch" aria-hidden="true">
         <button type="button" data-k="left">◀</button><button type="button" data-k="right">▶</button>
         <button type="button" data-k="thrust">▲</button><button type="button" data-k="fire">●</button>
