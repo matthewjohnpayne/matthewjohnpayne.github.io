@@ -56,6 +56,8 @@
     { "dates": "1997–2001", "degree": "BA and MPhys in Physics", "place": "University of Oxford, UK", "details": "" }
   ],
   "grants": [
+    { "dates": "2026", "role": "Co-I", "program": "Smithsonian Life on a Sustainable Planet", "title": "Coordinating Global Small-Body Observations for Planetary Defense and Natural-Hazard Preparedness", "amount": "approx. $252,500" },
+    { "dates": "FY2026", "role": "Co-I", "program": "Smithsonian Latino Initiatives Pool", "title": "Building on U.S. Latino Leadership in Planetary Defense: A SPARK Postbaccalaureate Research and Public Engagement Initiative", "amount": "approx. $50,000" },
     { "dates": "2023–2026", "role": "Co-I", "program": "NASA Opportunities for Research in Planetary Defense", "title": "A statistically sound model for astrometric uncertainties", "amount": "$445,911" },
     { "dates": "2021–2026", "role": "PI", "program": "NASA Cooperative Agreement", "title": "Minor Planet Center Augmentation", "amount": "$938,661" },
     { "dates": "2021–2026", "role": "PI", "program": "NASA Cooperative Agreement", "title": "Minor Planet Center Operations and Development", "amount": "$15,859,297" },
