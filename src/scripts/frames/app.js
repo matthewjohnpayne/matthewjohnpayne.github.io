@@ -3,7 +3,7 @@
 // the reader selects.
 import { buildFrames } from './frames.js';
 
-const YEARS = 300;
+const YEARS = 400;
 const DT = 0.5;          // days; validated against REBOUND IAS15 (see page text)
 const SAMPLE_DAYS = 2;
 const AU_RSUN = 215.032; // solar radii per AU
@@ -138,6 +138,14 @@ export function startReferenceFrames(ic) {
   });
   document.querySelectorAll('[data-show-frame]').forEach((b) => b.addEventListener('click', () => {
     setView(b.dataset.showPlanet || planet, b.dataset.showFrame);
+    // optional: data-show-year (a calendar year to jump to) and data-show-trail (years)
+    if (b.dataset.showTrail) trailSel.value = b.dataset.showTrail;
+    if (b.dataset.showYear && data) {
+      const days = (Number(b.dataset.showYear) - 2000) * 365.25 - (ic.epochMJD_TT - 51544.5);
+      index = Math.max(0, Math.min(data.t.length - 1, Math.round(days / SAMPLE_DAYS)));
+      slider.value = String(index);
+    }
+    if (b.dataset.showTrail || b.dataset.showYear) draw();
     $('rf-lab').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }));
   slider.addEventListener('input', () => { index = Number(slider.value); draw(); });

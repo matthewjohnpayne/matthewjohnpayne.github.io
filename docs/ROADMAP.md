@@ -23,7 +23,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 - [ ] **Render science-notebooks to GitHub Pages** (Jupyter Book or similar) at `matthewjohnpayne.github.io/science-notebooks/`.
 - [ ] **Featured papers:** set `featured: true` on a handful, and show them at the top of Publications and on the homepage.
 - [x] **Homepage card figures are computed** (2026-10-15): asteroid semi-major axes and eccentricities from MPCORB, the minimoon 2006 RH120 from JPL Horizons (`tools/export_card_figures.py`, `src/data/card-figures.json`), and Kamoʻoalewa integrated at build time with the reference-frames integrator.
-- [ ] **Extend the reference-frames run to about 400 years**, so readers can see Kamoʻoalewa leave the quasi-satellite state around 2306 (about 0.7 s of compute).
+- [x] **Reference-frames run extended to 400 years** (2026-10-15). In this integration (and REBOUND IAS15, which agrees to 35 km) Kamoʻoalewa leaves the quasi-satellite state around 2330, not 2306 as first noted; a new "Not for ever" paragraph has a button that jumps to 2400 with a 150-year trail.
 
 - [ ] **Talks: public slides.** Seven `_public.pdf` copies are in their MPC_Public folders (2026-10-15) and linked from the Talks records; Matthew to set each to *Anyone with the link*. Still to export by hand: the Google Slides decks and the 2023 IAWN Keynote deck. Then recover talks from before 2022.
 - [ ] **CV:** Matthew to review `/cv/`, and to supply anything missing since 2024 (new grants, honours and awards, committee and service roles such as IAWN or SMPAG).

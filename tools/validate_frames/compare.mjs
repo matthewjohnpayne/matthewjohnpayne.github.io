@@ -1,10 +1,11 @@
 import fs from 'node:fs';
 import { integrate } from '../../src/scripts/frames/nbody.js';
-const [icPath, refPath, dtArg] = process.argv.slice(2);
+const [icPath, refPath, dtArg, yearsArg] = process.argv.slice(2);
+const YEARS = Number(yearsArg || 300);
 const ic = JSON.parse(fs.readFileSync(icPath, 'utf8'));
 const dt = Number(dtArg);
 const t0 = performance.now();
-const out = integrate(ic, { years: 300, dt, sampleDays: 2 });
+const out = integrate(ic, { years: YEARS, dt, sampleDays: 2 });
 const ms = performance.now() - t0;
 const ref = new Float64Array(fs.readFileSync(refPath).buffer.slice(0));
 const nk = out.keys.length, N = out.t.length;
@@ -19,7 +20,7 @@ const err = (key, rel) => {
       d2 += (a - b) ** 2;
     }
     const d = Math.sqrt(d2); if (d > worst) { worst = d; at = out.t[s] / 365.25; }
-    for (const y of [10, 50, 100, 200, 300]) if (Math.abs(out.t[s] / 365.25 - y) < 0.003) marks[y] = d;
+    for (const y of [10, 50, 100, 200, 300, 400]) if (Math.abs(out.t[s] / 365.25 - y) < 0.003) marks[y] = d;
   }
   return `${key}${rel ? '-' + rel : ''}: max ${worst.toExponential(2)} AU (yr ${at.toFixed(0)}); ` + Object.entries(marks).map(([y, d]) => `${y}y ${d.toExponential(1)}`).join(', ');
 };

@@ -86,7 +86,7 @@ const parts = (text: string) => text.split('{p}');
       <div class="rf-figure">
         <div class="rf-stage">
           <canvas id="rf-canvas" role="img" aria-label="Trajectories of the asteroids in the selected reference frame"></canvas>
-          <div class="rf-status" id="rf-status" role="status">Integrating 300 years of Solar System motion in your browser…</div>
+          <div class="rf-status" id="rf-status" role="status">Integrating 400 years of Solar System motion in your browser…</div>
         </div>
         <div class="rf-controls">
           <button id="rf-play" class="rf-button rf-play" type="button" aria-pressed="false" disabled>▶ Play</button>
@@ -103,6 +103,7 @@ const parts = (text: string) => text.split('{p}');
               <option value="10" selected>10 years</option>
               <option value="50">50 years</option>
               <option value="150">150 years</option>
+              <option value="400">400 years</option>
               <option value="10000">Everything so far</option>
             </select>
           </label>
@@ -164,6 +165,9 @@ const parts = (text: string) => text.split('{p}');
       <p>Watch the <em>turns around Earth</em> readout with a 10-year trail. In the <button type="button" class="rf-inline" data-show-frame="corotating">co-rotating frame</button> the line from Earth to Kamoʻoalewa turns once a year, clockwise: −1 per year. But that frame itself rotates once a year, anticlockwise, with Earth: +1 per year. Undo the rotation, as the <button type="button" class="rf-inline" data-show-frame="planetocentric">non-rotating frame</button> does, and the two simply add to (−1) + (+1) = 0.</p>
       <p>The frame-independent fact is that Kamoʻoalewa is not bound to Earth: it orbits the Sun, well outside Earth’s Hill sphere. The loop is its eccentricity epicycle, about 0.1 AU by 0.2 AU for its eccentricity of 0.10. What makes it a quasi-satellite is where that loop sits: the 1:1 resonance keeps its mean longitude librating about Earth’s, so the loop is centred on Earth and encloses it.</p>
 
+      <h2>Not for ever</h2>
+      <p>Quasi-satellite states do not last. In this integration Kamoʻoalewa’s loops stay centred on Earth until about 2330; then its mean longitude stops librating about Earth’s and drifts away, reaching the far side of the Sun by about 2380. <button type="button" class="rf-inline" data-show-frame="corotating" data-show-year="2400" data-show-trail="150">See it in the co-rotating frame, up to 2400, with a 150-year trail</button>, and watch the longitude readout. The date itself is uncertain: small errors in the starting orbit, and the forces left out (see below), grow over centuries, so treat it as an illustration of the behaviour rather than a prediction.</p>
+
       <h2>Jupiter’s companions: a tadpole and a triangle</h2>
       <p>Switch the planet to Jupiter and the same five frames tell a second story. Seen from <button type="button" class="rf-inline" data-show-planet="jupiter" data-show-frame="planetocentric">Jupiter, with fixed axes</button>, Hektor and Hilda both seem to circle the planet once every 12 years. This time the illusion runs the other way: they share Jupiter’s trip around the Sun, and in the <button type="button" class="rf-inline" data-show-planet="jupiter" data-show-frame="corotating">co-rotating frame</button> that shared motion vanishes.</p>
       <p>What remains is the resonance. Hektor, the largest Jupiter Trojan, is in the 1:1 resonance and traces a compact tadpole around the L4 point, 60° ahead of Jupiter. It librates gently about L4 and never strays far.</p>
@@ -172,10 +176,10 @@ const parts = (text: string) => text.split('{p}');
       <p>Choose the frame that makes your question easy, and know what it hides.</p>
 
       <h2>How this page works</h2>
-      <p>When the page opens, your browser integrates the Sun, the eight planets, the Moon, Kamoʻoalewa, Hektor and Hilda for 300 years, starting on {epochDate}. Following the tutorial’s rule, the motion is integrated once, in the inertial barycentric frame, and stored. Every frame is then derived by subtracting an origin and rotating the axes; nothing is re-integrated when you switch.</p>
+      <p>When the page opens, your browser integrates the Sun, the eight planets, the Moon, Kamoʻoalewa, Hektor and Hilda for 400 years, starting on {epochDate}. Following the tutorial’s rule, the motion is integrated once, in the inertial barycentric frame, and stored. Every frame is then derived by subtracting an origin and rotating the axes; nothing is re-integrated when you switch.</p>
       <ul>
         <li><b>Initial conditions.</b> The asteroids’ state vectors are from the <a href="https://data.minorplanetcenter.net/api/get-orb" target="_blank" rel="noopener noreferrer">MPC Orbits API</a> ({ic.particles.map((p) => `${p.name}: ${p.mpc.nobs.toLocaleString('en')} observations, ${p.mpc.arc}`).join('; ')}). The Sun, planets and Moon are from <a href="https://ssd.jpl.nasa.gov/horizons/" target="_blank" rel="noopener noreferrer">JPL Horizons</a>, with masses from DE440.</li>
-        <li><b>Integrator.</b> A sixth-order symplectic method (Yoshida 1990) with a fixed half-day step, Newtonian point masses only. Over the full 300 years its Earth–Kamoʻoalewa separation agrees with REBOUND’s high-accuracy IAS15 integrator to within 30 km, and the Jupiter–Hektor and Jupiter–Hilda separations to within 20 m.</li>
+        <li><b>Integrator.</b> A sixth-order symplectic method (Yoshida 1990) with a fixed half-day step, Newtonian point masses only. Over the full 400 years its Earth–Kamoʻoalewa separation agrees with REBOUND’s high-accuracy IAS15 integrator to within 35 km, and the Jupiter–Hektor and Jupiter–Hilda separations to within 50 m.</li>
         <li><b>Limitations.</b> Positions are projected onto the ecliptic plane. Relativity, asteroid perturbers and non-gravitational forces are omitted, and orbit uncertainty is not propagated, so this is a demonstration, not an ephemeris.</li>
       </ul>
       <div class="rf-links">

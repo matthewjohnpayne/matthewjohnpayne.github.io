@@ -5,15 +5,19 @@ integrator, starting from the same initial conditions (`src/data/frames-ic.json`
 
 ```bash
 pip install rebound numpy
-python reference.py ../../src/data/frames-ic.json 300 2 ref300.npz
-python -c "import numpy as np; np.load('ref300.npz')['xyz'].astype('<f8').tofile('ref300.bin')"
-node compare.mjs ../../src/data/frames-ic.json ref300.bin 0.5
+python reference.py ../../src/data/frames-ic.json 400 2 ref400.npz
+python -c "import numpy as np; np.load('ref400.npz')['xyz'].astype('<f8').tofile('ref400.bin')"
+node compare.mjs ../../src/data/frames-ic.json ref400.bin 0.5 400
 node frames_test.mjs
 ```
 
 Results on 2026-10-14 (epoch MJD 61200, 300 years, step 0.5 day): Earth–Kamoʻoalewa separation
 agrees with IAS15 to 1.7e-7 AU (about 26 km); Earth–Sun to 1.7e-7 AU; Jupiter–Hektor to 8e-11 AU
 and Jupiter–Hilda to 1.1e-10 AU (under 20 m).
+
+Results on 2026-10-15 for the extended 400-year run (the page now integrates 400 years): Earth–Kamoʻoalewa
+2.3e-7 AU (about 35 km); Jupiter–Hektor 1.6e-10 AU and Jupiter–Hilda 3.0e-10 AU (under 50 m). In both
+integrations Kamoʻoalewa leaves the quasi-satellite state around 2330.
 
 `frames_test.mjs` checks the frame transforms:
 - Earth: pinned in the co-rotating frame; fitted mean motion equal to the sidereal year
