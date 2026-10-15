@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HomeBlastroids from '../components/HomeBlastroids.astro';
+import HomeOrbit from '../components/HomeOrbit.astro';
 import ScienceVisual from '../components/ScienceVisual.astro';
 import site from '../data/site.json';
 import features from '../data/features.json';
@@ -26,7 +26,7 @@ const link = (path: string) => path.startsWith('http') ? path : root + path.repl
           <a class="button button-outline" href={link('teaching/')}>Teaching & tutorials <span aria-hidden="true">→</span></a>
         </div>
       </div>
-      <HomeBlastroids />
+      <HomeOrbit />
     </div>
   </section>
   <section class="site-content home-content">

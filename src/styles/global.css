@@ -258,3 +258,8 @@
 body.bl-modal-open{overflow:hidden}
 @media(max-width:575px){.home-game .bl-stage{height:300px}}
 .bl-overlay:not([hidden])~.bl-touch{display:none}
+/* Homepage hero diagram (opens Blastroids) */
+.hero-orbit{display:block;width:100%;padding:0;text-align:left;cursor:pointer;font:inherit}
+.hero-orbit:focus-visible{outline:3px solid #24b9be;outline-offset:3px}
+.hero-orbit-art{height:clamp(260px,26vw,380px);padding:18px 22px}
+@media(max-width:575px){.hero-orbit-art{height:230px;padding:10px}}
