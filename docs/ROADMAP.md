@@ -24,7 +24,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 - [ ] **Replace the illustrative homepage card figures** (`src/components`) with real computed figures. (The fourth card, "Planetary chaos", already draws computed resonance separatrices.)
 - [ ] **Extend the reference-frames run to about 400 years**, so readers can see Kamoʻoalewa leave the quasi-satellite state around 2306 (about 0.7 s of compute).
 
-- [ ] **Talks: public slides.** Matthew to create the public Drive folder and export PDFs (see `docs/TALKS.md` and the list in the 2026-10-15 done entry), then add their links. Then recover talks from before 2022.
+- [ ] **Talks: public slides.** Seven `_public.pdf` copies are in their MPC_Public folders (2026-10-15) and linked from the Talks records; Matthew to set each to *Anyone with the link*. Still to export by hand: the Google Slides decks and the 2023 IAWN Keynote deck. Then recover talks from before 2022.
 - [ ] **CV:** Matthew to review `/cv/`, and to supply anything missing since 2024 (new grants, honours and awards, committee and service roles such as IAWN or SMPAG).
 
 ## Content ideas

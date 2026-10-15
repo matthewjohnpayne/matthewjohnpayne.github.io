@@ -3,4 +3,7 @@ date: "2023-06-23"
 event: "Asteroids, Comets, Meteors (ACM) 2023"
 location: "Flagstaff, Arizona"
 kind: conference
+materials:
+  - label: "Slides (PDF)"
+    url: "https://drive.google.com/file/d/1Yg0GcfyP52yZdxSmF3WMlamQUo3x0tKt/view"
 source: "Google Drive, MPC_Public/2023_06_ACM; inventoried 2026-10-15"

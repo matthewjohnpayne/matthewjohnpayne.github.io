@@ -25,8 +25,9 @@ Instead:
 
 1. Open the deck and check it: no budgets, staff names with roles, or personal information, and no film or TV clips or other copyrighted media. Delete those slides from a copy if needed.
 2. **File → Download → PDF document**. A PDF exported this way does not include speaker notes.
-3. Upload the PDF to the public talks folder (**Website_Talks_Public** in Matthew's own Google Drive, shared as *Anyone with the link: Viewer*). Name it like the Drive folder: `2026_09_24_IAWN.pdf`.
-4. Copy its link: **Share → Copy link**. It looks like `https://drive.google.com/file/d/<id>/view`.
+3. Save the PDF **in the talk's own folder** in MPC_Public, named `<folder name>_public.pdf` (for example `2026_09_24_IAWN/2026_09_24_IAWN_public.pdf`). With Google Drive for Desktop signed in (the shared drive appears under `~/Library/CloudStorage/GoogleDrive-mpayne@sao.si.edu/Shared drives/MPC/…`), an agent can do this step: it converts PowerPoint decks with LibreOffice (`soffice --headless --convert-to pdf`, no speaker notes), removes flagged slides with `pypdf` (not `pdfunite`, which duplicates images and inflates the file), and copies the result into the folder. Google Slides decks appear on disk only as links, so export them by hand (File → Download → PDF). Keynote decks: File → Export To → PDF.
+4. Share **only that PDF**, never the folder: right-click → Share → General access → *Anyone with the link: Viewer*. A shared folder would also expose the original decks, with their speaker notes, and anything internal stored beside them.
+5. Copy its link: **Share → Copy link**. It looks like `https://drive.google.com/file/d/<id>/view`.
 
 A recording can go in the same folder and be linked in the same way.
 
