@@ -47,6 +47,7 @@ source: "Google Drive, MPC_Public/2026_09_24_IAWN"
 - Use the title on the title slide, in sentence case.
 - Name the event in full the first time it appears, e.g. "International Asteroid Warning Network (IAWN) meeting".
 - `location` is optional. Add `note:` for things like "Recorded talk." or "With Federica Spoto."
+- When one record covers several decks, use a label naming each, e.g. "Lecture 1 slides (PDF)" (the allowed labels are listed in `src/content.config.ts`).
 - Link only material that is public: an official record (for testimony, the committee's hearing page) or a public PDF from step 3.
 - Before linking a Drive file, check that it opens in a private browser window.
 

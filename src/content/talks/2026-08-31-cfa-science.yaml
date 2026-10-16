@@ -3,4 +3,7 @@ date: "2026-08-31"
 event: "CfA science talk"
 location: "Center for Astrophysics | Harvard & Smithsonian"
 kind: colloquium
+materials:
+  - label: "Slides (PDF)"
+    url: "https://drive.google.com/file/d/1_atiC2YyrDyCcIClh_kFmMSN1yhuFJ0f/view"
 source: "Google Drive, MPC_Public/2026_08_31_CfAScience; inventoried 2026-10-15"
