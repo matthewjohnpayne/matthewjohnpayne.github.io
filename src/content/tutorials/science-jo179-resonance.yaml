@@ -1,0 +1,8 @@
+title: "2010 JO179: A Dwarf Planet in the 21:5 Resonance with Neptune"
+summary: Fetches the MPC's orbit of 2010 JO179 with the mpc_orb package, checks it against Holman, Payne, Fraser et al. (2018), and follows 100 clones with REBOUND for 700 million years to see how long it stays in the 21:5 resonance.
+topic: science
+url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/jo179_resonance/jo179_resonance.ipynb
+tools: [REBOUND, mpc-orb, NumPy, Matplotlib]
+order: 12
+area: solar-system
+papers: ["2018ApJ...855L...6H"]
