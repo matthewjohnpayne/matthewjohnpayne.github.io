@@ -114,7 +114,7 @@ const talks = defineCollection({
     presenter: z.string().optional(),     // set when someone else gave the talk (Matthew a co-author)
     note: z.string().optional(),
     materials: z.array(z.object({
-      label: z.enum(['Slides (PDF)', 'Slides', 'Video', 'Abstract', 'Hearing record', 'Written testimony',
+      label: z.enum(['Slides (PDF)', 'Slides', 'Poster (PDF)', 'Video', 'Abstract', 'Hearing record', 'Written testimony',
                      // for a record that covers more than one deck
                      'SMUG slides (PDF)', 'DPS slides (PDF)', 'Lecture 1 slides (PDF)', 'Lecture 2 slides (PDF)', 'Lecture 3 slides (PDF)']),
       url: z.url()
