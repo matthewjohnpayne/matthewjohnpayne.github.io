@@ -2,5 +2,5 @@ title: "Earth's Co-orbital Companions"
 summary: Asteroids in 1:1 resonance with Earth look like ordinary ellipses heliocentrically, but a co-rotating frame reveals quasi-satellite loops, a horseshoe and a tadpole.
 topic: orbits
 url: https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_earth_coorbitals/
-tools: [REBOUND]
+tools: [REBOUND, mpc-orb]
 order: 2
