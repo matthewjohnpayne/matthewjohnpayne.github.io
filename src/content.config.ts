@@ -49,6 +49,12 @@ const software = defineCollection({
     // Further links, such as tutorials or documentation.
     links: z.array(z.object({ label: z.string(), href: z.url() })).default([]),
     featured: z.boolean().default(false),
+    // Other spellings used in tutorials' `tools` lists, e.g. mpc-orb.
+    aliases: z.array(z.string()).default([]),
+    // Bibcodes of papers describing or built on the code, for links in both directions.
+    papers: z.array(z.string()).default([]),
+    // Site-relative path of an interactive page built on the code.
+    interactive: z.string().optional(),
     order: z.number().default(100)
   })
 });

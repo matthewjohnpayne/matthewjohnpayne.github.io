@@ -2,14 +2,15 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
+import PubExplore from '../components/PubExplore.astro';
+import { exploreByPaper } from '../lib/explore';
 import pages from '../data/pages.json';
 import research from '../data/research.json';
 
 const page = pages.find((p) => p.slug === 'research')!;
 const root = import.meta.env.BASE_URL;
-// Science notebooks and interactive pages that reproduce a paper, by bibcode.
-const exploreMap = new Map<string, { interactive?: string; notebook: string }>();
-for (const { data } of await getCollection('tutorials')) for (const b of data.papers) exploreMap.set(b, { interactive: data.interactive && `${root}${data.interactive.replace(/^\//, '')}`, notebook: data.url });
+// Interactive pages, notebooks and software linked to each paper, by bibcode.
+const exploreMap = await exploreByPaper();
 const pubs = new Map((await getCollection('publications')).map((p) => [p.data.bibcode, p.data]));
 
 // Every paper belongs to one theme (or "other"); say so at build time if not.
@@ -85,9 +86,7 @@ const external = (h: string) => h.startsWith('http');
                 <span>
                   <a class="pub-title" href={p.url} target="_blank" rel="noopener noreferrer" set:html={titleHtml(p.title)} />
                   <span class="theme-venue">{p.venue}{p.authorPosition === 1 && ' · first author'}</span>
-                  {exploreMap.has(p.bibcode) && (
-                    <span class="pub-explore">{exploreMap.get(p.bibcode)!.interactive && <><a href={exploreMap.get(p.bibcode)!.interactive}>Interactive page →</a> · </>}<a href={exploreMap.get(p.bibcode)!.notebook} target="_blank" rel="noopener noreferrer">Notebook ↗</a></span>
-                  )}
+                  <PubExplore e={exploreMap.get(p.bibcode)} />
                 </span>
               </li>
             ))}

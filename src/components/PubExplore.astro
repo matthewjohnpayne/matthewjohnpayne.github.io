@@ -1,0 +1,11 @@
+---
+import type { Explore } from '../lib/explore';
+interface Props { e?: Explore }
+const { e } = Astro.props;
+const parts = e ? [
+  e.interactive && { href: e.interactive, text: 'Interactive page →', ext: false },
+  e.notebook && { href: e.notebook, text: 'Notebook ↗', ext: true },
+  ...e.code.map((c) => ({ href: c.href, text: `Code: ${c.name} →`, ext: false }))
+].filter(Boolean) as { href: string; text: string; ext: boolean }[] : [];
+---
+{parts.length > 0 && <span class="pub-explore">{parts.map((p, i) => <>{i > 0 && ' · '}<a href={p.href} {...(p.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{p.text}</a></>)}</span>}

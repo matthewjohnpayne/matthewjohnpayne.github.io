@@ -9,3 +9,4 @@ links:
     href: https://docs.minorplanetcenter.net/mpc-ops-docs/orbits/mpc-orb-json/
   - label: "PyPI: pip install mpc_orb"
     href: https://pypi.org/project/mpc_orb/
+aliases: [mpc-orb]

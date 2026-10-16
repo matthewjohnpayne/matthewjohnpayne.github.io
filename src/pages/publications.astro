@@ -2,15 +2,16 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
+import PubExplore from '../components/PubExplore.astro';
+import { exploreByPaper } from '../lib/explore';
 import pages from '../data/pages.json';
 import meta from '../data/publications-meta.json';
 import collab from '../data/collaborators.json';
 
 const page = pages.find((p) => p.slug === 'publications')!;
 const root = import.meta.env.BASE_URL;
-// Science notebooks and interactive pages that reproduce a paper, by bibcode.
-const exploreMap = new Map<string, { interactive?: string; notebook: string }>();
-for (const { data } of await getCollection('tutorials')) for (const b of data.papers) exploreMap.set(b, { interactive: data.interactive && `${root}${data.interactive.replace(/^\//, '')}`, notebook: data.url });
+// Interactive pages, notebooks and software linked to each paper, by bibcode.
+const exploreMap = await exploreByPaper();
 const pubs = (await getCollection('publications'))
   .map((p) => p.data)
   .sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
@@ -71,9 +72,7 @@ const ordinal = (n: number) => n + (suffix[(n % 100 - 20) % 10] || suffix[n % 10
                       {p.venue}{p.volume && `, ${p.volume}`}{p.page && `, ${p.page}`}
                       {p.doi && <> · <a href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener noreferrer">DOI</a></>}
                     </p>
-                    {exploreMap.has(p.bibcode) && (
-                    <span class="pub-explore">{exploreMap.get(p.bibcode)!.interactive && <><a href={exploreMap.get(p.bibcode)!.interactive}>Interactive page →</a> · </>}<a href={exploreMap.get(p.bibcode)!.notebook} target="_blank" rel="noopener noreferrer">Notebook ↗</a></span>
-                  )}
+                    <PubExplore e={exploreMap.get(p.bibcode)} />
                   </li>
                 );
               })}

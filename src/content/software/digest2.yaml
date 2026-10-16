@@ -7,3 +7,4 @@ order: 1
 links:
   - label: "Tutorials: initial orbit determination with digest2"
     href: https://docs.minorplanetcenter.net/tutorials/iod_tutorials/
+papers: ["2019PASP..131f4501K", "2023PASP..135j4505V"]

@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
 import pages from '../data/pages.json';
+import { sitePath } from '../lib/explore';
 
 const page = pages.find((p) => p.slug === 'software')!;
 const root = import.meta.env.BASE_URL;
@@ -11,6 +12,15 @@ const sections = [
   { heading: 'Selected projects', items: software.filter((s) => s.data.featured) },
   { heading: 'More repositories', items: software.filter((s) => !s.data.featured) }
 ];
+// Papers about each package, and the tutorials that use it (from the tutorials' tool lists).
+const pubs = new Map((await getCollection('publications')).map((p) => [p.data.bibcode, p.data]));
+const tutorials = (await getCollection('tutorials')).sort((a, b) => a.data.order - b.data.order);
+const usedIn = (names: string[]) => tutorials.filter((t) => t.data.tools.some((tool) => names.includes(tool.toLowerCase()))).map((t) => t.data);
+const cite = (p: { authors: string[]; authorCount?: number; year: number }) => {
+  const last = (a: string) => a.split(',')[0];
+  const n = p.authorCount ?? p.authors.length;
+  return n === 1 ? last(p.authors[0]) : n === 2 ? `${last(p.authors[0])} & ${last(p.authors[1])}` : `${last(p.authors[0])} et al.`;
+};
 ---
 <BaseLayout title={page.title} description={page.summary}>
   <SectionHero eyebrow={page.eyebrow} title={page.title} lead={page.lead} />
@@ -20,17 +30,27 @@ const sections = [
         <div class="catalogue-group">
           <div class="section-heading"><h2>{section.heading}</h2></div>
           <div class="resource-grid">
-            {section.items.map(({ data }) => (
-              <article class="resource-item">
+            {section.items.map(({ data }) => {
+              const papers = data.papers.map((b) => pubs.get(b)).filter((p) => p !== undefined);
+              const tuts = usedIn([data.name, ...data.aliases].map((n) => n.toLowerCase()));
+              return (
+              <article class="resource-item" id={data.name}>
                 <h3 class="code-name">{data.name}</h3>
                 <p>{data.summary}</p>
                 {data.language && <ul class="tag-list" aria-label="Languages">{data.language.split(/,\s*/).map((l) => <li>{l}</li>)}</ul>}
                 <div class="item-links">
+                  {data.interactive && <a class="text-link" href={sitePath(data.interactive)}>Interactive page →</a>}
                   <a class="text-link" href={data.repo} target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
                   {data.links.map((l) => <a class="text-link" href={l.href} target="_blank" rel="noopener noreferrer">{l.label} ↗</a>)}
                 </div>
+                {papers.length > 0 && (
+                  <div class="sw-related"><h4>Papers</h4><ul>{papers.map((p) => <li><a href={p.url} target="_blank" rel="noopener noreferrer">{p.title}</a> <span>({cite(p)} {p.year})</span></li>)}</ul></div>
+                )}
+                {tuts.length > 0 && (
+                  <div class="sw-related"><h4>Tutorials that use it</h4><ul>{tuts.map((t) => <li><a href={t.url} target="_blank" rel="noopener noreferrer">{t.title} ↗</a>{t.interactive && <> · <a href={sitePath(t.interactive)}>interactive →</a></>}</li>)}</ul></div>
+                )}
               </article>
-            ))}
+            );})}
           </div>
         </div>
       ))}

@@ -1,0 +1,11 @@
+---
+// A tutorial's tools, with those listed on the Software page linked to their entry there.
+import { softwareByTool, sitePath } from '../lib/explore';
+interface Props { tools: string[] }
+const { tools } = Astro.props;
+const sw = await softwareByTool();
+---
+{tools.length > 0 && <ul class="tag-list" aria-label="Tools used">{tools.map((tool) => {
+  const name = sw.get(tool.toLowerCase());
+  return <li>{name ? <a href={`${sitePath('software/')}#${name}`} title={`${name} on the Software page`}>{tool}</a> : tool}</li>;
+})}</ul>}
