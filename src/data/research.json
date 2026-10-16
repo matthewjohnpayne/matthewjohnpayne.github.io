@@ -92,6 +92,16 @@
       "summary": "Planet Nine, trans-Neptunian objects, Neptune Trojans, Centaurs and the DECam Ecliptic Exploration Project (DEEP).",
       "links": [
         {
+          "label": "Interactive: could Cassini have felt Planet Nine?",
+          "group": "Planet Nine",
+          "href": "/teaching/cassini-planet-nine/"
+        },
+        {
+          "label": "Notebook: Planet Nine and the Cassini ranging data (Holman & Payne 2016)",
+          "group": "Planet Nine",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/cassini_planet9/cassini_planet9.ipynb"
+        },
+        {
           "label": "Interactive: Jupiter’s Trojans and Hildas in five reference frames",
           "group": "Reference frames",
           "href": "/teaching/reference-frames/#planet=jupiter&frame=corotating"

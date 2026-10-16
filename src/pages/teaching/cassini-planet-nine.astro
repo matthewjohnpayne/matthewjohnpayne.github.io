@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/cassini_planet9/cassini_planet9.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2016AJ....152...94H/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const references = [
+  ['Batygin, K. & Brown, M. E. (2016), AJ 151, 22', '2016AJ....151...22B'],
+  ['Fienga, A., Laskar, J., Manche, H. & Gastineau, M. (2016), A&A 587, L8', '2016A&A...587L...8F'],
+  ['Holman, M. J. & Payne, M. J. (2016), AJ 152, 94', '2016AJ....152...94H']
+];
+---
+<BaseLayout title="Could Cassini have felt Planet Nine?" description="An interactive guide to the Cassini ranging limits on Planet Nine, after Holman & Payne (2016): place a distant planet anywhere on the sky and see the signature its tidal pull would leave in the Earth–Saturn range.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · PLANET NINE</p>
+      <h1>Could Cassini have felt Planet Nine?</h1>
+      <p>From 2004 to 2017 the Cassini spacecraft orbited Saturn, and radio ranging from Earth measured the Earth–Saturn distance to tens of metres. A planet several times the Earth’s mass a few hundred au away would pull Saturn very slightly off its predicted orbit. <a href={paper} target="_blank" rel="noopener noreferrer">Holman &amp; Payne (2016)</a> built a simple model of that pull and used it to map where on the sky such a planet could hide. Place a planet anywhere and see what the ranging would have recorded.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="cp-lab">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>Put a planet on the sky</h2><p>Select a point on the map, or use the sliders. The colours show the weakest tidal pull the ranging would detect in each direction; red hatching marks where a planet of the mass and distance you choose would have been seen.</p></div>
+      </div>
+      <div class="tt-presets" role="group" aria-label="Examples">
+        <span class="tt-presets-label">Examples:</span>
+        <button type="button" class="ro-chip" data-cp-preset="nu60">Nominal orbit, ν = 60°</button>
+        <button type="button" class="ro-chip" data-cp-preset="nu117">Nominal orbit, ν ≈ 117° (Fienga et al.’s best fit)</button>
+        <button type="button" class="ro-chip" data-cp-preset="hp16">Holman &amp; Payne’s preferred region</button>
+      </div>
+      <div class="ro-stage cp-stage-sky"><canvas id="cp-sky" tabindex="0" role="img" aria-label="Sky map of the ranging's sensitivity"></canvas></div>
+      <p class="mo-cap" id="cp-status" role="status"></p>
+      <p class="mo-cap">White line: Saturn’s path over 2004–2014. White dots: the nominal Planet Nine orbit of Batygin &amp; Brown (2016). Red dot: your planet; open circle: the opposite point of the sky, where a planet would pull on Saturn in exactly the same way. Use the arrow keys to move the planet when the map is selected.</p>
+      <div class="tt-layout">
+        <div class="tt-controls">
+          <div class="ro-control"><label for="cp-ra">Right ascension: <output id="cp-ra-out" class="hl-value"></output></label><input id="cp-ra" type="range" min="0" max="358" step="2" value="116" /></div>
+          <div class="ro-control"><label for="cp-dec">Declination: <output id="cp-dec-out" class="hl-value"></output></label><input id="cp-dec" type="range" min="-88" max="88" step="2" value="24" /></div>
+          <div class="ro-control"><label for="cp-mass">Mass: <output id="cp-mass-out" class="hl-value"></output></label><input id="cp-mass" type="range" min="1" max="20" step="1" value="10" /></div>
+          <div class="ro-control"><label for="cp-dist">Distance from the Sun: <output id="cp-dist-out" class="hl-value"></output></label><input id="cp-dist" type="range" min="2.3" max="3.2" step="0.005" value="2.7" /></div>
+          <div class="ro-control"><label for="cp-nu">Or slide it along the nominal orbit (true anomaly): <output id="cp-nu-out" class="hl-value"></output></label><input id="cp-nu" type="range" min="-180" max="178" step="2" value="60" /></div>
+        </div>
+        <div>
+          <p class="ro-progress em-read" id="cp-read" role="status"></p>
+        </div>
+      </div>
+
+      <div class="ro-head ss-step2">
+        <p class="ro-step">2</p>
+        <div><h2>What the ranging would have recorded</h2><p>The change this planet would make to the Cassini range residuals, at each of the measurements from late 2004 to mid-2014, after a refit of Saturn’s orbit has absorbed everything it can.</p></div>
+      </div>
+      <div class="ro-stage tt-stage-plot"><canvas id="cp-sig" role="img" aria-label="Planet Nine's signature in the range residuals"></canvas></div>
+      <p class="ro-progress em-read" id="cp-sig-read" role="status"></p>
+      <div class="rf-explain hl-explain">
+        <p><b>Why so little survives.</b> Over ten years, most of what a distant planet’s steady pull does to Saturn looks just like a slightly different orbit, and the ephemeris fit absorbs it: between 80% and 97% of the raw effect, depending on direction. What is left is the curved pattern above. On the nominal orbit it peaks at a few hundred metres when the planet is near pericentre, 280 au from the Sun, and fades to almost nothing towards aphelion, 1,100 au away.</p>
+        <p><b>What this page cannot show.</b> Holman &amp; Payne fitted the actual range residuals, read from the figures of Fienga et al. (2016). Where the residuals happen to resemble a signature, adding the planet improves the fit; that gave their preferred region, around right ascension 40°, declination −15°. Where they are anti-aligned, the limits tighten, to about 10⁻¹⁴ M☉ au⁻³ over large areas of sky. This page has only the measurement times, so it shows what the data could detect: its limits are weaker, typically 10⁻¹³.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>The pull.</b> A planet of mass <i>M</i> at distance <i>r</i> pulls on Saturn relative to the Sun with the tidal acceleration <i>GM</i>/<i>r</i>³ [<b>ρ</b> − 3(<b>ρ</b>·<b>n</b>)<b>n</b>], where <b>ρ</b> is Saturn’s position and <b>n</b> points to the planet (Holman &amp; Payne Eq. 7). Only <i>M</i>/<i>r</i>³ and the direction matter.</li>
+        <li><b>The model.</b> The notebook integrates Saturn’s displacement with the linearised Encke equation, projects the Earth–Saturn range onto it, and removes, by least squares, everything a change of Saturn’s initial position and velocity could mimic. Everything is linear, so six precomputed basis signatures give the result for any direction and strength. This page uses those six; its results match the notebook’s to better than 10⁻⁶ (<code>tools/validate_cassini/</code>).</li>
+        <li><b>The data.</b> Positions of Saturn and the Earth come from JPL Horizons. Holman &amp; Payne do not list their 190 or so measurement times, so the notebook reads their distribution off the paper’s Figure 1. Each residual is assumed uncertain by 31.95 m, Holman &amp; Payne’s value after rejecting outliers, and a planet counts as detected if it would raise χ² by 14.2, three standard deviations for three parameters, as in the paper.</li>
+        <li><b>Checks.</b> For the nominal orbit, the model’s signatures have the same shapes as the full ephemeris fits of Fienga et al. (2016), with amplitudes about a quarter smaller, and at large <i>M</i>/<i>r</i>³ they match the paper’s own model to about 20%.</li>
+      </ul>
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startCassini } from '../../scripts/cassini/app.js';
+    startCassini();
+  </script>
+</BaseLayout>
