@@ -61,7 +61,23 @@
       "title": "Exomoons and satellite stability",
       "summary": "Whether moons survive in closely packed planetary systems and around white dwarfs.",
       "bibcodes": ["2013ApJ...775L..44P", "2016MNRAS.457..217P", "2017MNRAS.464.2557P"],
-      "links": []
+      "links": [
+        {
+          "label": "Notebook: can moons survive in tightly packed planetary systems? (Payne, Deck, Holman & Perets 2013)",
+          "group": "Moons in tightly packed systems",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/moons_stips/moons_stips.ipynb"
+        },
+        {
+          "label": "Interactive: how do planets lose their moons around white dwarfs?",
+          "group": "Moons around white dwarfs",
+          "href": "/teaching/exomoons/"
+        },
+        {
+          "label": "Notebook: exomoons in white dwarf systems (Payne, Veras, Holman & Gänsicke 2016)",
+          "group": "Moons around white dwarfs",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/exomoons_wd/exomoons_wd.ipynb"
+        }
+      ]
     },
     {
       "id": "debris-disks",

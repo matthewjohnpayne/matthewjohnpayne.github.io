@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/exomoons_wd/exomoons_wd.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2016MNRAS.457..217P/abstract';
+const paper2 = 'https://ui.adsabs.harvard.edu/abs/2017MNRAS.464.2557P/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const cases = [['A', 'A: Jupiter, distant'], ['B', 'B: Jupiter, close'], ['C', 'C: Jupiter, close and slow'], ['X', 'X: Earth, distant'], ['Y', 'Y: Earth, close'], ['Z', 'Z: Earth, very close']];
+const references = [
+  ['Chambers, J. E. (1999), MNRAS 304, 793', '1999MNRAS.304..793C'],
+  ['Hurley, J. R., Pols, O. R. & Tout, C. A. (2000), MNRAS 315, 543', '2000MNRAS.315..543H'],
+  ['Payne, M. J., Veras, D., Holman, M. J. & Gänsicke, B. T. (2016), MNRAS 457, 217', '2016MNRAS.457..217P'],
+  ['Payne, M. J., Veras, D., Gänsicke, B. T. & Holman, M. J. (2017), MNRAS 464, 2557', '2017MNRAS.464.2557P'],
+  ['Rein, H. & Spiegel, D. S. (2015), MNRAS 446, 1424', '2015MNRAS.446.1424R'],
+  ['Veras, D. & Gänsicke, B. T. (2015), MNRAS 447, 1049', '2015MNRAS.447.1049V']
+];
+---
+<BaseLayout title="How do planets lose their moons around white dwarfs?" description="An interactive guide to how moons are freed from their planets around white dwarfs, after Payne, Veras, Holman & Gänsicke (2016), with encounters integrated in your browser.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · EXOMOONS AND WHITE DWARFS</p>
+      <h1>How do planets lose their moons around white dwarfs?</h1>
+      <p>Many white dwarfs are polluted with rocky material from their old planetary systems, and something must keep delivering it. In the Solar System, the moons outweigh the asteroid belt more than a hundredfold. This page follows <a href={paper} target="_blank" rel="noopener noreferrer">Payne, Veras, Holman &amp; Gänsicke (2016)</a> and <a href={paper2} target="_blank" rel="noopener noreferrer">Payne et al. (2017)</a>: why a dying star’s mass loss keeps moons safe, and how the planet–planet scattering that follows can set them free.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="em-massloss">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>Mass loss makes moons safer</h2><p>A star sheds half or more of its mass on its way to becoming a white dwarf. What happens to its planets’ moons?</p></div>
+      </div>
+      <div class="ro-map-controls iso-controls-row">
+        <fieldset class="ro-segmented">
+          <legend>The star started at</legend>
+          {[1, 2, 3, 5, 8].map((m) => <label><input type="radio" name="em-prog" value={m} checked={m === 1} /><span>{m} M☉</span></label>)}
+        </fieldset>
+        <fieldset class="ro-segmented">
+          <legend>Planet</legend>
+          <label><input type="radio" name="em-planet" value="jupiter" checked /><span>Jupiter</span></label>
+          <label><input type="radio" name="em-planet" value="earth" /><span>Earth</span></label>
+        </fieldset>
+      </div>
+      <div class="ro-control em-time"><label for="em-ml-t">Through the mass loss: <output id="em-ml-t-out" class="hl-value"></output></label>
+        <input id="em-ml-t" type="range" min="0" max="1" step="0.01" value="0" /></div>
+      <div class="em-pair">
+        <div class="ro-stage em-stage-sq"><canvas id="em-ml" role="img" aria-label="The planet's orbit widening as the star loses mass, with its Hill sphere"></canvas></div>
+        <div class="ro-stage em-stage-sq"><canvas id="em-ml-zoom" role="img" aria-label="Close-up of the planet: its moons, and half its Hill radius now and before mass loss"></canvas></div>
+      </div>
+      <p class="ro-progress em-read" id="em-ml-read" role="status"></p>
+      <div class="rf-explain hl-explain">
+        <p><b>Why the moons are safer.</b> A moon is held by its planet out to roughly half of the planet’s <i>Hill radius</i>, <i>r</i><sub>H</sub> = <i>a</i>(1 − <i>e</i>)(<i>M</i><sub>p</sub>/3<i>M</i><sub>★</sub>)<sup>1/3</sup>, where the star’s tide takes over. When the star loses mass slowly, the planet’s orbit widens in proportion (<i>a</i> ∝ 1/<i>M</i><sub>★</sub>), and the moon’s orbit, which depends only on the planet, does not change. So the Hill radius grows as <i>M</i><sub>★</sub><sup>−4/3</sup>, by a factor of 2 to 10 according to the paper’s stellar models, and the moons end up deep inside it. The notebook confirms this with a direct integration.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab ro-lab-map" id="em-encounter">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">2</p>
+        <div><h2>One close encounter</h2><p>Long after the star has died, the planets can become unstable and scatter off one another. What does one close pass do to the moons?</p></div>
+      </div>
+      <div class="tt-presets" role="group" aria-label="The paper’s six encounters (Table 1)">
+        <span class="tt-presets-label">The paper’s encounters:</span>
+        {cases.map(([k, l]) => <button type="button" class="ro-chip" data-case={k} aria-pressed={k === 'B' ? 'true' : 'false'}>{l}</button>)}
+      </div>
+      <details class="tt-more em-custom">
+        <summary>Or set up your own encounter</summary>
+        <label class="tt-mass">Both planets
+          <select id="em-c-mass"><option value="jupiter">Jupiter-mass</option><option value="earth">Earth-mass</option></select>
+        </label>
+        <div class="ro-control"><label for="em-c-q">Closest approach: <output id="em-c-q-out"></output></label><input id="em-c-q" type="range" min="-2.5" max="0.7" step="0.01" value="-0.3" /></div>
+        <div class="ro-control"><label for="em-c-v">Relative speed at closest approach: <output id="em-c-v-out"></output></label><input id="em-c-v" type="range" min="-4" max="-2.5" step="0.01" value="-3" /></div>
+      </details>
+      <p class="ro-hover em-read" id="em-enc-read" role="status"></p>
+      <div class="em-pair em-pair-wide">
+        <div class="ro-stage tt-stage-plot"><canvas id="em-map" role="img" aria-label="Moons' starting semi-major axis and eccentricity, coloured by whether they survived the encounter"></canvas></div>
+        <div class="ro-stage em-stage-sq"><canvas id="em-path" role="img" aria-label="The flyby planet's path relative to the parent planet, with the parent's Hill sphere"></canvas></div>
+      </div>
+      <div class="ro-stage em-stage-curve"><canvas id="em-curve" role="img" aria-label="Fraction of moons surviving against their distance from the planet, for each encounter"></canvas></div>
+      <div class="ro-compute em-run">
+        <label class="tt-mass">Moons
+          <select id="em-n"><option value="40">40</option><option value="100" selected>100</option><option value="250">250</option></select>
+        </label>
+        <button type="button" class="rf-button" id="em-run">Integrate in your browser</button>
+        <p class="ro-progress" id="em-enc-status" role="status">The notebook’s results load when you reach this section.</p>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>Reading the maps.</b> Each dot is a moon, placed by its orbit before the encounter: its distance from the planet, as a fraction of the Hill radius, and its eccentricity. The notebook followed 10,000 moons through each of the paper’s six encounters with the REBOUND integrator; 3,000 are shown. Distant encounters (A, X) barely matter. Closer ones (B, Y), which each scattering planet can expect at least once, strip moons from the outer Hill sphere, and the rarest (C, Z) clear most of it.</p>
+        <p><b>In your browser.</b> “Integrate” follows new moons between 0.003 and 0.5 Hill radii through the same encounter, with a Bulirsch–Stoer integrator like the one the paper used. Moons closer in take far longer to compute and are left out; in the notebook they all survive every encounter except Z, the closest, which removes 3.5% of them (mostly beyond 0.002 Hill radii).</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="em-pericentre">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">3</p>
+        <div><h2>A close pass by the white dwarf</h2><p>Scattering also throws planets onto eccentric orbits. Near the white dwarf, the Hill sphere shrinks.</p></div>
+      </div>
+      <div class="ro-control"><label for="em-peri-q">The planet’s pericentre: <output id="em-peri-q-out" class="hl-value"></output></label>
+        <input id="em-peri-q" type="range" min="-2" max="0" step="0.01" value="-1" /></div>
+      <div class="ro-stage em-stage-strip"><canvas id="em-peri" role="img" aria-label="The planet's moons placed by their orbit as a fraction of its Hill radius at pericentre"></canvas></div>
+      <p class="ro-progress em-read" id="em-peri-read" role="status"></p>
+      <div class="rf-explain hl-explain">
+        <p><b>The argument.</b> The Hill radius is proportional to the planet’s distance from the star, so at a pericentre a tenth of the orbit’s size it is ten times smaller. The paper argues that moons then orbiting beyond it are freed, onto orbits that pass as close to the white dwarf as the planet did. The planet and star choices from section 1 apply here.</p>
+        <p><b>But the pass is brief.</b> The notebook follows moons through one such pericentre passage and finds that they escape less readily than this suggests, because they do not have time to get away before the planet recedes. Every moon inside about 0.7 of the pericentre Hill radius survives; half survive at about 1.2 times it, and about a fifth even at 4 times it, however close the pericentre. The planet comes back every orbit, though, so the moons beyond about 0.7 of it are exposed again and again.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab ro-lab-map" id="em-fate">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">4</p>
+        <div><h2>Where the freed moons go</h2><p>Four Earth-mass planets around a white dwarf, each with a moon, scatter. How close to the white dwarf do the planets and moons come?</p></div>
+      </div>
+      <label class="tt-mass em-sys">System
+        <select id="em-sys">{Array.from({ length: 24 }, (_, k) => <option value={k}>{k + 1}</option>)}</select>
+      </label>
+      <div class="ro-stage tt-stage-plot"><canvas id="em-scatter" role="img" aria-label="Pericentre distances of the four planets and their freed moons against time"></canvas></div>
+      <p class="ro-hover" id="em-scatter-status" role="status"></p>
+      <div class="rf-explain hl-explain">
+        <p><b>Freed moons wander inwards.</b> Once free, a moon is a small body on an orbit that crosses the planets’, and is kicked around by them. <a href={paper2} target="_blank" rel="noopener noreferrer">Payne et al. (2017)</a> followed 119 such systems for 100 million years and found that the freed moons reach far smaller pericentres than the planets, often within 0.01 au, close to where a white dwarf’s tides tear bodies apart. The notebook’s 24 systems are a much smaller and shorter test, built to become unstable at once and followed for 20,000 years. Most moons are freed, and about one in eight comes closer to the white dwarf than any planet does (0.96 au, against 1.45 au), but none gets near 0.1 au: that takes the slow drift of the much longer published runs.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>Mass loss</b> (section 1) uses the paper’s formulae for slow, isotropic mass loss, and its Hill-radius growth factors from the SSE stellar-evolution code (<a href={ads('2000MNRAS.315..543H')} target="_blank" rel="noopener noreferrer">Hurley et al. 2000</a>); each factor implies the white dwarf’s mass. Moon distances are today’s.</li>
+        <li><b>Encounters</b> (section 2) follow the paper’s Table 1: a planet on a circular orbit at 30 au around a Sun-like star, a second planet of the same mass passing it, and test moons drawn as in the paper. The paper does not give the flyby’s direction; here it crosses the parent’s orbit. The maps are the notebook’s REBOUND (IAS15; <a href={ads('2015MNRAS.446.1424R')} target="_blank" rel="noopener noreferrer">Rein &amp; Spiegel 2015</a>) runs; the browser uses a Bulirsch–Stoer integrator.</li>
+        <li><b>Validation.</b> For 160 moons in four of the encounters, this page’s integrator and REBOUND agree on the fate of all 159 that the page can follow (<code>tools/validate_exomoons/</code>). The other, in encounter Z, is captured by the passing planet and passes so close to it, so often, that it needs more steps than the page allows; the page leaves such moons out and says so.</li>
+        <li><b>Limitations.</b> Each encounter is a single pass; real scattering brings many. Neither tides nor radiation are included. The scattering systems in section 4 are a short, small-scale test, not a reproduction of the 2017 paper’s statistics.</li>
+      </ul>
+
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startExomoons } from '../../scripts/exomoons/app.js';
+    startExomoons(import.meta.env.BASE_URL);
+  </script>
+</BaseLayout>

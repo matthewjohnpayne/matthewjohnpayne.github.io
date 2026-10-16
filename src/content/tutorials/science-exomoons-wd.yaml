@@ -1,0 +1,9 @@
+title: "How Planets Lose Their Moons around White Dwarfs"
+summary: Reproduces the experiments of Payne, Veras, Holman & Gänsicke (2016) with REBOUND — mass loss that entrenches moons, single planet-planet encounters that strip them, and close passes by the white dwarf — and tests the 2017 follow-up at small scale.
+topic: science
+url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/exomoons_wd/exomoons_wd.ipynb
+tools: [REBOUND, NumPy, Matplotlib]
+order: 5
+interactive: teaching/exomoons/
+area: moons
+papers: ["2016MNRAS.457..217P", "2017MNRAS.464.2557P"]
