@@ -1,0 +1,16 @@
+---
+import { mpcStats, SUMMARY_DOCS } from '../lib/mpcStats';
+interface Props { heading?: string; kicker?: string; moreLink?: string }
+const { heading = 'The Minor Planet Center at a glance', kicker = 'MINOR PLANET CENTER', moreLink } = Astro.props;
+const { asOf, items } = await mpcStats();
+---
+<section class="mpc-stats" aria-labelledby="mpc-stats-h">
+  <div class="section-heading">
+    <div><p class="section-kicker">{kicker}</p><h2 id="mpc-stats-h">{heading}</h2></div>
+    {moreLink && <a class="text-link" href={moreLink}>About the MPC <span aria-hidden="true">→</span></a>}
+  </div>
+  <dl class="mpc-stats-grid">
+    {items.map((it) => <div class="mpc-stat"><dt>{it.label}</dt><dd><span class="mpc-stat-value">{it.value.toLocaleString('en-US')}</span><span class="mpc-stat-note">{it.note}</span></dd></div>)}
+  </dl>
+  <p class="mpc-stats-source">As of {asOf}, from the <a href={SUMMARY_DOCS} target="_blank" rel="noopener noreferrer">MPC Summary API</a>; updated whenever this site is rebuilt.</p>
+</section>

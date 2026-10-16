@@ -1,0 +1,120 @@
+{
+  "cutoff_time": "2026-10-01T21:00:00+00:00",
+  "designated_objects": 1609195,
+  "designated_this_half_month": 0,
+  "designated_this_month": 0,
+  "designated_this_year": 14738,
+  "identifications": 490506,
+  "mpec_counts": {
+    "DOU": 10269,
+    "PHA": 162,
+    "TNO": 38,
+    "comet": 6574,
+    "critical": 125,
+    "distant": 189,
+    "editorial": 52,
+    "identification": 734,
+    "retraction": 15,
+    "single_object": 53683,
+    "total": 72806,
+    "unusual": 228
+  },
+  "named_comets": 4394,
+  "named_interstellar": 3,
+  "named_minor_planets": 26525,
+  "named_natural_satellites": 163,
+  "neocp_objects": 31,
+  "numbered_objects": 896611,
+  "object_type_counts": {
+    "Comet": {
+      "numbered": 507,
+      "unnumbered": 4075
+    },
+    "Comet Fragment": {
+      "numbered": 142,
+      "unnumbered": 85
+    },
+    "Dual Status (Minor Planet and Comet)": {
+      "numbered": 9,
+      "unnumbered": 0
+    },
+    "Interstellar": {
+      "numbered": 3,
+      "unnumbered": 0
+    },
+    "Minor Planet": {
+      "numbered": 895901,
+      "unnumbered": 708227
+    },
+    "Natural Satellite of Planet": {
+      "numbered": 182,
+      "unnumbered": 271
+    },
+    "Past Impactor": {
+      "numbered": 0,
+      "unnumbered": 11
+    }
+  },
+  "obs_deleted": 1655205,
+  "obs_duplicated": 2404254,
+  "obs_itf": 9117535,
+  "obs_published": 546317817,
+  "obscodes": 2729,
+  "orbit_type_counts": {
+    "Amor": {
+      "numbered": 1572,
+      "unnumbered": 13298
+    },
+    "Apollo": {
+      "numbered": 2001,
+      "unnumbered": 22229
+    },
+    "Aten": {
+      "numbered": 293,
+      "unnumbered": 3188
+    },
+    "Atira": {
+      "numbered": 9,
+      "unnumbered": 31
+    },
+    "Centaur": {
+      "numbered": 166,
+      "unnumbered": 355
+    },
+    "Hyperbolic": {
+      "numbered": 1,
+      "unnumbered": 1
+    },
+    "Jovian Trojan": {
+      "numbered": 10629,
+      "unnumbered": 5648
+    },
+    "Jupiter Coupled": {
+      "numbered": 1673,
+      "unnumbered": 3536
+    },
+    "Main Belt": {
+      "numbered": 862549,
+      "unnumbered": 593309
+    },
+    "Mars Crosser": {
+      "numbered": 9195,
+      "unnumbered": 21152
+    },
+    "Middle Other": {
+      "numbered": 6774,
+      "unnumbered": 5562
+    },
+    "Neptune Trojan": {
+      "numbered": 12,
+      "unnumbered": 42
+    },
+    "TNO": {
+      "numbered": 1037,
+      "unnumbered": 6170
+    }
+  },
+  "pccp_objects": 12,
+  "program_codes": 2310,
+  "updated_at": "2026-10-01T21:05:26.102738+00:00"
+}

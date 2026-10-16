@@ -4,6 +4,7 @@ import HomeOrbit from '../components/HomeOrbit.astro';
 import ScienceVisual from '../components/ScienceVisual.astro';
 import site from '../data/site.json';
 import features from '../data/features.json';
+import MpcStats from '../components/MpcStats.astro';
 const root = import.meta.env.BASE_URL;
 const link = (path: string) => path.startsWith('http') ? path : root + path.replace(/^\//,'');
 ---
@@ -52,6 +53,7 @@ const link = (path: string) => path.startsWith('http') ? path : root + path.repl
           <div class="discipline-number">03</div><div><h3>Minor Planet Center <span aria-hidden="true">↗</span></h3><p>Connecting observations to orbital knowledge for the astronomical community.</p></div>
         </a>
       </div>
+      <MpcStats moreLink={link('mpc/')} />
       <section class="about-band" aria-label="About Matthew Payne">
         <div>
           <p class="section-kicker">ABOUT</p>
