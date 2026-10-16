@@ -1,0 +1,38 @@
+[
+ {
+  "key": "ceres",
+  "label": "(1) Ceres",
+  "note": "Observed since its discovery in 1801.",
+  "created": "2026-09-22 06:40:05"
+ },
+ {
+  "key": "apophis",
+  "label": "(99942) Apophis",
+  "note": "Fitted with the Yarkovsky effect (the 7th parameter). The real orbit is reshaped by its close approach to Earth on 13 April 2029, which a two-body model ignores.",
+  "created": "2026-10-01 22:35:34"
+ },
+ {
+  "key": "2024yr4",
+  "label": "2024 YR4",
+  "note": "Briefly a possible 2032 Earth impactor; further observations in 2025 ruled that out.",
+  "created": "2026-10-09 06:53:26"
+ },
+ {
+  "key": "2008tc3",
+  "label": "2008 TC3",
+  "note": "Observed for less than a day before it hit Earth on 7 October 2008, less than three hours after this epoch; this page ignores Earth, so its clones carry on.",
+  "created": "2026-10-07 21:45:17"
+ },
+ {
+  "key": "12p",
+  "label": "12P/Pons\u2013Brooks",
+  "note": "A comet, fitted with non-gravitational accelerations from outgassing (A1 and A2), which the two-body model here leaves out.",
+  "created": "2026-10-09 18:10:09"
+ },
+ {
+  "key": "3i",
+  "label": "3I/ATLAS",
+  "note": "Interstellar, on a hyperbolic orbit (e > 1), so it has no Keplerian semi-major axis or period.",
+  "created": "2026-10-01 21:25:45"
+ }
+]

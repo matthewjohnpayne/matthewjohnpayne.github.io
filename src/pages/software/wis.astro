@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const repo = 'https://github.com/Smithsonian/mpc-public/tree/main/wis';
+const obscodesDocs = 'https://docs.minorplanetcenter.net/mpc-ops-docs/apis/obscodes/';
+const quick = [['X05', 'Rubin'], ['F51', 'Pan-STARRS 1'], ['703', 'Catalina'], ['309', 'Paranal'], ['250', 'Hubble'], ['274', 'JWST'], ['258', 'Gaia']];
+---
+<BaseLayout title="Where is the observatory?" description="An interactive guide to observatory positions and parallax, after the MPC's wis package: where any MPC observatory code is at any moment, and how much its position shifts the apparent position of an asteroid.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE · WIS</p>
+      <h1>Where is the observatory?</h1>
+      <p>Every observation sent to the Minor Planet Center names the observatory it was made from, by a three-character code. To use the observation, the MPC needs to know where that observatory was, to within metres, at the instant it was made: on the spinning Earth, or in space. The MPC’s <a href={repo} target="_blank" rel="noopener noreferrer"><code>wis</code></a> package (“Where Is Satellite/observatory”) does this. Here is why it matters.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="wis-lab">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>Choose an observatory and a moment</h2><p>Any of the 2,683 ground-based MPC observatory codes, or one of three telescopes in space.</p></div>
+      </div>
+      <div class="iso-controls-row wis-controls">
+        <div class="ro-control">
+          <label for="wis-code">Observatory code or name</label>
+          <input id="wis-code" class="wis-input" list="wis-codes" value="X05" autocomplete="off" spellcheck="false" />
+          <datalist id="wis-codes"></datalist>
+        </div>
+        <div class="ro-control">
+          <label for="wis-time">Date and time (UTC)</label>
+          <input id="wis-time" class="wis-input" type="datetime-local" step="60" value="2026-10-13T06:00" />
+        </div>
+        <div class="wis-quick" role="group" aria-label="Some observatories">
+          {quick.map(([c, n]) => <button type="button" class="ro-chip" data-code={c}>{c} {n}</button>)}
+        </div>
+      </div>
+      <p class="mo-error" id="wis-error" role="alert" hidden></p>
+      <div class="tt-layout">
+        <div class="mo-summary wis-where" id="wis-where" aria-live="polite"></div>
+        <div>
+          <div class="ro-stage wis-stage-map"><canvas id="wis-map" role="img" aria-label="The observatory's position around the Earth"></canvas></div>
+          <p class="mo-cap" id="wis-map-cap"></p>
+        </div>
+      </div>
+
+      <div class="ro-head ss-step2">
+        <p class="ro-step">2</p>
+        <div><h2>Parallax: the same asteroid, seen from two places</h2><p>An asteroid seen from the observatory is not in quite the same direction as seen from the centre of the Earth. The closer the asteroid, the bigger the difference.</p></div>
+      </div>
+      <div class="tt-layout">
+        <div class="tt-controls">
+          <div class="ro-control"><label for="wis-dist">Asteroid’s distance: <output id="wis-dist-out" class="hl-value"></output></label><input id="wis-dist" type="range" min="-3" max="1" step="0.01" value="-1.5" /></div>
+          <div class="ro-control"><label for="wis-ra">Its right ascension: <output id="wis-ra-out" class="hl-value"></output></label><input id="wis-ra" type="range" min="0" max="360" step="1" value="20" /></div>
+          <div class="ro-control"><label for="wis-dec">Its declination: <output id="wis-dec-out" class="hl-value"></output></label><input id="wis-dec" type="range" min="-89" max="89" step="1" value="5" /></div>
+          <button type="button" class="ro-chip" id="wis-opp">Point it opposite the Sun</button>
+        </div>
+        <div>
+          <div class="ro-stage wis-stage-track"><canvas id="wis-track" role="img" aria-label="The apparent shift of the asteroid on the sky, compared with its geocentric position"></canvas></div>
+          <p class="ro-progress em-read" id="wis-par-read" role="status"></p>
+        </div>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>What to try.</b> For a ground-based observatory, the curve is the asteroid’s apparent wobble over a day as the Earth turns: up to 6,400 km of baseline, about 9″ for an asteroid at 1 au and 90″ for one at a tenth of that. Now pick JWST, 1.5 million km away: the same asteroid can appear degrees from where it would be seen from the Earth. An observatory position wrong by a single kilometre shifts an asteroid passing at 0.01 au by 0.14″, comparable to the accuracy of good modern measurements, so wis computes each position from the best available models of the Earth’s rotation and from the spacecraft’s own tracking data.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>Ground-based observatories</b> are placed from the longitude and the parallax constants <i>ρ</i> cos <i>φ′</i> and <i>ρ</i> sin <i>φ′</i> in the MPC’s <a href={obscodesDocs} target="_blank" rel="noopener noreferrer">observatory codes</a>, as in wis. wis turns these into the equatorial J2000 frame with NASA/JPL’s SPICE toolkit and measured Earth orientation; this page uses the Earth rotation angle, IAU 1976 precession and the largest terms of IAU 1980 nutation. It agrees with wis to within about 200 m from 2000 to 2026, mostly because it leaves out the measured difference between the Earth’s rotation and atomic time (UT1 − UTC), and also polar motion (<code>tools/validate_wis/</code>).</li>
+        <li><b>JWST, Gaia and Hubble</b> are positions from wis itself, from the spacecraft kernels that it downloads (<code>tools/export_wis_data.py</code>): daily for JWST since launch, including predictions after today; daily for Gaia from launch to the end of its science observations on 15 January 2025; and every minute for Hubble over two days, 12–13 October 2026. Interpolated between samples, they agree with wis to within 500 m.</li>
+        <li><b>The parallax</b> is pure geometry: the direction from the observatory to a point at the asteroid’s distance, compared with the direction from the Earth’s centre, ignoring light-travel time and aberration (which affect both views almost equally). The direction “opposite the Sun” uses a low-precision formula for the Sun’s position, good to about 0.01°.</li>
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={repo} target="_blank" rel="noopener noreferrer">wis on GitHub ↗</a>
+        <a class="text-link" href="https://pypi.org/project/wis/" target="_blank" rel="noopener noreferrer">PyPI ↗</a>
+        <a class="text-link" href={`${root}software/`}>All software →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startWis } from '../../scripts/wis/app.js';
+    startWis();
+  </script>
+</BaseLayout>

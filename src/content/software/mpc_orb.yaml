@@ -10,3 +10,4 @@ links:
   - label: "PyPI: pip install mpc_orb"
     href: https://pypi.org/project/mpc_orb/
 aliases: [mpc-orb]
+interactive: software/mpc-orb/

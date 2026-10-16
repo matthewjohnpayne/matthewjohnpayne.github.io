@@ -7,3 +7,4 @@ order: 3
 links:
   - label: "PyPI: pip install wis"
     href: https://pypi.org/project/wis/
+interactive: software/wis/

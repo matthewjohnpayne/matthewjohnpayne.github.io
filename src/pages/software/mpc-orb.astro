@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const repo = 'https://github.com/Smithsonian/mpc-public/tree/main/mpc_orb';
+const docs = 'https://docs.minorplanetcenter.net/mpc-ops-docs/orbits/mpc-orb-json/';
+const api = 'https://docs.minorplanetcenter.net/mpc-ops-docs/apis/get-orb/';
+---
+<BaseLayout title="What’s in an orbit file?" description="An interactive guide to mpc_orb.json, the Minor Planet Center's orbit format: element sets, covariance, and how orbit uncertainty becomes position uncertainty, for real MPC orbits or a file of your own.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE · MPC_ORB</p>
+      <h1>What’s in an orbit file?</h1>
+      <p>The Minor Planet Center publishes the best-fit orbit of every asteroid and comet as an <a href={docs} target="_blank" rel="noopener noreferrer"><code>mpc_orb.json</code></a> file: the orbit written three ways, its uncertainty, and how the fit was made. Pick an object, or load a file of your own, and see what the numbers mean.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="mo-lab">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>Choose an orbit</h2><p>Six real MPC orbits, or any <code>mpc_orb.json</code> file. Your file is read in your browser and never uploaded.</p></div>
+      </div>
+      <div class="mo-pick">
+        <fieldset class="mo-samples" id="mo-samples"><legend>MPC orbit</legend></fieldset>
+        <div class="mo-own">
+          <label class="rf-button mo-file-label" for="mo-file">Load your own file…</label>
+          <input type="file" id="mo-file" accept=".json,application/json" class="mo-file" />
+          <details class="mo-paste"><summary>…or paste JSON</summary>
+            <label for="mo-text" class="mo-paste-label">Paste an mpc_orb object, or a whole response from the MPC’s get-orb API</label>
+            <textarea id="mo-text" rows="5" spellcheck="false"></textarea>
+            <button type="button" class="rf-button" id="mo-text-go">Read it</button>
+          </details>
+        </div>
+      </div>
+      <p class="mo-error" id="mo-error" role="alert" hidden></p>
+      <div class="mo-summary" id="mo-summary" aria-live="polite"></div>
+
+      <div class="ro-head ss-step2">
+        <p class="ro-step">2</p>
+        <div><h2>One orbit, three ways</h2><p>The fitted orbit is a position and velocity at one moment, the <i>epoch</i>. The file also gives it as cometary elements (perihelion distance <i>q</i> and time of perihelion) and Keplerian elements (semi-major axis <i>a</i> and mean anomaly). All three describe the same ellipse, or hyperbola.</p></div>
+      </div>
+      <div class="mo-tables" id="mo-tables"></div>
+      <p class="ro-progress em-read" id="mo-check"></p>
+
+      <div class="ro-head ss-step2">
+        <p class="ro-step">3</p>
+        <div><h2>The uncertainty is a matrix, not a list</h2><p>Each element has an uncertainty, but the errors are correlated: a fit can trade one parameter off against another. The covariance matrix records this. Here it is as correlations, from −1 to +1.</p></div>
+      </div>
+      <div class="iso-controls-row">
+        <fieldset class="ro-segmented" id="mo-rep">
+          <legend>Element set</legend>
+          {['CAR', 'COM', 'KEP'].map((r, i) => <label><input type="radio" name="mo-rep" value={r} checked={i === 0} /><span>{r}</span></label>)}
+        </fieldset>
+      </div>
+      <div class="tt-layout mo-corr-layout">
+        <div class="ro-stage mo-stage-corr"><canvas id="mo-corr" role="img" aria-label="Correlation matrix of the orbit's parameters"></canvas></div>
+        <div class="rf-explain hl-explain"><p id="mo-corr-read"></p></div>
+      </div>
+
+      <div class="ro-head ss-step2">
+        <p class="ro-step">4</p>
+        <div><h2>From an uncertain orbit to an uncertain position</h2><p>Draw 500 orbits at random from the covariance, the “clones”, and move them all forward or back in time. Their spread is where the object might be.</p></div>
+      </div>
+      <div class="ro-compute em-run">
+        <div class="ro-control em-time"><label for="mo-t">Time from the epoch: <output id="mo-t-out" class="hl-value"></output></label><input id="mo-t" type="range" min="-20" max="20" step="0.05" value="1" /></div>
+      </div>
+      <div class="mo-cloud-grid">
+        <div><div class="ro-stage mo-stage-sq"><canvas id="mo-orbit" role="img" aria-label="The orbit seen from above the ecliptic, with the Sun, Earth's orbit and the object's position"></canvas></div><p class="mo-cap">The orbit from above the ecliptic (Earth’s orbit dashed).</p></div>
+        <div><div class="ro-stage mo-stage-sq"><canvas id="mo-cloud" role="img" aria-label="The clones around the nominal position, along-track against radial"></canvas></div><p class="mo-cap">The clones around the best-fit position: along the orbit (across) and towards the Sun (up).</p></div>
+      </div>
+      <p class="ro-progress em-read" id="mo-cloud-read" role="status"></p>
+      <div class="ro-stage mo-stage-growth"><canvas id="mo-growth" role="img" aria-label="Spread of the clones along the orbit, radially and across it, against time from the epoch"></canvas></div>
+      <p class="mo-cap">The spread of the clones against time, from 200 of them, 20 years either side of the epoch.</p>
+      <div class="rf-explain hl-explain">
+        <p><b>What to try.</b> Compare Ceres, observed for two centuries, with 2008 TC3, observed for less than a day. For almost every object the cloud stretches <i>along</i> the orbit: a small error in the orbital period adds up, orbit after orbit, so the spread grows steadily with time, while the radial spread only oscillates. That is why an object that is not observed for a few years can be “lost”.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>The samples</b> are the MPC’s current orbits, from its <a href={api} target="_blank" rel="noopener noreferrer">get-orb API</a> (<code>tools/export_mpcorb_samples.py</code>); each passes the <code>mpc_orb</code> package’s schema validation. To get your own, send the API a designation, e.g. <code>{'{"desig": "Bennu"}'}</code>, and load the response here.</li>
+        <li><b>The conversions</b> treat the Cartesian state as heliocentric and ecliptic, with the Sun’s <i>GM</i> = <i>k</i>², <i>k</i> being the Gaussian gravitational constant. They reproduce the file’s cometary and Keplerian elements to about one part in 10⁸ for all six samples.</li>
+        <li><b>The clones</b> are drawn from the six-by-six position-and-velocity block of the Cartesian covariance; any non-gravitational parameters are left out. Converted to cometary elements, 4,000 clones reproduce the file’s uncertainties in <i>q</i>, <i>e</i> and <i>i</i> to within 3%, which is the statistical noise of 4,000 draws.</li>
+        <li><b>The motion is two-body</b>: the Sun alone, with no planets and no non-gravitational forces. It agrees with REBOUND to under a metre over 50 years (<code>tools/validate_mpcorb/</code>), but it is not an ephemeris. Real orbits are perturbed by the planets, and close approaches to them, like Apophis’s in 2029, stretch the uncertainty far more than shown here. The MPC propagates its orbits with the full force model named in each file.</li>
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={repo} target="_blank" rel="noopener noreferrer">mpc_orb on GitHub ↗</a>
+        <a class="text-link" href={docs} target="_blank" rel="noopener noreferrer">Format documentation ↗</a>
+        <a class="text-link" href={`${root}software/`}>All software →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startMpcOrb } from '../../scripts/mpcorb/app.js';
+    startMpcOrb();
+  </script>
+</BaseLayout>
