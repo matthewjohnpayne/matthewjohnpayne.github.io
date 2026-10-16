@@ -19,34 +19,41 @@ const quick = [['X05', 'Rubin'], ['F51', 'Pan-STARRS 1'], ['703', 'Catalina'], [
     <div class="content-width">
       <div class="ro-head">
         <p class="ro-step">1</p>
-        <div><h2>Choose an observatory and a moment</h2><p>Any of the 2,683 ground-based MPC observatory codes, or one of three telescopes in space.</p></div>
+        <div><h2>Choose observatories and a moment</h2><p>Any of the 2,683 ground-based MPC observatory codes, or one of three telescopes in space. Add up to six to compare them.</p></div>
       </div>
       <div class="iso-controls-row wis-controls">
         <div class="ro-control">
-          <label for="wis-code">Observatory code or name</label>
-          <input id="wis-code" class="wis-input" list="wis-codes" value="X05" autocomplete="off" spellcheck="false" />
+          <label for="wis-code">Add an observatory (code or name)</label>
+          <div class="wis-add">
+            <input id="wis-code" class="wis-input" list="wis-codes" value="" placeholder="e.g. X05, 568 or Mauna Kea" autocomplete="off" spellcheck="false" />
+            <button type="button" class="rf-button" id="wis-add">Add</button>
+          </div>
           <datalist id="wis-codes"></datalist>
         </div>
         <div class="ro-control">
           <label for="wis-time">Date and time (UTC)</label>
           <input id="wis-time" class="wis-input" type="datetime-local" step="60" value="2026-10-13T06:00" />
         </div>
-        <div class="wis-quick" role="group" aria-label="Some observatories">
-          {quick.map(([c, n]) => <button type="button" class="ro-chip" data-code={c}>{c} {n}</button>)}
+        <div class="wis-quick" role="group" aria-label="Some observatories: select to add or remove">
+          {quick.map(([c, n]) => <button type="button" class="ro-chip" data-code={c} aria-pressed="false">{c} {n}</button>)}
         </div>
+      </div>
+      <div class="wis-selected-row">
+        <span class="wis-selected-label" id="wis-selected-label">Showing:</span>
+        <ul class="wis-selected" id="wis-selected" aria-labelledby="wis-selected-label"></ul>
       </div>
       <p class="mo-error" id="wis-error" role="alert" hidden></p>
       <div class="tt-layout">
         <div class="mo-summary wis-where" id="wis-where" aria-live="polite"></div>
         <div>
-          <div class="ro-stage wis-stage-map"><canvas id="wis-map" role="img" aria-label="The observatory's position around the Earth"></canvas></div>
+          <div class="ro-stage wis-stage-map"><canvas id="wis-map" role="img" aria-label="The observatories' positions around the Earth"></canvas></div>
           <p class="mo-cap" id="wis-map-cap"></p>
         </div>
       </div>
 
       <div class="ro-head ss-step2">
         <p class="ro-step">2</p>
-        <div><h2>Parallax: the same asteroid, seen from two places</h2><p>An asteroid seen from the observatory is not in quite the same direction as seen from the centre of the Earth. The closer the asteroid, the bigger the difference.</p></div>
+        <div><h2>Parallax: the same asteroid, seen from different places</h2><p>An asteroid seen from an observatory is not in quite the same direction as seen from the centre of the Earth. The closer the asteroid, the bigger the difference, and each observatory sees a different shift.</p></div>
       </div>
       <div class="tt-layout">
         <div class="tt-controls">
@@ -56,12 +63,12 @@ const quick = [['X05', 'Rubin'], ['F51', 'Pan-STARRS 1'], ['703', 'Catalina'], [
           <button type="button" class="ro-chip" id="wis-opp">Point it opposite the Sun</button>
         </div>
         <div>
-          <div class="ro-stage wis-stage-track"><canvas id="wis-track" role="img" aria-label="The apparent shift of the asteroid on the sky, compared with its geocentric position"></canvas></div>
+          <div class="ro-stage wis-stage-track"><canvas id="wis-track" role="img" aria-label="The apparent shift of the asteroid on the sky from each observatory, compared with its geocentric position"></canvas></div>
           <p class="ro-progress em-read" id="wis-par-read" role="status"></p>
         </div>
       </div>
       <div class="rf-explain hl-explain">
-        <p><b>What to try.</b> For a ground-based observatory, the curve is the asteroid’s apparent wobble over a day as the Earth turns: up to 6,400 km of baseline, about 9″ for an asteroid at 1 au and 90″ for one at a tenth of that. Now pick JWST, 1.5 million km away: the same asteroid can appear degrees from where it would be seen from the Earth. An observatory position wrong by a single kilometre shifts an asteroid passing at 0.01 au by 0.14″, comparable to the accuracy of good modern measurements, so wis computes each position from the best available models of the Earth’s rotation and from the spacecraft’s own tracking data.</p>
+        <p><b>What to try.</b> Add two observatories far apart on the Earth (Rubin in Chile and Pan-STARRS in Hawaii, say): their curves are offset from each other, and that offset is what lets observers in different places triangulate a nearby asteroid’s distance. For a ground-based observatory, the curve is the asteroid’s apparent wobble over a day as the Earth turns: up to 6,400 km of baseline, about 9″ for an asteroid at 1 au and 90″ for one at a tenth of that. Now pick JWST, 1.5 million km away: the same asteroid can appear degrees from where it would be seen from the Earth. An observatory position wrong by a single kilometre shifts an asteroid passing at 0.01 au by 0.14″, comparable to the accuracy of good modern measurements, so wis computes each position from the best available models of the Earth’s rotation and from the spacecraft’s own tracking data.</p>
       </div>
     </div>
   </section>
