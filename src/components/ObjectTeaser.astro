@@ -1,0 +1,18 @@
+---
+// A link to the current Object of the Month, for the homepage and the MPC page.
+import { objectsByMonth, monthLabel } from '../lib/objects';
+const [current] = await objectsByMonth();
+const root = import.meta.env.BASE_URL;
+---
+{current && <a class="obj-teaser" href={`${root}objects/${current.id}/`}>
+  <p class="section-kicker">OBJECT OF THE MONTH · {monthLabel(current.data.month).toUpperCase()}</p>
+  <h3>{current.data.name}</h3>
+  <p>{current.data.summary}</p>
+  <span class="small-link">Read about it <span aria-hidden="true">→</span></span>
+</a>}
+<style>
+  .obj-teaser { display: block; background: #fff; border: 1px solid var(--line); border-radius: 7px; padding: 22px 24px; color: inherit; text-decoration: none; }
+  .obj-teaser:hover, .obj-teaser:focus-visible { border-color: var(--teal); }
+  .obj-teaser h3 { margin: 4px 0 8px; font-size: 19px; color: var(--ink); }
+  .obj-teaser p:not(.section-kicker) { margin: 0 0 10px; font-size: 14px; line-height: 1.6; color: var(--body); }
+</style>

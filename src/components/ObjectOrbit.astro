@@ -1,0 +1,98 @@
+---
+// Orbit figures and element table for one Object of the Month (see src/lib/objectOrbit.ts).
+import { orbitFigures, mjdToDate, type ObjectData } from '../lib/objectOrbit';
+interface Props { data: ObjectData; name: string; view: 'heliocentric' | 'earth-corotating' }
+const { data, name, view } = Astro.props;
+const root = import.meta.env.BASE_URL;
+const fig = orbitFigures(data);
+const short = data.names.name || data.names.unpacked_primary_provisional_designation;
+const epoch = fig.epoch.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const path = (pts: number[][], X: (v: number) => number, Y: (v: number) => number) =>
+  'M' + pts.map(([x, y]) => `${X(x).toFixed(1)},${Y(y).toFixed(1)}`).join('L');
+
+// Heliocentric view, looking down on the ecliptic (x towards the vernal equinox).
+const H = { size: 320, c: 160, s: 160 / 1.25 };
+const hx = (v: number) => H.c + v * H.s, hy = (v: number) => H.c - v * H.s;
+const helio = { earth: path(fig.helio.earth, hx, hy), object: path(fig.helio.object, hx, hy),
+  e0: fig.helio.earth[0], o0: fig.helio.object[0] };
+
+// Frame turning with the Earth: the Sun is off to the left (towards -x), Earth's motion is up.
+const corot = view === 'earth-corotating' ? (() => {
+  let m = 0;
+  for (const [x, y] of fig.corot) m = Math.max(m, Math.abs(x), Math.abs(y));
+  const half = Math.ceil(m * 10) / 10;                 // au, rounded up to 0.1
+  const s = 150 / half, c = 160;
+  const X = (v: number) => c + v * s, Y = (v: number) => c - v * s;
+  return { d: path(fig.corot, X, Y), p0: [X(fig.corot[0][0]), Y(fig.corot[0][1])], hill: fig.hill * s, bar: 0.1 * s, c, half };
+})() : null;
+
+const deg = (v: number) => `${v.toFixed(4)}°`;
+const sig = (v: number) => v.toPrecision(2);
+const rows: [string, string, string][] = [
+  ['Semi-major axis, a', `${data.kep.a.toFixed(6)} au`, `${sig(data.kepSigma.a)} au`],
+  ['Eccentricity, e', data.kep.e.toFixed(6), sig(data.kepSigma.e)],
+  ['Inclination to the ecliptic, i', deg(data.kep.i), `${sig(data.kepSigma.i)}°`],
+  ['Longitude of ascending node, Ω', deg(data.kep.node), `${sig(data.kepSigma.node)}°`],
+  ['Argument of perihelion, ω', deg(data.kep.argperi), `${sig(data.kepSigma.argperi)}°`],
+  ['Mean anomaly at epoch, M', deg(data.kep.mean_anomaly), `${sig(data.kepSigma.mean_anomaly)}°`],
+  ['Perihelion distance, q', `${data.com.q.toFixed(6)} au`, `${sig(data.comSigma.q)} au`],
+  ['Aphelion distance, Q', `${(data.kep.a * (1 + data.kep.e)).toFixed(6)} au`, ''],
+  ['Orbital period', `${data.periodDays.toFixed(2)} days`, ''],
+  ['Absolute magnitude, H', data.H.toFixed(2), ''],
+];
+---
+<div class="obj-figures">
+  <figure class="obj-figure">
+    <svg viewBox={`0 0 ${H.size} ${H.size}`} role="img" aria-labelledby="obj-helio-cap">
+      <path d={helio.earth} fill="none" stroke="#9fb4bb" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <path d={helio.object} fill="none" stroke="#11949b" stroke-width="1.6"/>
+      <circle cx={H.c} cy={H.c} r="6" fill="#e9a160"/>
+      <text x={H.c} y={H.c + 20} text-anchor="middle" class="obj-label">Sun</text>
+      <circle cx={hx(helio.e0[0])} cy={hy(helio.e0[1])} r="4.5" fill="#1b3040"/>
+      <circle cx={hx(helio.o0[0])} cy={hy(helio.o0[1])} r="4" fill="#11949b"/>
+      <line x1="16" y1={H.size - 16} x2={16 + 0.5 * H.s} y2={H.size - 16} stroke="#435866" stroke-width="1.2"/>
+      <text x="16" y={H.size - 22} class="obj-label">0.5 au</text>
+    </svg>
+    <figcaption id="obj-helio-cap"><b>Around the Sun.</b> One year of {short}’s orbit (teal) and the Earth’s (dashed), seen from above the plane of Earth’s orbit, starting on {epoch} (dots). The two orbits almost coincide.</figcaption>
+  </figure>
+  {corot && <figure class="obj-figure">
+    <svg viewBox="0 0 320 320" role="img" aria-labelledby="obj-corot-cap">
+      <line x1={corot.c} y1="10" x2={corot.c} y2="310" stroke="#e4ecee" stroke-width="1"/>
+      <line x1="10" y1={corot.c} x2="310" y2={corot.c} stroke="#e4ecee" stroke-width="1"/>
+      <circle cx={corot.c} cy={corot.c} r={corot.hill} fill="none" stroke="#e9a160" stroke-width="1" stroke-dasharray="2 2"/>
+      <path d={corot.d} fill="none" stroke="#11949b" stroke-width="1.6"/>
+      <circle cx={corot.p0[0]} cy={corot.p0[1]} r="4" fill="#11949b"/>
+      <circle cx={corot.c} cy={corot.c} r="2.5" fill="#1b3040"/>
+      <text x={corot.c + 8} y={corot.c - 8} class="obj-label">Earth</text>
+      <text x="14" y={corot.c - 6} class="obj-label">← to the Sun</text>
+      <text x={corot.c + 6} y="22" class="obj-label">↑ Earth’s motion</text>
+      <line x1={310 - corot.bar} y1="304" x2="310" y2="304" stroke="#435866" stroke-width="1.2"/>
+      <text x="310" y="298" text-anchor="end" class="obj-label">0.1 au</text>
+    </svg>
+    <figcaption id="obj-corot-cap"><b>Seen from the turning Earth.</b> The same year in a frame that turns with the Earth, keeping the Sun to the left. {short} loops around the Earth once a year, between {fig.rMin.toFixed(2)} and {fig.rMax.toFixed(2)} au away. The small dashed circle is the Earth’s Hill sphere ({fig.hill.toFixed(3)} au), the region inside which the Earth’s gravity could hold a satellite.</figcaption>
+  </figure>}
+</div>
+<p class="obj-method">Computed when this site was built: the MPC’s best-fit orbit, integrated for one year with the Sun, planets and Moon (Newtonian point masses; the integrator of the <a href={`${root}teaching/reference-frames/`}>reference-frames page</a>). An illustration, not an ephemeris.</p>
+
+<div class="obj-table-wrap">
+  <table class="obj-table">
+    <caption>Orbit of {name}: osculating heliocentric ecliptic elements at epoch {epoch} (MJD {data.epochMJD_TT} TT), with 1σ uncertainties</caption>
+    <thead><tr><th scope="col">Quantity</th><th scope="col">Value</th><th scope="col">Uncertainty (1σ)</th></tr></thead>
+    <tbody>{rows.map(([q, v, u]) => <tr><th scope="row">{q}</th><td>{v}</td><td>{u}</td></tr>)}</tbody>
+  </table>
+  <p class="obj-method">From the <a href="https://data.minorplanetcenter.net/api/get-orb" target="_blank" rel="noopener noreferrer">MPC Orbits API</a>, retrieved {data.fetched}: orbit type {data.orbitType}; {data.nobs} observations over {data.arc} at {data.nopp} oppositions; fitted {data.fitDate.slice(0, 10)}.</p>
+</div>
+
+<style>
+  .obj-figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 22px; margin: 26px 0 8px; }
+  .obj-figure { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 7px; padding: 14px; }
+  .obj-figure svg { display: block; width: 100%; height: auto; max-width: 420px; margin: 0 auto; }
+  .obj-label { font-size: 11px; fill: #435866; font-family: inherit; }
+  .obj-method { font-size: 13px !important; line-height: 1.6 !important; color: var(--muted) !important; }
+  .obj-table-wrap { overflow-x: auto; margin-top: 22px; }
+  .obj-table { width: 100%; min-width: 0; border-collapse: collapse; background: #fff; border: 1px solid var(--line); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .obj-table caption { text-align: left; font-size: 13px; color: var(--body); padding-bottom: 8px; caption-side: top; }
+  .obj-table th, .obj-table td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+  .obj-table thead th { font-size: 12px; color: var(--muted); font-weight: 640; }
+  .obj-table tbody th { font-weight: 500; color: var(--ink); }
+</style>

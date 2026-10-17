@@ -175,4 +175,23 @@ const notes = defineCollection({
   })
 });
 
-export const collections = { tutorials, courses, software, publications, people, talks, faq, ideas, notes };
+// Object of the Month: one Markdown file per object, the essay as the body (see _TEMPLATE.md).
+// Every factual claim must be supported by an entry in `sources`. The orbit comes from the
+// MPC Orbits API via tools/export_object_orbits.py (src/data/objects/<file name>.json).
+const objects = defineCollection({
+  loader: glob({ pattern: '[^_]*.md', base: './src/content/objects' }),
+  schema: z.object({
+    name: z.string(),                     // as the MPC writes it, e.g. "(469219) Kamoʻoalewa"
+    designation: z.string(),              // passed to the MPC Orbits API
+    month: z.string().regex(/^\d{4}-\d{2}$/),   // the month it is featured, YYYY-MM
+    summary: z.string(),                  // one or two sentences for teasers
+    // Extra view of the orbit: 'earth-corotating' adds the path seen from a frame turning with the Earth.
+    view: z.enum(['heliocentric', 'earth-corotating']).default('heliocentric'),
+    related: z.array(z.object({ label: z.string(), href: z.string() })).default([]),
+    papers: z.array(z.string()).default([]),   // bibcodes of Matthew's papers about the object
+    sources: z.array(z.object({ label: z.string(), url: z.url() })).min(1),
+    reviewed: z.boolean().default(false)  // set to true once Matthew has approved the text
+  })
+});
+
+export const collections = { tutorials, courses, software, publications, people, talks, faq, ideas, notes, objects };
