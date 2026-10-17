@@ -9,13 +9,15 @@ magnitude and the fit statistics. The page integrates the state at build time wi
 reference-frames integrator, so the orbit's epoch must match src/data/frames-ic.json
 (re-run tools/fetch_frames_ic.py at the new epoch if the MPC moves to a new one).
 
-Usage:  python3 tools/export_object_orbits.py   (standard library only)
+Usage:  python3 tools/export_object_orbits.py [record name ...]   (standard library only)
+        With names, only those records are fetched; an object keeps the orbit it was featured with.
 Writes: src/data/objects/<record name>.json
 """
 import datetime
 import json
 import pathlib
 import re
+import sys
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -32,7 +34,8 @@ def get_orb(desig):
 
 
 def summarise(mo, desig):
-    kep, com, car = mo["KEP"], mo["COM"], mo["CAR"]
+    com, car = mo["COM"], mo["CAR"]
+    kep = mo.get("KEP") or {"coefficient_names": [], "coefficient_values": [], "coefficient_uncertainties": []}
     named = lambda block: dict(zip(block["coefficient_names"], block["coefficient_values"]))
     sigma = lambda block: dict(zip(block["coefficient_names"], block["coefficient_uncertainties"]))
     fit = mo["orbit_fit_statistics"]
@@ -47,7 +50,7 @@ def summarise(mo, desig):
         "com": named(com), "comSigma": sigma(com),
         "state": car["coefficient_values"],   # heliocentric ecliptic (ICRF), au and au/day
         "H": mo["magnitude_data"]["H"], "G": mo["magnitude_data"]["G"],
-        "periodDays": fit["period"],
+        "periodDays": fit.get("period"),
         "arc": fit["arc_length_total"], "nobs": fit["nobs_total"], "nopp": fit["nopp"],
         "rms": fit["normalized_RMS"],
         "fitDate": mo["software_data"]["fitting_datetime"],
@@ -57,14 +60,17 @@ def summarise(mo, desig):
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
+    want = set(sys.argv[1:])
     for path in sorted(RECORDS.glob("[!_]*.md")):
+        if want and path.stem not in want:
+            continue
         m = re.search(r'^designation:\s*"?([^"\n]+)"?\s*$', path.read_text(encoding="utf-8"), re.M)
         if not m:
             raise SystemExit(f"{path.name}: no designation in the front matter")
         desig = m.group(1).strip()
         data = summarise(get_orb(desig), desig)
         (OUT / f"{path.stem}.json").write_text(json.dumps(data, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-        print(f"{path.stem}: {data['names']['citation']}, epoch MJD {data['epochMJD_TT']}, a = {data['kep']['a']:.6f} au")
+        print(f"{path.stem}: {desig}, epoch MJD {data['epochMJD_TT']}, q = {data['com']['q']:.6f} au, e = {data['com']['e']:.6f}")
 
 
 if __name__ == "__main__":

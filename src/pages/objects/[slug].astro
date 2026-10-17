@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ObjectOrbit from '../../components/ObjectOrbit.astro';
+import ObjectFigures from '../../components/ObjectFigures.astro';
 import { render } from 'astro:content';
-import { objectsByMonth, objectStatus, orbitData, monthLabel } from '../../lib/objects';
+import { objectsByMonth, objectStatus, orbitData, figureData, monthLabel } from '../../lib/objects';
 
 export async function getStaticPaths() {
   return (await objectsByMonth()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
@@ -28,7 +29,9 @@ const external = (h: string) => h.startsWith('http');
       {status !== 'live' && <p class="obj-status" role="note"><strong>{status === 'draft' ? 'Draft.' : 'Queued.'}</strong> {status === 'draft' ? 'Not yet reviewed, so it is not on the live site.' : `Reviewed; it appears on the live site on 1 ${monthLabel(o.month)}.`}</p>}
       <Content />
       <h2>The orbit</h2>
-      <ObjectOrbit data={orbitData(entry.id)} name={o.name} view={o.view} />
+      {o.view === 'heliocentric' || o.view === 'earth-corotating'
+        ? <ObjectOrbit data={orbitData(entry.id)} name={o.name} view={o.view} />
+        : <ObjectFigures data={orbitData(entry.id)} fig={figureData(entry.id)} name={o.name} view={o.view} />}
       {o.related.length > 0 && <>
         <h2>Explore further</h2>
         <ul>{o.related.map((r) => <li><a href={href(r.href)} target={external(r.href) ? '_blank' : undefined} rel={external(r.href) ? 'noopener noreferrer' : undefined}>{r.label}</a></li>)}</ul>

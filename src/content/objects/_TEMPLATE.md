@@ -1,11 +1,13 @@
 ---
 # Copy to <name>.md (lower case, no spaces); files starting with "_" are ignored.
-# Then run: python3 tools/export_object_orbits.py   (writes src/data/objects/<name>.json)
+# Then run: python3 tools/export_object_orbits.py <name>   (writes src/data/objects/<name>.json)
 name: "(NNNNNN) Name"            # as the MPC writes it
 designation: "NNNNNN"            # passed to the MPC Orbits API
 month: "YYYY-MM"                 # the month it is featured
 summary: "One or two sentences for the teasers."
-view: heliocentric               # or earth-corotating, for Earth co-orbitals
+view: heliocentric               # or earth-corotating, for Earth co-orbitals; or, with figures computed once by
+                                 # tools/export_object_figures.py <name>: outer-resonance (add resonance: [p, q]),
+                                 # hyperbolic (interstellar objects) or earth-capture (minimoons)
 related:                         # pages, notebooks and tutorials on this site or elsewhere
   - label: ""
     href: ""
