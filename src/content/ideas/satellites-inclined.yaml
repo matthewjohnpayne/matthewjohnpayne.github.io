@@ -5,5 +5,31 @@ citation: "Payne, Deck, Holman & Perets (2013), ApJL 775, L44"
 section: "Causes of Instability"
 quote: "A more comprehensive investigation is required to understand the dependence of a_max on the close approach distance of the perturbing planet, but our results indicate that repeated weaker interactions do not destabilize moon orbits on short timescales. Similarly, we defer for future work the study of the effects of non-coplanarity and possible resonances between the satellite and planetary periods."
 note: "a_max is the widest moon orbit that stays stable around a planet with a close neighbour."
+since:
+  checked: "2026-10-17"
+  paragraphs:
+    - "Later studies of moons in multi-planet systems have kept the coplanar set-up. Dey & Raymond (2025, preprint) placed massless moons on coplanar, initially circular orbits around each of the seven TRAPPIST-1 planets, which sit in a resonant chain. They found outer stability limits of 40–45% of the Hill radius, close to the 0.4 Hill radii of Payne et al. (2013), and noted that the neighbouring planets together shrink the stable zone noticeably only for TRAPPIST-1 b and e. Kane (2017) used Hill-radius and Roche-limit arguments to suggest that most TRAPPIST-1 planets are unlikely to host moons, with no dynamical integrations."
+    - "Non-coplanarity has been studied in other set-ups. Hong et al. (2015) integrated moons around one of two Jupiter-mass planets with a 10° mutual inclination. Around a spherical host planet, moons inside a critical distance were driven to high inclinations, and some to high eccentricities, by a 1:1 secular resonance between the moon's nodal precession and that of the star as seen from the planet. Around an oblate host the moons were all stable. For a single planet, Donnison (2020) found that the Hill-stable star–planet–moon separation shrinks as the moon's inclination grows, though much less than when the planet's eccentricity grows. Melnikov (2026) concluded that no published criterion gives a reliable stability limit once the moon's orbit is inclined by more than about 30°, and that numerical integration is needed. Patel, Quarles & Cuntz (2025) found secular resonances that shape the stable regions of inclined star–planet–moon–submoon systems."
+    - "Resonances between moon and planet periods have so far been studied as migration effects. Spalding, Batygin & Adams (2016) showed that a giant planet migrating inward can capture moons within about 10 planetary radii into evection resonance, where the moon's apsidal precession period matches the planet's orbital period. The moon's eccentricity then grows until it collides with the planet. Our search found no study of such resonances, or of inclined moons, around a planet with a close neighbouring planet."
+  open:
+    - "How a_max, the widest stable moon orbit, depends on the moon's inclination, and on the mutual inclination of the planets, in closely packed two-planet and multi-planet systems, including the retrograde case."
+    - "Whether secular resonances with the neighbouring planet, as well as with the star, empty particular zones of moon semimajor axis in compact systems, and how the planet's oblateness changes this."
+    - "Whether evection-type and other mean-motion commensurabilities between a moon and the planetary periods, and the planets' synodic period, destabilise moons inside the coplanar limit in compact systems."
+    - "How a_max depends on how close the perturbing planet comes, which Payne et al. (2013) also left for future work."
+  sources:
+    - label: "Dey & Raymond (2025), Orbital Stability of Moons Around the TRAPPIST-1 Planets, arXiv:2512.19226"
+      url: "https://arxiv.org/abs/2512.19226"
+    - label: "Kane (2017), Worlds without Moons: Exomoon Constraints for Compact Planetary Systems, ApJL 839, L19"
+      bibcode: "2017ApJ...839L..19K"
+    - label: "Hong, Tiscareno, Nicholson & Lunine (2015), Orbital instability of close-in exomoons in non-coplanar systems, MNRAS 449, 828"
+      bibcode: "2015MNRAS.449..828H"
+    - label: "Donnison (2020), Limits on the orbits of possible exomoons around Kepler giant planets in the habitable zone, P&SS 192, 105033"
+      bibcode: "2020P&SS..19205033D"
+    - label: "Melnikov (2026), About the Applicability of Stability Criteria to the Orbital Dynamics of Exoplanet Satellites, SoSyR 60, 33"
+      bibcode: "2026SoSyR..60...33M"
+    - label: "Patel, Quarles & Cuntz (2025), Orbital stability of hierarchical three- and four-body systems with inclination: results for Kepler-1625, 1708, and HD 23079, MNRAS 537, 2291"
+      bibcode: "2025MNRAS.537.2291P"
+    - label: "Spalding, Batygin & Adams (2016), Resonant Removal of Exomoons during Planetary Migration, ApJ 817, 18"
+      bibcode: "2016ApJ...817...18S"
 status: draft
 order: 20

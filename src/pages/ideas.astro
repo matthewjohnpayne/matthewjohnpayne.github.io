@@ -25,6 +25,7 @@ const drafts = ideas.filter((i) => i.status === 'draft').length;
         <p><b>{ideas.length} {ideas.length === 1 ? 'question' : 'questions'}</b>, grouped by area.</p>
         {drafts > 0 && <p class="idea-draft-note">Draft preview: {drafts} {drafts === 1 ? 'entry is' : 'entries are'} awaiting Matthew's review and will not appear on the published site until approved.</p>}
         <p class="pub-source">Each entry quotes the paper's future-work or open-questions passage and links to the paper on NASA ADS.</p>
+        <p class="pub-source">Interested in working on one of these, or on an idea of your own? See <a href={`${root}work-with-me/`}>Working with me</a>.</p>
       </div>
       <div>
         {ideas.length === 0 && <p>No entries yet.</p>}

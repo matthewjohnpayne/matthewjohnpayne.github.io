@@ -5,5 +5,28 @@ citation: "Payne, Veras, Holman & Gänsicke (2016), MNRAS 457, 217"
 section: "Discussion: Fate of Liberated Moons"
 quote: "The fate of these liberated moons remains an open question, as they may, (i) remain in orbit about the WD; (ii) be scattered out of the system by a planet; (iii) collide with other moons or planets, fragmenting and adding to the debris already in the system, or (iv) be scattered within the Roche radius of the WD."
 note: "The paper adds that following the liberated moons' long-term evolution would show what fraction reach orbits that graze the white dwarf and pollute it. The exomoons page on this site follows the paper's encounters."
+since:
+  checked: "2026-10-17"
+  paragraphs:
+    - "The first follow-up was by the same authors. Payne, Veras, Gänsicke & Holman (2017) added test-particle moons to 119 simulated white-dwarf systems of four Earth-mass planets and followed them for 10^8 yr after planet-planet scattering began. Liberated moons became minor planets on orbits crossing the planets. About 15% came within 0.1 au of the white dwarf and about 5% within 0.01 au, close to the tidal-disruption distance of about 0.011 au they estimate for a Callisto-like moon, while the parent planets stayed beyond about 1 au. Some moons were ejected, many stayed bound to their planets, and the moons reached high and even retrograde inclinations. In one example, scattered moons also pushed an interior belt at 1 au to pericentres of about 0.01 au within 10 Myr. The authors state that the paper is a qualitative picture, not a measure of outcome fractions."
+    - "Trierweiler, Doyle, Melis, Walsh & Young (2022) set up a rate calculation. They inserted moons at the first orbit crossing of a three-planet system (1.3, 30.6 and 7.8 Earth masses around a 3 solar-mass star that becomes a 0.75 solar-mass white dwarf). All 60 moons in 10 simulations were liberated; one of the 60 entered the white dwarf's Roche limit (about 0.005 au) within 200 Myr of the white dwarf forming, and in their example run two moons were thrown onto hyperbolic orbits after a close approach to the white dwarf. Combined with Solar System moon populations, this implies that about 1% of white dwarf pollution comes from moons rather than asteroids. Doyle, Desch & Young (2021) argued that excess beryllium in a polluted white dwarf points to an accreted icy moon. Veras & Rosengren (2023) found that bodies of about a lunar mass are the smallest perturbers that can still drive white dwarf pollution, which is relevant to liberated moons acting as perturbers. Mustill, Davies & Kenworthy (2024), studying planet-planet scattering around main-sequence stars, found that satellites are often exchanged, collide or are tidally disrupted near their planets, leaving debris around 90% of scattered planets that carried Galilean-like moon systems. The review by Veras, Mustill & Bonsor (2024) concludes that pollution from moons is less likely than from asteroids but more likely than from planets."
+  open:
+    - "Outcome fractions for liberated moons (remaining in orbit, ejected, colliding with planets or other moons, or entering the Roche radius) over the full Gyr cooling ages of white dwarfs. Both simulation studies stop at 100–200 Myr and use small samples."
+    - "How these fractions depend on planet masses, spacings and number of planets. Trierweiler et al. (2022) simulated a single three-planet architecture."
+    - "How often liberated moons collide with planets or with each other around white dwarfs, and how much debris this produces. Mustill et al. (2024) treat satellite collisions only near the parent planet, around main-sequence stars."
+    - "Including tides, radiation and sublimation when liberated moons pass close to the white dwarf, which Payne et al. (2017) left out of their integrations."
+  sources:
+    - label: "Payne, Veras, Gänsicke & Holman (2017), The fate of exomoons in white dwarf planetary systems, MNRAS 464, 2557"
+      bibcode: "2017MNRAS.464.2557P"
+    - label: "Trierweiler, Doyle, Melis, Walsh & Young (2022), Exomoons as Sources of White Dwarf Pollution, ApJ 936, 30"
+      bibcode: "2022ApJ...936...30T"
+    - label: "Doyle, Desch & Young (2021), Icy Exomoons Evidenced by Spallogenic Nuclides in Polluted White Dwarfs, ApJL 907, L35"
+      bibcode: "2021ApJ...907L..35D"
+    - label: "Veras & Rosengren (2023), The smallest planetary drivers of white dwarf pollution, MNRAS 519, 6257"
+      bibcode: "2023MNRAS.519.6257V"
+    - label: "Mustill, Davies & Kenworthy (2024), The formation of transiting circumplanetary debris discs from the disruption of satellite systems during planet-planet scattering, MNRAS 530, 3606"
+      bibcode: "2024MNRAS.530.3606M"
+    - label: "Veras, Mustill & Bonsor (2024), The Evolution and Delivery of Rocky Extra-Solar Materials to White Dwarfs, RvMG 90, 141"
+      bibcode: "2024RvMG...90..141V"
 status: draft
 order: 30

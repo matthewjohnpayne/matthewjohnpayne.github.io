@@ -4,5 +4,33 @@ paper: "2023PSJ.....4...69H"
 citation: "Holman, Akmal, Farnocchia et al. (2023), PSJ 4, 69"
 section: "Conclusions"
 quote: "Future work could include extending the equations of motion to be more suitable for artificial satellite orbits, parallelizing the code to improve the speed performance, and building a framework for orbit fitting."
+since:
+  checked: "2026-10-17"
+  paragraphs:
+    - "A framework for orbit fitting now exists. Layup (Bernardinelli, Holman, Schwamb et al. 2025) is an open-source Python and C++ orbit-fitting suite driven by ASSIST and designed for the data volume of the Rubin Observatory's LSST; it also handles shift-and-stack and ranging data, converts orbits and their uncertainties between representations, and includes a special-purpose integrator for the original semi-major axes of comets. Its repository (v1.0.0, September 2026) fits barycentric orbits with covariances to MPC 80-column or ADES astrometry and predicts on-sky positions with uncertainties. The B612 Asteroid Institute's adam-assist makes ASSIST the propagator of adam-core, whose orbit-determination module provides Gauss initial orbits and least-squares differential correction. Independently, GRSS (Makadia et al. 2025) and jorbit (Cassese, Rice & Lu 2025) provide orbit fitting on their own IAS15-type integrators."
+    - "Parallelisation has been achieved around ASSIST rather than inside it. Layup distributes fits over a pool of worker processes, and adam-assist runs propagation and ephemeris generation in a Rust backend with local parallelism through Rayon. The ASSIST repository's changes through June 2026 (interpolated simulations, SPK planetary ephemerides, checks on ephemeris time coverage) do not parallelise the integration of a single trajectory. jorbit, written in JAX, is optionally GPU-accelerated and maintains about 1 mas agreement with JPL Horizons over a decade for typical main-belt asteroids."
+    - "Artificial-satellite orbits have not been addressed. ASSIST's force model remains the Sun, Moon, planets and 16 massive asteroids, the Earth's J2 to J5 and the Sun's J2 zonal harmonics, general relativity and the Marsden non-gravitational model, with no atmospheric drag or higher-degree geopotential. An open feature request (June 2026) asks for Jupiter's J2 and the Galilean moons for close encounters such as that of the Centaur 2004 TZ387."
+  open:
+    - "Equations of motion suitable for Earth satellites and cislunar objects: a higher-degree geopotential, atmospheric drag and spacecraft radiation-pressure models, with their variational equations."
+    - "Parallelising the integration of an individual trajectory (or of its variational particles) within ASSIST itself, as opposed to distributing independent objects over processes."
+    - "Planetary oblateness and satellite perturbations for planets other than the Earth, for close encounters with Jupiter and the other giant planets."
+    - "A peer-reviewed description and validation of ASSIST-based orbit fitting at LSST scale; Layup is so far described in a conference abstract and its documentation."
+  sources:
+    - label: "Bernardinelli, Holman, Schwamb et al. (2025), Layup: orbit fitting at LSST Scale, EPSC-DPS Joint Meeting 2025, EPSC-DPS2025-979"
+      bibcode: "2025epsc.conf..979B"
+    - label: "Layup repository (Smithsonian/layup), Orbit fitting at LSST scale"
+      url: "https://github.com/Smithsonian/layup"
+    - label: "adam-assist repository (B612 Asteroid Institute), ASSIST propagator for adam-core"
+      url: "https://github.com/B612-Asteroid-Institute/adam-assist"
+    - label: "adam-core repository (B612 Asteroid Institute), orbit_determination module"
+      url: "https://github.com/B612-Asteroid-Institute/adam_core"
+    - label: "Makadia, Farnocchia, Chesley & Eggl (2025), Gauss-Radau Small-body Simulator (GRSS): An Open-source Library for Planetary Defense, PSJ 6, 85"
+      bibcode: "2025PSJ.....6...85M"
+    - label: "Cassese, Rice & Lu (2025), A High-precision, Differentiable Code for Solar System Ephemerides, PSJ 6, 252"
+      bibcode: "2025PSJ.....6..252C"
+    - label: "ASSIST repository and force documentation (matthewholman/assist)"
+      url: "https://github.com/matthewholman/assist"
+    - label: "ASSIST issue 129, Jupiter J2+Galilean moon potential (e.g. 2004 TZ387) (June 2026)"
+      url: "https://github.com/matthewholman/assist/issues/129"
 status: draft
 order: 80

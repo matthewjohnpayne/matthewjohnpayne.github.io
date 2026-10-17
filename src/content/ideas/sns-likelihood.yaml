@@ -5,5 +5,27 @@ citation: "Stetzler, Jurić, Bernardinelli et al. (2025), AJ 170, 352"
 section: "Conclusions"
 quote: "The algorithm does not reach the theoretical limit expected from ideal coaddition. One possible reason for this is due to our limited method of results filtering. […] Additionally, it is possible that this is due to the metric used for accumulating signal: the number of detections across epochs in an aperture of variable size. A different metric, perhaps the detection likelihood could be accumulated instead, mimicking the approach of Whidden et al. (2019)."
 note: "The shift-and-stack page on this site runs the paper's algorithm on a synthetic catalogue."
+since:
+  checked: "2026-10-17"
+  paragraphs:
+    - "The paper is recent (arXiv September 2025), and ADS lists only one citing paper so far. We found no published or preprint study that replaces the per-aperture count of detections in catalogue shift-and-stack with an accumulated detection likelihood, or that otherwise closes the gap to ideal coaddition. The paper itself puts that gap at about 0.25 mag in depth relative to image-based shift-and-stack, at a speedup of about 30x with 88% of the memory."
+    - "Related work has advanced other routes. Ruch, Napier, Gerdes & Lin (2026) link single detections, not tracklets, by searching trial orbits in a spherical-orbit basis and clustering the propagated detections; on 12 months of DES Supernova X3 data they report a linking efficiency above 98% on implanted objects and 17 new TNOs. They do not, as far as their abstract shows, stack sub-threshold signal. Li, Geringer-Sameth & Golovich (2026) do accumulate evidence probabilistically across low-threshold source catalogues, linking candidates with a likelihood ratio, but only for targeted prediscovery of NEAs whose orbits are already known, not for blind searches. On the image side, heliostack (Napier, Holman, Lin et al. 2026) extends image shift-and-stack to nonlinear orbits over a 15-day HST baseline. YOSO (Pandey et al. 2026) uses a pixel-level Gaussian motion filter and reports a very low false-positive rate, but is about 0.88 mag less sensitive than other shift-and-stack methods. Alexandersen, Holman & Payne (2026) build TESS subtraction templates designed to prepare images for shift-and-stack."
+  open:
+    - "Whether accumulating a per-detection likelihood (from each catalogue entry's flux and its uncertainty), in place of a count of detections, recovers most of the roughly 0.25 mag lost relative to image-based shift-and-stack, and at what cost in speed and memory."
+    - "How much of the remaining gap is due to filtering of the results and how much to the signal metric. The paper names both as possible causes but does not separate them."
+    - "How low the per-epoch catalogue threshold can go before the number of false detections cancels out any gain from a likelihood metric, and how this depends on survey cadence (e.g. LSST)."
+  sources:
+    - label: "Stetzler, Jurić, Bernardinelli et al. (2025), An Efficient Shift-and-stack Algorithm Applied to Detection Catalogs, AJ 170, 352"
+      bibcode: "2025AJ....170..352S"
+    - label: "Ruch, Napier, Gerdes & Lin (2026), Efficient Detection-level Linking of Trans-Neptunian Objects via a Spherical-orbit Basis, PSJ 7, 228"
+      bibcode: "2026PSJ.....7..228R"
+    - label: "Li, Geringer-Sameth & Golovich (2026), An Automated Probabilistic Asteroid Prediscovery Pipeline, AJ 172, 91"
+      bibcode: "2026AJ....172...91L"
+    - label: "Napier, Holman, Lin, Gerdes & Ruch (2026), heliostack: A Novel Approach to Minor Planet Discovery, PSJ 7, 117"
+      bibcode: "2026PSJ.....7..117N"
+    - label: "Pandey, Fuentes, Bernardinelli et al. (2026), You Only Stack Once: A Motion-filtered, Deep Learning Framework for Detecting Faint Moving Sources, AJ 172, 34"
+      bibcode: "2026AJ....172...34P"
+    - label: "Alexandersen, Holman & Payne (2026), Cleaning TESS Images to Reveal Solar System Objects, PSJ 7, 192"
+      bibcode: "2026PSJ.....7..192A"
 status: draft
 order: 60

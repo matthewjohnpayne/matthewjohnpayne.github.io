@@ -5,5 +5,33 @@ citation: "Keys, Vereš, Payne et al. (2019), PASP 131, 064501"
 section: "Discussion: Future directions"
 quote: "The discrete population bins (in q,e,i, H) need to be replaced with a smooth 4-dimensional function, perhaps also incorporating additional orbital elements to allow improved discrimination of (e.g.) Hildas and Jupiter Trojans. […] Replacing the synthetic two-detection approach with a robust statistical treatment of all submitted detections, allowing for a significantly improved handling of NEOs that exhibit non-linear motion during close-approach."
 note: "The same list called for per-observation uncertainties from ADES, which a later paper took up (Vereš et al. 2023, PASP 135, 104505)."
+since:
+  checked: "2026-10-17"
+  paragraphs:
+    - "digest2 itself has been improved step by step, but its basic structure is unchanged. Vereš, Cloete, Weryk & Loeb (2023) updated the population model to the 2023 orbit catalogue, extended the table of mean astrometric uncertainties to 140 observatory codes, added ADES input with per-detection uncertainties, and introduced a parameter (RMS′) that compares the tracklet's great-circle residuals with the reported uncertainties as an indicator of curvature within the tracklet. In the companion conference abstract (with Payne) they report that RMS′ flagged several NEO tracklets but also nearly 2000 main-belt tracklets, mostly because the reported uncertainties were too small. The current public code (digest2 v2.8.2, Smithsonian/mpc-public, August 2026; population model updated again in May 2026) still computes its motion vector from the first and last observations and still scores trial orbits against a binned (q, e, i, H) model of 29 × 8 × 11 × 18 bins, with Hildas and Jupiter Trojans as classes in those same four elements."
+    - "Most new work instead builds on top of digest2's output. Vereš, Cloete, Payne & Loeb (2025) analysed the digest2 parameters of NEOCP candidates from 2019–2024, during which only about half were confirmed as NEOs. A filter on selected digest2 parameters removed 20% of non-NEOs; adding machine-learning classifiers (gradient boosting, random forest, SGD, neural networks; about 95% precision) removed more than 80% of non-NEOs, while losing 5.5% of NEO discovery tracklets, or about 1% net once later follow-up tracklets are counted. These filters are now distributed with digest2. Cloete, Vereš & Loeb (2024) found that digest2-derived quantities are among the most important features for identifying interstellar objects in simulated LSST tracklets. Wagg et al. (2025) predict that under current NEOCP criteria Rubin will add about 129 candidates per night in its first year, only 8.3% of them NEOs, and propose further prioritisation (e.g. predicting whether Rubin will recover a tracklet itself, 68% accuracy)."
+    - "Using all detections with a full statistical treatment is done operationally elsewhere: ESA's Meerkat Asteroid Guard (Drury et al. 2026) applies systematic ranging to NEOCP tracklets and derives posterior probabilities for orbital and physical properties, mainly to detect imminent impactors. For NEO Surveyor, Spoto, Payne & Masiero (2025, conference abstract) describe MPC classification methods that extract orbital information directly from very short arcs, without an orbit fit."
+  open:
+    - "Replacing the binned (q, e, i, H) population model with a smooth, continuous density; as of v2.8.2 digest2 still uses bins."
+    - "Adding further orbital elements (e.g. semimajor axis, or resonant angles) to the population model to tell Hildas and Jupiter Trojans apart from other classes better."
+    - "Scoring from a likelihood built on all submitted detections and their ADES uncertainties, rather than a motion vector from the first and last detections, so that curvature in close-approaching NEOs is used consistently rather than flagged afterwards (RMS′)."
+    - "Whether population-weighted ranging scores and the machine-learning filters of Vereš et al. (2025) can be combined into a single calibrated probability that keeps working at the Rubin-era NEOCP rates predicted by Wagg et al. (2025)."
+  sources:
+    - label: "Vereš, Cloete, Weryk & Loeb (2023), Improvement of Digest2 NEO Classification Code-utilizing the Astrometry Data Exchange Standard, PASP 135, 104505"
+      bibcode: "2023PASP..135j4505V"
+    - label: "Veres, Cloete, Weryk & Payne (2023), Digest2 - ADES-astrometry enhanced orbit classification code, DPS 55, 404.03"
+      bibcode: "2023DPS....5540403V"
+    - label: "Vereš, Cloete, Payne & Loeb (2025), Improving the discovery of near-Earth objects with machine-learning methods, A&A 698, A242"
+      bibcode: "2025A&A...698A.242V"
+    - label: "Cloete, Vereš & Loeb (2024), Machine learning methods for automated interstellar object classification with LSST, A&A 691, A338"
+      bibcode: "2024A&A...691A.338C"
+    - label: "Wagg, Juric, Yoachim, Kurlander et al. (2025), Expected Impact of Rubin Observatory LSST on NEO Follow-up, AJ 169, 315"
+      bibcode: "2025AJ....169..315W"
+    - label: "Drury, Gianotto, Fenucci, Faggioli et al. (2026), The ESA Meerkat Asteroid Guard: A Monitoring Service for Imminent Impactors, J. Astronaut. Sci. 73, 40"
+      bibcode: "2026JAnSc..73...40D"
+    - label: "Spoto, Payne & Masiero (2025), A new approach to asteroid classification with application to the NEO Surveyor mission, EPSC-DPS Joint Meeting 2025, 1095"
+      bibcode: "2025epsc.conf.1095S"
+    - label: "digest2 source code and documentation (v2.8.2), Smithsonian/mpc-public"
+      url: "https://github.com/Smithsonian/mpc-public/tree/main/digest2"
 status: draft
 order: 70
