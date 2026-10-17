@@ -7,6 +7,13 @@
                 { "label": "MPC orbit-determination tutorials", "href": "https://docs.minorplanetcenter.net/tutorials/iod_tutorials/" }],
     "files": ["src/pages/teaching/orbit-determination.astro", "src/scripts/od", "public/data/od"]
   },
+  "teaching/asteroid-belt": {
+    "checked": "The Kepler solver agrees with REBOUND's two-body integration to within 40 km for 400 sampled orbits over ±50 years.",
+    "tool": "validate_orbit_map",
+    "basedOn": [{ "label": "MPC tutorial: Plotting Asteroid Orbits", "href": "https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_plotting/" },
+                { "label": "MPCORB.DAT", "href": "https://minorplanetcenter.net/iau/MPCORB.html" }],
+    "files": ["src/pages/teaching/asteroid-belt.astro", "src/scripts/orbitmap", "public/data/orbitmap", "src/data/orbitmap.json"]
+  },
   "teaching/reference-frames": {
     "checked": "Agrees with REBOUND's IAS15 integrator to within 35 km for Earth–Kamoʻoalewa, and 50 m for Jupiter–Hektor and Jupiter–Hilda, over 400 years.",
     "tool": "validate_frames",
