@@ -1,0 +1,82 @@
+name: Monthly data refresh
+# Monthly: refresh the build-time copies of purely factual data, check the site builds, and commit.
+#   - src/data/mpc-today.json (tools/export_mpc_today.mjs): fallback for "Today at the MPC"
+#   - src/data/mpc-stats.json (tools/export_mpc_stats.mjs): fallback for "MPC at a glance"
+#   - src/data/card-figures.json (tools/export_card_figures.py): the homepage's MPCORB population
+#     sample and the 2006 RH120 path (a historical path; JPL's solution, unchanged unless JPL refits)
+#   - src/data/data-refresh.json: the date and outcome of this run. It changes every month, so the
+#     workflow always commits, which keeps GitHub from pausing the scheduled workflows (GitHub pauses
+#     them in a public repository after 60 days without commits).
+# Not refreshed automatically: anything tied to the MPC standard epoch (frames-ic.json, object orbits,
+# the mpc_orb page samples, whose notes quote times relative to their epoch); epoch-check.yml opens
+# a task when that epoch changes.
+on:
+  schedule:
+    - cron: '23 5 3 * *'   # 05:23 UTC on the 3rd of each month
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write    # start the deploy (a GITHUB_TOKEN push does not trigger it)
+concurrency:
+  group: auto-commit
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # the build's "Updated" dates and changelog come from git
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Today at the MPC
+        id: today
+        continue-on-error: true
+        run: node tools/export_mpc_today.mjs
+      - name: MPC at a glance
+        id: stats
+        continue-on-error: true
+        run: node tools/export_mpc_stats.mjs
+      - name: Homepage card figures (MPCORB and JPL Horizons)
+        id: cards
+        continue-on-error: true
+        run: |
+          pip install numpy
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/MPCORB.DAT.gz" https://minorplanetcenter.net/iau/MPCORB/MPCORB.DAT.gz
+          python3 tools/export_card_figures.py "$RUNNER_TEMP/MPCORB.DAT.gz"
+      - name: Record this run
+        run: |
+          cat > src/data/data-refresh.json <<JSON
+          {
+            "description": "Written by .github/workflows/data-refresh.yml: when the build-time data were last refreshed, and which steps succeeded.",
+            "date": "$(date -u +%Y-%m-%d)",
+            "steps": {
+              "mpc-today": "${{ steps.today.outcome }}",
+              "mpc-stats": "${{ steps.stats.outcome }}",
+              "card-figures": "${{ steps.cards.outcome }}"
+            }
+          }
+          JSON
+          cat src/data/data-refresh.json
+      - name: Build the site
+        run: |
+          npm install --no-audit --no-fund
+          node tools/export_changelog.mjs
+          npm run build
+          git checkout -- src/data/changelog.json 2>/dev/null || true
+      - name: Commit and deploy
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/mpc-today.json src/data/mpc-stats.json src/data/card-figures.json src/data/data-refresh.json
+          git diff --cached --quiet && { echo "Nothing changed."; exit 0; }
+          git commit -m "Data: monthly refresh of build-time MPC data"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          gh workflow run deploy.yml --ref main

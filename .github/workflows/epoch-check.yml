@@ -1,0 +1,42 @@
+name: MPC epoch check
+# Monthly: has the MPC moved to a new standard orbit epoch (tools/check_mpc_epoch.py)? If so, open a
+# claude-task issue: the reference-frames initial conditions, the numbers quoted on that page, and the
+# orbits of future Objects of the Month must move to the new epoch, with the validation re-run.
+on:
+  schedule:
+    - cron: '37 5 5 * *'   # 05:37 UTC on the 5th of each month
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare epochs
+        id: epoch
+        run: |
+          set +e
+          msg=$(python3 tools/check_mpc_epoch.py); rc=$?
+          echo "$msg"
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          { echo 'msg<<EOF'; echo "$msg"; echo 'EOF'; } >> "$GITHUB_OUTPUT"
+          [ $rc -eq 2 ] && echo "::warning::MPC Orbits API unreachable; will try again next month"
+          exit 0
+      - name: Open a task
+        if: steps.epoch.outputs.rc == '1'
+        env:
+          MSG: ${{ steps.epoch.outputs.msg }}
+        run: |
+          node tools/task_issue.mjs --title "MPC standard epoch changed" --what "$MSG" \
+            --why "The reference-frames page (src/data/frames-ic.json, tools/fetch_frames_ic.py, tools/validate_frames/ and the numbers quoted on the page) and the orbits of Objects of the Month not yet featured are tied to the epoch. Already-featured objects keep their saved orbits." \
+            --command "claude \"/epoch-update\""

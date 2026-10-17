@@ -1,0 +1,53 @@
+name: Link check
+# Weekly: build the site and check every link (lychee, configured in lychee.toml), then check that
+# every Google Drive link is shared publicly (tools/check_drive_links.mjs; a private file redirects
+# to a sign-in page, which lychee counts as success). Problems go into one claude-task issue.
+on:
+  schedule:
+    - cron: '7 5 * * 3'   # 05:07 UTC on Wednesdays
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build the site
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+      - name: Check links
+        id: lychee
+        uses: lycheeverse/lychee-action@v2.9.0
+        with:
+          lycheeVersion: v0.24.2
+          args: --no-progress --config lychee.toml --root-dir ${{ github.workspace }}/dist 'dist/**/*.html'
+          output: lychee-report.md
+          format: markdown
+          fail: false
+      - name: Check Google Drive links are public
+        id: drive
+        run: |
+          set +e
+          node tools/check_drive_links.mjs dist > drive-report.md; rc=$?
+          cat drive-report.md
+          echo "ok=$([ $rc -eq 0 ] && echo yes || echo no)" >> "$GITHUB_OUTPUT"
+      - name: Open an issue if anything is broken
+        if: steps.lychee.outputs.exit_code != '0' || steps.drive.outputs.ok != 'yes'
+        run: |
+          {
+            echo "The weekly check of the built site found problems (run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+            echo
+            if [ "${{ steps.lychee.outputs.exit_code }}" != "0" ]; then sed -n '/^## Errors/,$p' lychee-report.md; echo; fi
+            if [ "${{ steps.drive.outputs.ok }}" != "yes" ]; then cat drive-report.md; fi
+          } | head -c 50000 > what.md
+          node tools/task_issue.mjs --title "Broken links on the site" --what "$(cat what.md)" \
+            --why "Visitors following these links reach an error or a sign-in page." \
+            --command "claude \"/fix-links\""

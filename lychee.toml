@@ -1,0 +1,18 @@
+# Link checking for the weekly links workflow (.github/workflows/links.yml), run on the built site.
+# Tested 2026-10-17 with lychee 0.24.2 against dist/.
+max_retries = 3
+retry_wait_time = 5
+timeout = 30
+max_concurrency = 16
+# 403: publishers behind doi.org refuse automated requests although the DOI resolves (a DOI that
+# does not exist gives 404). 429: rate limited, not broken.
+accept = ["100..=103", "200..=299", "403", "429"]
+exclude = [
+  # ADS abstract pages answer 405 to any non-browser client; bibcodes come from ADS itself.
+  '^https://ui\.adsabs\.harvard\.edu/abs/',
+  # API endpoints that need a POST or a JSON body, linked as documentation of a data source.
+  '^https://data\.minorplanetcenter\.net/api/',
+  '^https://ssd-api\.jpl\.nasa\.gov/',
+  # LinkedIn answers 999 to all automated requests.
+  'linkedin\.com',
+]

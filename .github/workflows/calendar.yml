@@ -1,0 +1,51 @@
+name: Yearly reminders
+# Tasks that come round once a year, opened as issues:
+#   5 January: update students' and postdocs' current positions (claude-task "/update-people")
+#   5 April:   review the CV for anything new (maintenance; docs/CV.md)
+#   5 July:    re-check the open problems against the literature (claude-task "/review-ideas")
+on:
+  schedule:
+    - cron: '0 9 5 1 *'
+    - cron: '0 9 5 4 *'
+    - cron: '0 9 5 7 *'
+  workflow_dispatch:
+    inputs:
+      reminder:
+        description: Which reminder to open
+        type: choice
+        options: [people, cv, ideas]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SCHEDULE: ${{ github.event.schedule }}
+      CHOICE: ${{ inputs.reminder }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Open the reminder
+        run: |
+          year=$(date -u +%Y)
+          case "$SCHEDULE$CHOICE" in
+            "0 9 5 1 *"|people)
+              node tools/task_issue.mjs --title "Yearly update of students and postdocs ($year)" \
+                --what "It is time for the yearly check of the current positions and pages of the students and postdocs on the People page." \
+                --why "docs/UPDATING_PEOPLE.md describes the check; details come only from public pages or from Matthew." \
+                --command "claude \"/update-people\"" ;;
+            "0 9 5 4 *"|cv)
+              node tools/task_issue.mjs --label maintenance --title "Yearly CV review ($year)" \
+                --what "Time to review /cv/ for anything new in the past year: grants, honours and awards, committee and service roles, talks and supervision." \
+                --why "The CV is built from src/data/cv.json plus the site's publications, talks and people records (docs/CV.md). Send Claude the new items, or edit cv.json." ;;
+            "0 9 5 7 *"|ideas)
+              node tools/task_issue.mjs --title "Yearly literature check of the open problems ($year)" \
+                --what "Time to re-check each entry on /ideas/ against ADS and arXiv for work published since its last check." \
+                --why "Entries that have been answered should be removed; the others get their 'since then' notes updated." \
+                --command "claude \"/review-ideas\"" ;;
+            *) echo "Unknown schedule '$SCHEDULE' / choice '$CHOICE'"; exit 1 ;;
+          esac

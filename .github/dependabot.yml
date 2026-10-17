@@ -1,0 +1,19 @@
+# Monthly dependency updates, grouped into one pull request per ecosystem. build-check.yml builds
+# each pull request; merging one deploys the site.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      npm:
+        patterns: ['*']
+    open-pull-requests-limit: 3
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ['*']
