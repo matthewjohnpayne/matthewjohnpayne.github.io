@@ -1,0 +1,58 @@
+---
+// Open problems from the future-work passages of Matthew Payne's papers (src/content/ideas/).
+// Drafts are shown only under `npm run dev`; not linked from the navigation until Matthew approves.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHero from '../components/SectionHero.astro';
+
+const root = import.meta.env.BASE_URL;
+const dev = import.meta.env.DEV;
+const AREAS: Record<string, string> = {
+  exoplanets: 'Exoplanet dynamics', moons: 'Moons', 'solar-system': 'The outer Solar System',
+  detection: 'Finding moving objects', software: 'Software'
+};
+const ideas = (await getCollection('ideas')).map((i) => ({ id: i.id, ...i.data }))
+  .filter((i) => dev || i.status === 'approved')
+  .sort((a, b) => a.order - b.order);
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const drafts = ideas.filter((i) => i.status === 'draft').length;
+---
+<BaseLayout title="Open problems" description="Questions left open in Matthew Payne's papers, in the papers' own words." noindex={ideas.length === 0 || drafts > 0}>
+  <SectionHero eyebrow="RESEARCH · OPEN PROBLEMS" title="Open problems" lead="Questions that papers I have co-authored left for future work, quoted from the papers themselves. Some may since have been taken up, by us or by others." />
+  <section class="site-content page-content">
+    <div class="content-width pub-layout">
+      <div class="pub-summary">
+        <p><b>{ideas.length} {ideas.length === 1 ? 'question' : 'questions'}</b>, grouped by area.</p>
+        {drafts > 0 && <p class="idea-draft-note">Draft preview: {drafts} {drafts === 1 ? 'entry is' : 'entries are'} awaiting Matthew's review and will not appear on the published site until approved.</p>}
+        <p class="pub-source">Each entry quotes the paper's future-work or open-questions passage and links to the paper on NASA ADS.</p>
+      </div>
+      <div>
+        {ideas.length === 0 && <p>No entries yet.</p>}
+        {Object.entries(AREAS).filter(([k]) => ideas.some((i) => i.area === k)).map(([k, label]) => (
+          <section class="pub-year">
+            <h2>{label}</h2>
+            {ideas.filter((i) => i.area === k).map((i) => (
+              <article class="pub-item idea-item" id={i.id}>
+                <h3 class="pub-title idea-title">{i.title}{i.status === 'draft' && <span class="idea-badge">Draft</span>}</h3>
+                <blockquote class="idea-quote"><p>“{i.quote}”</p></blockquote>
+                <p class="pub-venue"><a href={ads(i.paper)} target="_blank" rel="noopener noreferrer">{i.citation}</a>{i.section && `, ${i.section}`}</p>
+                {i.note && <p class="idea-note">{i.note}</p>}
+              </article>
+            ))}
+          </section>
+        ))}
+        <p class="back-row"><a href={root}>← Return to homepage</a></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .idea-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; margin: 0; }
+  .idea-title:hover { color: var(--ink); text-decoration: none; }
+  .idea-badge { font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: #8a4b12; background: #fbecdc; border-radius: 3px; padding: 2px 7px; }
+  .idea-quote { margin: 12px 0 0; padding: 2px 0 2px 16px; border-left: 3px solid #bed2d7; }
+  .idea-quote p { margin: 0; font-size: 15px; line-height: 1.7; color: var(--body); }
+  .idea-note { margin: 8px 0 0; font-size: 13px; line-height: 1.6; color: var(--body); }
+  .idea-draft-note { background: #fbecdc; color: #6b3a0e; padding: 10px 12px; border-radius: 4px; }
+</style>

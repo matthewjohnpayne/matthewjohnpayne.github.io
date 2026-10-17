@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 
 const root = import.meta.env.BASE_URL;
 const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/exomoons_wd/exomoons_wd.ipynb';
@@ -22,6 +23,7 @@ const references = [
       <p class="eyebrow">INTERACTIVE TUTORIAL · EXOMOONS AND WHITE DWARFS</p>
       <h1>How do planets lose their moons around white dwarfs?</h1>
       <p>Many white dwarfs are polluted with rocky material from their old planetary systems, and something must keep delivering it. In the Solar System, the moons outweigh the asteroid belt more than a hundredfold. This page follows <a href={paper} target="_blank" rel="noopener noreferrer">Payne, Veras, Holman &amp; Gänsicke (2016)</a> and <a href={paper2} target="_blank" rel="noopener noreferrer">Payne et al. (2017)</a>: why a dying star’s mass loss keeps moons safe, and how the planet–planet scattering that follows can set them free.</p>
+      <PageStatus page="teaching/exomoons" />
     </div>
   </section>
 

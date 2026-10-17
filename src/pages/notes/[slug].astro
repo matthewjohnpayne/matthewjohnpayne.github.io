@@ -1,0 +1,32 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getNotes, longDate } from '../../lib/notes';
+
+export async function getStaticPaths() {
+  return (await getNotes()).map((note) => ({ params: { slug: note.id }, props: { note } }));
+}
+const { note } = Astro.props;
+const { Content } = await render(note);
+const root = import.meta.env.BASE_URL;
+const draft = note.data.status === 'draft';
+---
+<BaseLayout title={note.data.title} description={note.data.summary} noindex={draft}>
+  <section class="inner-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">NOTE · {longDate(note.data.date).toUpperCase()}{draft && ' · DRAFT'}</p>
+      <h1 class="note-h1">{note.data.title}</h1>
+    </div>
+  </section>
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <Content />
+      {note.data.tags.length > 0 && <p class="pub-source">Topics: {note.data.tags.join(', ')}</p>}
+      <p class="back-row"><a href={`${root}notes/`}>← All notes</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .note-h1 { font-size: clamp(30px, 4vw, 48px) !important; }
+</style>

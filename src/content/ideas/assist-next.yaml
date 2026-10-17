@@ -1,0 +1,8 @@
+title: "Extending an ephemeris-quality integrator"
+area: software
+paper: "2023PSJ.....4...69H"
+citation: "Holman, Akmal, Farnocchia et al. (2023), PSJ 4, 69"
+section: "Conclusions"
+quote: "Future work could include extending the equations of motion to be more suitable for artificial satellite orbits, parallelizing the code to improve the speed performance, and building a framework for orbit fitting."
+status: draft
+order: 80

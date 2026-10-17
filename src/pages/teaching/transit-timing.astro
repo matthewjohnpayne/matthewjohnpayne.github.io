@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 
 const root = import.meta.env.BASE_URL;
 const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/ttv_inclined/ttv_inclined.ipynb';
@@ -25,6 +26,7 @@ const references = [
       <p class="eyebrow">INTERACTIVE TUTORIAL · TRANSIT TIMING VARIATIONS</p>
       <h1>Can a planet hide from transit timing?</h1>
       <p>A planet that transits its star keeps time like a clock, unless another planet tugs on it. Then its transits come a little early or late, and these transit timing variations (TTVs) can reveal a planet too small to see any other way. But what if the hidden planet’s orbit is tilted, or even runs backwards? This page follows <a href={paper} target="_blank" rel="noopener noreferrer">Payne, Ford &amp; Veras (2010)</a>: a hot Jupiter and an Earth-mass companion, with every system integrated in your browser.</p>
+      <PageStatus page="teaching/transit-timing" />
     </div>
   </section>
 

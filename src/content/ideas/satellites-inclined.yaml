@@ -1,0 +1,9 @@
+title: "Do inclined orbits or satellite–planet resonances change which moons survive in packed systems?"
+area: moons
+paper: "2013ApJ...775L..44P"
+citation: "Payne, Deck, Holman & Perets (2013), ApJL 775, L44"
+section: "Causes of Instability"
+quote: "A more comprehensive investigation is required to understand the dependence of a_max on the close approach distance of the perturbing planet, but our results indicate that repeated weaker interactions do not destabilize moon orbits on short timescales. Similarly, we defer for future work the study of the effects of non-coplanarity and possible resonances between the satellite and planetary periods."
+note: "a_max is the widest moon orbit that stays stable around a planet with a close neighbour."
+status: draft
+order: 20

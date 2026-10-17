@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 
 const root = import.meta.env.BASE_URL;
 const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/laplace_gj876/laplace_gj876.ipynb';
@@ -17,6 +18,7 @@ const references = [
       <p class="eyebrow">INTERACTIVE TUTORIAL · RESONANCES</p>
       <h1>Three planets in step: the Laplace resonance of GJ 876</h1>
       <p>The red dwarf GJ 876 has four known planets. The middle three, c, b and e, orbit in periods close to 30, 61 and 124 days, a 1:2:4 chain like that of Jupiter’s moons Io, Europa and Ganymede. <a href={ads('2010ApJ...719..890R')} target="_blank" rel="noopener noreferrer">Rivera et al. (2010)</a> found them in a <i>Laplace configuration</i>; fitting the star’s radial velocities with full <i>N</i>-body orbits, <a href={paper} target="_blank" rel="noopener noreferrer">Nelson et al. (2016)</a> measured how tightly the three are locked together. Here you can integrate their fitted orbits in your browser and see how the lock depends on the outermost planet’s mass.</p>
+      <PageStatus page="teaching/laplace-resonance" />
     </div>
   </section>
 

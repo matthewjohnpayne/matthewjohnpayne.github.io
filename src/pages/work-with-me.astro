@@ -1,0 +1,56 @@
+---
+// Prospective students and postdocs. A skeleton: the sections only Matthew can write
+// (what he offers, his reference-letter policy, how to get in touch) appear as placeholders
+// under `npm run dev` and are left out of the built site until he supplies the text.
+// The programme links are public CfA pages, checked 2026-10-17. Not linked from the navigation.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHero from '../components/SectionHero.astro';
+
+const root = import.meta.env.BASE_URL;
+const dev = import.meta.env.DEV;
+const cfa = 'https://www.cfa.harvard.edu/opportunities';
+const programmes = [
+  ['SAO Astronomy Summer Intern Program (Astro REU)', `${cfa}/graduate-undergraduate-programs/reu-summer-intern-program`,
+    'A 10-week summer research internship for undergraduates, working on a project with an SAO or Harvard scientist.'],
+  ['SPARK', `${cfa}/graduate-undergraduate-programs/spark`,
+    'A one-year postbaccalaureate research programme at the Center for Astrophysics for recent graduates.'],
+  ['SAO Predoctoral Program', `${cfa}/graduate-undergraduate-programs/predoctoral-program`,
+    'For graduate students at other universities to carry out all or part of their thesis research with SAO scientists.'],
+  ['Fellowships and visiting scientist positions', `${cfa}/fellowships-visiting-scientist-positions`,
+    'Postdoctoral fellowships and visiting positions at the Center for Astrophysics.']
+];
+// Sections Matthew writes. Each stays out of the built site until it has text.
+const fromMatthew: [string, string][] = [
+  ['What I can offer', ''],          // kinds of project; whether he is taking students or postdocs now
+  ['Reference letters', ''],         // his policy: who he writes for, notice needed, what to send
+  ['Getting in touch', '']           // how he prefers to be contacted (address shown as text)
+];
+---
+<BaseLayout title="Working with me" description="Research opportunities for students and postdocs with Matthew Payne at the Minor Planet Center and the Center for Astrophysics." noindex>
+  <SectionHero eyebrow="PEOPLE · OPPORTUNITIES" title="Working with me" lead="The Minor Planet Center is part of the Smithsonian Astrophysical Observatory, at the Center for Astrophysics | Harvard & Smithsonian. Students and early-career researchers can join research there through the programmes below." />
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      {fromMatthew.map(([heading, text]) => (text ? (
+        <><h2>{heading}</h2><p>{text}</p></>
+      ) : dev && (
+        <div class="wwm-placeholder"><h2>{heading}</h2><p>To be written by Matthew. This section is left out of the published page until then.</p></div>
+      )))}
+      <h2>Programmes at the Center for Astrophysics</h2>
+      <ul class="wwm-list">
+        {programmes.map(([name, href, what]) => (
+          <li><a href={href} target="_blank" rel="noopener noreferrer">{name} ↗</a><br />{what}</li>
+        ))}
+      </ul>
+      <p>The full list is on the Center's <a href={cfa} target="_blank" rel="noopener noreferrer">Academics &amp; Opportunities</a> page, which has current deadlines.</p>
+      <p>The <a href={`${root}people/`}>People</a> page lists the students and postdocs I have worked with.</p>
+      <p class="back-row"><a href={root}>← Return to homepage</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .wwm-placeholder { border: 2px dashed #e9a160; border-radius: 6px; padding: 4px 18px 16px; margin: 30px 0; background: #fdf6ee; }
+  .wwm-placeholder h2 { margin-top: 16px; }
+  .wwm-list { padding-left: 20px; }
+  .wwm-list li { margin-bottom: 14px; }
+</style>

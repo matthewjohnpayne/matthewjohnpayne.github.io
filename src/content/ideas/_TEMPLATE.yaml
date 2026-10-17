@@ -1,0 +1,11 @@
+# Copy to <short-name>.yaml. Use only a future-work or open-question passage from one of
+# Matthew Payne's own papers, quoted verbatim, and set status: approved only with his say-so.
+title: "The question, in one line"
+area: solar-system        # exoplanets | moons | solar-system | detection | software
+paper: "2018AJ....156..263L"
+citation: "Li, Hadden, Payne & Holman (2018), AJ 156, 263"
+section: "Section 5"
+quote: "The paper's own words."
+note: "Optional plain-English context. No new claims."
+status: draft
+order: 100

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 
 const root = import.meta.env.BASE_URL;
 const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/rv_demcmc/rv_demcmc.ipynb';
@@ -17,6 +18,7 @@ const references = [
       <p class="eyebrow">INTERACTIVE TUTORIAL · RADIAL VELOCITIES</p>
       <h1>Fitting planets that pull on each other</h1>
       <p>A planet makes its star wobble, and the star’s radial velocity is usually modelled as a sum of Keplerian orbits, one per planet. When planets are massive and close, as in a resonant pair, they pull on each other and those orbits change. <a href={paper} target="_blank" rel="noopener noreferrer">Nelson, Ford &amp; Payne (2014)</a> built RUN DMC to fit such systems with full <i>N</i>-body integrations, sampled by <i>differential-evolution</i> MCMC. This page uses the simulated resonant pair of the notebook, loosely modelled on GJ 876’s inner planets.</p>
+      <PageStatus page="teaching/run-dmc" />
     </div>
   </section>
 

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 
 const root = import.meta.env.BASE_URL;
 const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/cassini_planet9/cassini_planet9.ipynb';
@@ -17,6 +18,7 @@ const references = [
       <p class="eyebrow">INTERACTIVE TUTORIAL · PLANET NINE</p>
       <h1>Could Cassini have felt Planet Nine?</h1>
       <p>From 2004 to 2017 the Cassini spacecraft orbited Saturn, and radio ranging from Earth measured the Earth–Saturn distance to tens of metres. A planet several times the Earth’s mass a few hundred au away would pull Saturn very slightly off its predicted orbit. <a href={paper} target="_blank" rel="noopener noreferrer">Holman &amp; Payne (2016)</a> built a simple model of that pull and used it to map where on the sky such a planet could hide. Place a planet anywhere and see what the ranging would have recorded.</p>
+      <PageStatus page="teaching/cassini-planet-nine" />
     </div>
   </section>
 
