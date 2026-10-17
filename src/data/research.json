@@ -3,9 +3,9 @@
   "themes": [
     {
       "id": "formation",
-      "title": "Planet formation in binaries and disks",
-      "summary": "Forming planets around brown dwarfs, in binary star systems and in gravitationally unstable disks.",
-      "bibcodes": ["2007MNRAS.381.1597P", "2009MNRAS.400.1936P", "2009PhDT.......268P", "2010ApJ...724.1153X", "2011ApJ...735...10X", "2011ApJ...735...30B"],
+      "title": "Planet formation and debris disks",
+      "summary": "Forming planets around brown dwarfs, in binary star systems and in gravitationally unstable disks, and the planetesimal belts that reveal unseen planets, including ALMA observations of Fomalhaut and HD 141569.",
+      "bibcodes": ["2007MNRAS.381.1597P", "2009MNRAS.400.1936P", "2009PhDT.......268P", "2010MNRAS.402..657W", "2010ApJ...724.1153X", "2011ApJ...735...10X", "2011ApJ...735...30B", "2012ApJ...750L..21B", "2016ApJ...829....6W"],
       "links": []
     },
     {
@@ -78,13 +78,6 @@
           "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/exomoons_wd/exomoons_wd.ipynb"
         }
       ]
-    },
-    {
-      "id": "debris-disks",
-      "title": "Debris disks",
-      "summary": "Planetesimal belts and what they reveal about unseen planets, including ALMA observations of Fomalhaut and HD 141569.",
-      "bibcodes": ["2010MNRAS.402..657W", "2012ApJ...750L..21B", "2016ApJ...829....6W"],
-      "links": []
     },
     {
       "id": "outer-solar-system",

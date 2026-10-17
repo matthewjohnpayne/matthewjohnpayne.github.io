@@ -54,6 +54,13 @@ const external = (h: string) => h.startsWith('http');
             <span class="theme-meta">{t.papers.length} papers · {years(t.papers)}</span>
           </a>
         ))}
+        {other.length > 0 && (
+          <a class="theme-card theme-card-other" href="#other">
+            <span class="theme-n">+</span>
+            <strong>{research.other.title}</strong>
+            <span class="theme-meta">{other.length} papers · {years(other)}</span>
+          </a>
+        )}
       </nav>
 
       {themes.map((t, i) => (
