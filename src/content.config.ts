@@ -196,7 +196,11 @@ const objects = defineCollection({
     month: z.string().regex(/^\d{4}-\d{2}$/),   // the month it is featured, YYYY-MM
     summary: z.string(),                  // one or two sentences for teasers
     // Extra view of the orbit: 'earth-corotating' adds the path seen from a frame turning with the Earth.
-    view: z.enum(['heliocentric', 'earth-corotating']).default('heliocentric'),
+    // 'outer-resonance', 'hyperbolic' and 'earth-capture' use figures computed once by
+    // tools/export_object_figures.py (src/data/objects/<name>-figure.json).
+    view: z.enum(['heliocentric', 'earth-corotating', 'outer-resonance', 'hyperbolic', 'earth-capture']).default('heliocentric'),
+    resonance: z.tuple([z.number().int(), z.number().int()]).optional(),   // [p, q] for outer-resonance, e.g. [21, 5]
+    horizons: z.string().optional(),     // JPL Horizons COMMAND, if the designation alone is ambiguous
     related: z.array(z.object({ label: z.string(), href: z.string() })).default([]),
     papers: z.array(z.string()).default([]),   // bibcodes of Matthew's papers about the object
     sources: z.array(z.object({ label: z.string(), url: z.url() })).min(1),

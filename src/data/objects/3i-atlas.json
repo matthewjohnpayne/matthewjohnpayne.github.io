@@ -1,0 +1,77 @@
+{
+ "designation": "3I",
+ "fetched": "2026-10-17",
+ "source": "MPC Orbits API (https://data.minorplanetcenter.net/api/get-orb), mpc_orb format",
+ "names": {
+  "designation_count": 1,
+  "iau_designation": "(3I)",
+  "iau_name": "",
+  "name": "ATLAS",
+  "orbfit_name": "3I",
+  "packed_permid": "0003I",
+  "packed_primary_provisional_designation": "CK25N010",
+  "packed_secondary_provisional_designations": [],
+  "permid": "3I",
+  "unpacked_primary_provisional_designation": "C/2025 N1",
+  "unpacked_secondary_provisional_designations": []
+ },
+ "epochMJD_TT": 61200.0,
+ "orbitType": "",
+ "kep": {
+  "a": 0.0,
+  "e": 0.0,
+  "i": 0.0,
+  "node": 0.0,
+  "argperi": 0.0,
+  "mean_anomaly": 0.0,
+  "yarkovsky": 0.0
+ },
+ "kepSigma": {
+  "a": 0.0,
+  "e": 0.0,
+  "i": 0.0,
+  "node": 0.0,
+  "argperi": 0.0,
+  "mean_anomaly": 0.0,
+  "yarkovsky": 0.0
+ },
+ "com": {
+  "q": 1.35207729498414,
+  "e": 6.124500932922171,
+  "i": 175.2390711677662,
+  "node": 323.0190730444481,
+  "argperi": 128.793855747788,
+  "peri_time": 60977.4598426932
+ },
+ "comSigma": {
+  "q": 2.9497e-07,
+  "e": 4.41185e-06,
+  "i": 6.32291e-06,
+  "node": 5.7928e-05,
+  "argperi": 5.79927e-05,
+  "peri_time": 9.97985e-06
+ },
+ "state": [
+  -2.22945401273657,
+  7.62988469763373,
+  -0.395931593193359,
+  -0.00307218099922378,
+  0.0343788719331109,
+  -0.00213336258242716
+ ],
+ "H": 10.748,
+ "G": 0.1,
+ "periodDays": null,
+ "arc": "341 days",
+ "nobs": 8341,
+ "nopp": 0,
+ "rms": 0.590293,
+ "fitDate": "2026-10-01 20:27:35",
+ "frame": {
+  "EclipticObliquityArcseconds": "84381.448",
+  "eph": "DE431",
+  "force_model": "AST17",
+  "refframe": "ICRF",
+  "refsys": "Ecliptic"
+ }
+}

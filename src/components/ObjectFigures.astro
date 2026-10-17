@@ -1,0 +1,254 @@
+---
+// Figures and element table for an Object of the Month whose orbit needs more than the one-year
+// view of ObjectOrbit.astro: a resonant TNO, an interstellar object or a temporary minimoon.
+// The figures are computed once by tools/export_object_figures.py (src/data/objects/<name>-figure.json).
+import type { ObjectData } from '../lib/objectOrbit';
+import { mjdToDate } from '../lib/objectOrbit';
+interface Props { data: ObjectData; fig: any; name: string; view: 'outer-resonance' | 'hyperbolic' | 'earth-capture' }
+const { data, fig, name, view } = Astro.props;
+const short = name.replace(/^\(\d+\)\s*/, '');   // e.g. "2010 JO179", "3I/ATLAS"
+const day = (iso: string) => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const num = (v: number, d = 0) => v.toLocaleString('en-GB', { minimumFractionDigits: d, maximumFractionDigits: d });
+const path = (pts: number[][], X: (v: number) => number, Y: (v: number) => number) =>
+  pts.length ? 'M' + pts.map(([x, y]) => `${X(x).toFixed(1)},${Y(y).toFixed(1)}`).join('L') : '';
+// A square plot of half-width `half` (data units) in a 320-unit box.
+const square = (half: number, cx = 0, cy = 0) => {
+  const s = 150 / half, c = 160;
+  return { s, c, X: (v: number) => c + (v - cx) * s, Y: (v: number) => c - (v - cy) * s };
+};
+// A square that frames a set of points, with a margin.
+const framing = (pts: number[][]) => {
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  return square(0.54 * Math.max(x1 - x0, y1 - y0), (x0 + x1) / 2, (y0 + y1) / 2);
+};
+const v = fig.validation;
+const planetName: Record<string, string> = { mercury: 'Mercury', venus: 'Venus', earth: 'Earth', mars: 'Mars', jupiter: 'Jupiter', saturn: 'Saturn', uranus: 'Uranus', neptune: 'Neptune' };
+
+// ---------------------------------------------------------------- outer-resonance
+let outer: any = null;
+if (view === 'outer-resonance') {
+  const A = framing([...fig.helio.object, ...fig.helio.planets.neptune]);
+  const R = square(125);
+  const st = fig.angle.stats;
+  // resonant-angle chart: 600 x 220 box
+  const W = 600, Hh = 220, L = 46, B = 30, T = 12, Rr = 12;
+  const tx = (t: number) => L + (t / st.years) * (W - L - Rr);
+  const ty = (d: number) => T + (1 - d / 360) * (Hh - T - B);
+  const dots = fig.angle.t.map((t: number, k: number) => `M${tx(t).toFixed(1)},${ty(fig.angle.theta[k]).toFixed(1)}h0.01`).join('');
+  outer = {
+    A, R, W, Hh, L, B, T, Rr, tx, ty, dots, st,
+    planets: Object.entries(fig.helio.planets).map(([k, pts]) => ({ k, d: path(pts as number[][], A.X, A.Y), now: fig.helio.now[k] })),
+    object: path(fig.helio.object, A.X, A.Y), now: fig.helio.now.object,
+    rot: path(fig.rotating.path, R.X, R.Y), nepR: fig.rotating.neptune_r, peri: fig.rotating.pericentres,
+    yticks: [0, 90, 180, 270, 360], xticks: [0, 50000, 100000, 150000, 200000],
+  };
+}
+
+// ---------------------------------------------------------------- hyperbolic
+let hyp: any = null;
+if (view === 'hyperbolic') {
+  const A = square(6);
+  const ev = fig.events;
+  // distance chart over a window around perihelion
+  const from = '2025-05-01', to = '2026-07-31';
+  const idx = fig.dates.map((d: string, k: number) => [d, k]).filter(([d]: [string]) => d >= from && d <= to).map(([, k]: [string, number]) => k);
+  const t0 = Date.parse(from), t1 = Date.parse(to);
+  const W = 600, Hh = 250, L = 40, B = 30, T = 24, Rr = 12, ymax = 8;
+  const tx = (iso: string) => L + ((Date.parse(iso) - t0) / (t1 - t0)) * (W - L - Rr);
+  const ty = (d: number) => T + (1 - d / ymax) * (Hh - T - B);   // clipped to the plot area
+  const line = (key: string) => 'M' + idx.map((k: number) => `${tx(fig.dates[k]).toFixed(1)},${ty(fig.dist[key][k]).toFixed(1)}`).join('L');
+  const months = ['2025-07-01', '2025-10-01', '2026-01-01', '2026-04-01', '2026-07-01'];
+  hyp = {
+    A, ev, W, Hh, L, B, T, Rr, tx, ty, months, ymax,
+    orbits: Object.entries(fig.orbits).map(([k, pts]) => ({ k, d: path(pts as number[][], A.X, A.Y) })),
+    path: path(fig.path, A.X, A.Y),
+    lines: [['sun', '#e9a160', 'Sun', 14], ['earth', '#1b3040', 'Earth', -8], ['mars', '#b5523b', 'Mars', 14], ['jupiter', '#7a6cb0', 'Jupiter', 14]].map(([k, c, label, dy]) => ({ k, c, label, dy, d: line(k as string) })),
+  };
+}
+
+// ---------------------------------------------------------------- earth-capture
+let cap: any = null;
+if (view === 'earth-capture') {
+  const A = square(0.02);
+  const ins = fig.inside;
+  const k0 = fig.dates.indexOf(ins.from), k1 = fig.dates.indexOf(ins.to);
+  const W = 600, Hh = 230, L = 52, B = 30, T = 24, Rr = 12, ymax = 0.08;
+  const t0 = Date.parse(fig.dates[0]), t1 = Date.parse(fig.dates[fig.dates.length - 1]);
+  const tx = (iso: string) => L + ((Date.parse(iso) - t0) / (t1 - t0)) * (W - L - Rr);
+  const ty = (d: number) => T + (1 - d / ymax) * (Hh - T - B);   // clipped to the plot area
+  cap = {
+    A, ins, W, Hh, L, B, T, Rr, tx, ty, ymax,
+    before: path(fig.path.slice(0, k0 + 1), A.X, A.Y), during: path(fig.path.slice(k0, k1 + 1), A.X, A.Y), after: path(fig.path.slice(k1), A.X, A.Y),
+    dist: 'M' + fig.dates.map((d: string, k: number) => `${tx(d).toFixed(1)},${ty(fig.dist[k]).toFixed(1)}`).join('L'),
+    months: ['2006-04-01', '2006-07-01', '2006-10-01', '2007-01-01', '2007-04-01', '2007-07-01', '2007-10-01', '2008-01-01'],
+  };
+}
+
+// ---------------------------------------------------------------- element table (from the cometary elements)
+const c = data.com, cs = data.comSigma;
+const GM_SUN = 2.959122082855911e-4, AU_DAY_KMS = 1731.456837;
+const deg = (x: number) => `${x.toFixed(4)}°`;
+const sig = (x: number) => (x ? x.toPrecision(2) : '');
+const rows: [string, string, string][] = [
+  ['Perihelion distance, q', `${c.q.toFixed(6)} au`, cs.q ? `${sig(cs.q)} au` : ''],
+  ['Eccentricity, e', c.e.toFixed(6), sig(cs.e)],
+  ['Inclination to the ecliptic, i', deg(c.i), cs.i ? `${sig(cs.i)}°` : ''],
+  ['Longitude of ascending node, Ω', deg(c.node), cs.node ? `${sig(cs.node)}°` : ''],
+  ['Argument of perihelion, ω', deg(c.argperi), cs.argperi ? `${sig(cs.argperi)}°` : ''],
+  ['Time of perihelion', mjdToDate(c.peri_time).toISOString().slice(0, 10) + ` (MJD ${c.peri_time.toFixed(3)})`, cs.peri_time ? `${sig(cs.peri_time)} d` : ''],
+];
+if (c.e < 1) {
+  const a = c.q / (1 - c.e);
+  rows.push(['Semi-major axis, a', `${a.toFixed(4)} au`, ''], ['Aphelion distance, Q', `${(a * (1 + c.e)).toFixed(3)} au`, ''],
+    ['Orbital period', a > 5 ? `${num(Math.pow(a, 1.5), 0)} years` : `${(365.25 * Math.pow(a, 1.5)).toFixed(1)} days`, '']);
+} else {
+  const a = c.q / (1 - c.e);   // negative for a hyperbola
+  rows.push(['Speed far from the Sun, v∞', `${(Math.sqrt(GM_SUN / -a) * AU_DAY_KMS).toFixed(1)} km/s`, '']);
+}
+if (data.H) rows.push(['Absolute magnitude, H', data.H.toFixed(2), '']);
+const epoch = mjdToDate(data.epochMJD_TT).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const arc = /day/.test(data.arc) ? `an arc of ${data.arc}` : `${data.arc}${data.nopp ? ` at ${data.nopp} oppositions` : ''}`;
+---
+{outer && <>
+<div class="obj-figures">
+  <figure class="obj-figure">
+    <svg viewBox="0 0 320 320" role="img" aria-labelledby="objf-a-cap">
+      {outer.planets.map((p: any) => <path d={p.d} fill="none" stroke={p.k === 'neptune' ? '#7d939b' : '#c3d0d4'} stroke-width={p.k === 'neptune' ? 1.3 : 1} stroke-dasharray={p.k === 'neptune' ? undefined : '3 3'}/>)}
+      <path d={outer.object} fill="none" stroke="#11949b" stroke-width="1.6"/>
+      <circle cx={outer.A.X(0)} cy={outer.A.Y(0)} r="4" fill="#e9a160"/>
+      {outer.planets.filter((p: any) => p.k === 'neptune').map((p: any) => <><circle cx={outer.A.X(p.now[0])} cy={outer.A.Y(p.now[1])} r="3.5" fill="#435866"/><text x={outer.A.X(p.now[0]) + 6} y={outer.A.Y(p.now[1]) - 6} class="obj-label">Neptune</text></>)}
+      <circle cx={outer.A.X(outer.now[0])} cy={outer.A.Y(outer.now[1])} r="4" fill="#11949b"/>
+      <text x={outer.A.X(outer.now[0]) + 7} y={outer.A.Y(outer.now[1]) + 4} class="obj-label">{short}</text>
+      <line x1="16" y1="304" x2={16 + 25 * outer.A.s} y2="304" stroke="#435866" stroke-width="1.2"/>
+      <text x="16" y="298" class="obj-label">25 au</text>
+    </svg>
+    <figcaption id="objf-a-cap"><b>Around the Sun.</b> The orbit of {short} (teal) and those of the four giant planets (Neptune solid, Jupiter, Saturn and Uranus dashed), seen from above the plane of Earth’s orbit. Dots: positions on {day(fig.epoch)}. Its orbit is tilted by {c.i.toFixed(0)}° and reaches from {c.q.toFixed(0)} to {(c.q / (1 - c.e) * (1 + c.e)).toFixed(0)} au from the Sun.</figcaption>
+  </figure>
+  <figure class="obj-figure">
+    <svg viewBox="0 0 320 320" role="img" aria-labelledby="objf-b-cap">
+      <circle cx={outer.R.c} cy={outer.R.c} r={outer.nepR * outer.R.s} fill="none" stroke="#c3d0d4" stroke-width="1" stroke-dasharray="3 3"/>
+      <path d={outer.rot} fill="none" stroke="#11949b" stroke-width="0.8" stroke-opacity="0.8"/>
+      {outer.peri.map((p: number[]) => <circle cx={outer.R.X(p[0])} cy={outer.R.Y(p[1])} r="3.2" fill="#e9a160"/>)}
+      <circle cx={outer.R.c} cy={outer.R.c} r="4" fill="#e9a160"/>
+      <circle cx={outer.R.X(outer.nepR)} cy={outer.R.c} r="4" fill="#435866"/>
+      <text x={outer.R.X(outer.nepR) + 7} y={outer.R.c + 4} class="obj-label">Neptune</text>
+      <line x1="16" y1="304" x2={16 + 25 * outer.R.s} y2="304" stroke="#435866" stroke-width="1.2"/>
+      <text x="16" y="298" class="obj-label">25 au</text>
+    </svg>
+    <figcaption id="objf-b-cap"><b>Turning with Neptune.</b> One full cycle of the resonance, {fig.resonance[0]} orbits of Neptune (about {num(fig.cycle_years)} years), in a frame that turns with Neptune, so that Neptune stays fixed (right). In that time {short} goes round the Sun {fig.resonance[1]} times. Its closest approaches to the Sun (orange dots) fall at {fig.rotating.pericentres.length} places spaced around the orbit, and throughout the cycle it never comes within about {num(fig.rotating.min_to_neptune)} au of Neptune.</figcaption>
+  </figure>
+</div>
+<figure class="obj-figure obj-wide">
+  <svg viewBox={`0 0 ${outer.W} ${outer.Hh}`} role="img" aria-labelledby="objf-c-cap">
+    {outer.yticks.map((d: number) => <><line x1={outer.L} x2={outer.W - outer.Rr} y1={outer.ty(d)} y2={outer.ty(d)} stroke={d === 180 ? '#c3d0d4' : '#edf2f3'} stroke-width="1"/><text x={outer.L - 6} y={outer.ty(d) + 4} text-anchor="end" class="obj-label">{d}°</text></>)}
+    {outer.xticks.map((t: number, k: number) => <text x={outer.tx(t)} y={outer.Hh - 10} text-anchor={k === 0 ? 'start' : k === outer.xticks.length - 1 ? 'end' : 'middle'} class="obj-label">{t === 0 ? 'now' : `${num(t / 1000)},000 yr`}</text>)}
+    <path d={outer.dots} stroke="#11949b" stroke-width="2.4" stroke-linecap="round"/>
+  </svg>
+  <figcaption id="objf-c-cap"><b>The resonant angle.</b> θ = {fig.resonance[0]}λ − {fig.resonance[1]}λ<sub>N</sub> − {fig.resonance[0] - fig.resonance[1]}ϖ (λ and λ<sub>N</sub> the mean longitudes of {short} and Neptune, ϖ the longitude of perihelion of {short}), every {outer.st.every_years} years for the next {num(outer.st.years)} years. It never circulates: it swings around {num(outer.st.centre_deg)}° between {num(outer.st.min_deg)}° and {num(outer.st.max_deg)}°{outer.st.libration_period_years ? `, with a period of about ${num(outer.st.libration_period_years)} years` : ''}. Meanwhile the ratio of its orbital period to Neptune’s stays between {outer.st.ratio_min.toFixed(3)} and {outer.st.ratio_max.toFixed(3)} (21/5 = 4.2).</figcaption>
+</figure>
+</>}
+
+{hyp && <div class="obj-figures">
+  <figure class="obj-figure">
+    <svg viewBox="0 0 320 320" role="img" aria-labelledby="objf-a-cap">
+      <defs><clipPath id="objf-clip"><rect x="0" y="0" width="320" height="320"/></clipPath></defs>
+      <g clip-path="url(#objf-clip)">
+        {hyp.orbits.map((o: any) => <path d={o.d} fill="none" stroke={o.k === 'earth' ? '#7d939b' : '#c3d0d4'} stroke-width="1" stroke-dasharray={o.k === 'earth' ? undefined : '3 3'}/>)}
+        <path d={hyp.path} fill="none" stroke="#11949b" stroke-width="1.6"/>
+      </g>
+      <circle cx={hyp.A.c} cy={hyp.A.c} r="4" fill="#e9a160"/>
+      {Object.entries(fig.planets_at_perihelion).map(([k, p]: [string, any]) => <><circle cx={hyp.A.X(p[0])} cy={hyp.A.Y(p[1])} r="3.2" fill="#435866"/><text x={hyp.A.X(p[0]) + 6} y={hyp.A.Y(p[1]) + 4} class="obj-label">{planetName[k]}</text></>)}
+      <circle cx={hyp.A.X(fig.perihelion_xy[0])} cy={hyp.A.Y(fig.perihelion_xy[1])} r="3.6" fill="#11949b"/>
+      <text x={hyp.A.X(fig.perihelion_xy[0]) - 6} y={hyp.A.Y(fig.perihelion_xy[1]) - 7} text-anchor="end" class="obj-label">perihelion</text>
+      <circle cx={hyp.A.X(fig.discovery.xy[0])} cy={hyp.A.Y(fig.discovery.xy[1])} r="3.6" fill="#fff" stroke="#11949b" stroke-width="1.4"/>
+      <text x={hyp.A.X(fig.discovery.xy[0]) + 7} y={hyp.A.Y(fig.discovery.xy[1]) + 4} class="obj-label">discovery</text>
+      <line x1="16" y1="304" x2={16 + 1 * hyp.A.s} y2="304" stroke="#435866" stroke-width="1.2"/>
+      <text x="16" y="298" class="obj-label">1 au</text>
+    </svg>
+    <figcaption id="objf-a-cap"><b>Through the inner Solar System.</b> The path of {short} (teal) from {day(fig.start)} to {day(fig.stop)}, seen from above the plane of Earth’s orbit, with the orbits of Mercury to Jupiter (Earth solid). Open dot: its position at discovery ({day(fig.discovery.date)}); filled dot: perihelion ({day(hyp.ev.sun.date)}), with the Earth, Mars and Jupiter where they were on that day. It moves clockwise, against the planets’ direction of travel.</figcaption>
+  </figure>
+</div>}
+{hyp && <figure class="obj-figure obj-wide">
+    <svg viewBox={`0 0 ${hyp.W} ${hyp.Hh}`} role="img" aria-labelledby="objf-b-cap">
+      {[0, 2, 4, 6, 8].map((d) => <><line x1={hyp.L} x2={hyp.W - hyp.Rr} y1={hyp.ty(d)} y2={hyp.ty(d)} stroke="#edf2f3"/><text x={hyp.L - 6} y={hyp.ty(d) + 4} text-anchor="end" class="obj-label">{d}</text></>)}
+      {hyp.months.map((m: string) => <text x={hyp.tx(m)} y={hyp.Hh - 10} text-anchor="middle" class="obj-label">{new Date(m).toLocaleDateString('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' })}</text>)}
+      <text x={hyp.L - 6} y={hyp.T - 12} text-anchor="end" class="obj-label">au</text>
+      <defs><clipPath id="objf-chart"><rect x={hyp.L} y={hyp.T} width={hyp.W - hyp.L - hyp.Rr} height={hyp.Hh - hyp.T - hyp.B}/></clipPath></defs>
+      <g clip-path="url(#objf-chart)">{hyp.lines.map((l: any) => <path d={l.d} fill="none" stroke={l.c} stroke-width="1.6"/>)}</g>
+      {hyp.lines.map((l: any) => <><circle cx={hyp.tx(hyp.ev[l.k].date)} cy={hyp.ty(hyp.ev[l.k].au)} r="3" fill={l.c}/><text x={hyp.tx(hyp.ev[l.k].date)} y={hyp.ty(hyp.ev[l.k].au) + l.dy} text-anchor="middle" class="obj-label">{l.label} {hyp.ev[l.k].au.toFixed(2)}</text></>)}
+    </svg>
+    <figcaption id="objf-b-cap"><b>How close it came.</b> Distance of {short} from the Sun (orange), the Earth (dark), Mars (red) and Jupiter (purple), in au, May 2025 to July 2026. Closest approaches in this integration: the Sun {hyp.ev.sun.au.toFixed(2)} au on {day(hyp.ev.sun.date)}; Mars {hyp.ev.mars.au.toFixed(2)} au on {day(hyp.ev.mars.date)}; the Earth {hyp.ev.earth.au.toFixed(2)} au on {day(hyp.ev.earth.date)}; Jupiter {hyp.ev.jupiter.au.toFixed(2)} au on {day(hyp.ev.jupiter.date)}.</figcaption>
+  </figure>}
+
+{cap && <div class="obj-figures">
+  <figure class="obj-figure">
+    <svg viewBox="0 0 320 320" role="img" aria-labelledby="objf-a-cap">
+      <defs><clipPath id="objf-clip"><rect x="0" y="0" width="320" height="320"/></clipPath></defs>
+      <line x1={cap.A.c} y1="10" x2={cap.A.c} y2="310" stroke="#edf2f3"/>
+      <line x1="10" y1={cap.A.c} x2="310" y2={cap.A.c} stroke="#edf2f3"/>
+      <circle cx={cap.A.c} cy={cap.A.c} r={fig.hill_au * cap.A.s} fill="none" stroke="#e9a160" stroke-width="1" stroke-dasharray="3 3"/>
+      <circle cx={cap.A.c} cy={cap.A.c} r={fig.moon_au * cap.A.s} fill="none" stroke="#9fb4bb" stroke-width="1" stroke-dasharray="2 2"/>
+      <g clip-path="url(#objf-clip)">
+        <path d={cap.before} fill="none" stroke="#9fb4bb" stroke-width="1"/>
+        <path d={cap.after} fill="none" stroke="#9fb4bb" stroke-width="1"/>
+        <path d={cap.during} fill="none" stroke="#11949b" stroke-width="1.5"/>
+      </g>
+      <circle cx={cap.A.c} cy={cap.A.c} r="3" fill="#1b3040"/>
+      <text x={cap.A.c - 8} y={cap.A.c + 16} text-anchor="end" class="obj-label">Earth</text>
+      <circle cx={cap.A.X(cap.ins.from_xy[0])} cy={cap.A.Y(cap.ins.from_xy[1])} r="3.4" fill="#fff" stroke="#11949b" stroke-width="1.4"/>
+      <circle cx={cap.A.X(cap.ins.to_xy[0])} cy={cap.A.Y(cap.ins.to_xy[1])} r="3.4" fill="#11949b"/>
+      <text x="14" y={cap.A.c - 6} class="obj-label">← to the Sun</text>
+      <line x1={310 - 0.01 * cap.A.s} y1="304" x2="310" y2="304" stroke="#435866" stroke-width="1.2"/>
+      <text x="310" y="298" text-anchor="end" class="obj-label">0.01 au</text>
+    </svg>
+    <figcaption id="objf-a-cap"><b>Around the Earth.</b> The path of {short} from {day(fig.start)} to {day(fig.stop)}, in a frame centred on the Earth that turns once a year so that the Sun stays to the left. Teal: while it was inside the Earth’s Hill sphere (orange dashed circle, {fig.hill_au.toFixed(3)} au), from {day(cap.ins.from)} (open dot) to {day(cap.ins.to)} (filled dot); grey before and after. The small dashed circle is the Moon’s orbit.</figcaption>
+  </figure>
+</div>}
+{cap && <figure class="obj-figure obj-wide">
+    <svg viewBox={`0 0 ${cap.W} ${cap.Hh}`} role="img" aria-labelledby="objf-b-cap">
+      <rect x={cap.tx(cap.ins.from)} y={cap.T} width={cap.tx(cap.ins.to) - cap.tx(cap.ins.from)} height={cap.Hh - cap.T - cap.B} fill="#eef7f7"/>
+      {[0, 0.02, 0.04, 0.06, 0.08].map((d) => <><line x1={cap.L} x2={cap.W - cap.Rr} y1={cap.ty(d)} y2={cap.ty(d)} stroke="#edf2f3"/><text x={cap.L - 6} y={cap.ty(d) + 4} text-anchor="end" class="obj-label">{d.toFixed(2)}</text></>)}
+      <text x={cap.L - 6} y={cap.T - 12} text-anchor="end" class="obj-label">au</text>
+      {cap.months.map((m: string) => <text x={cap.tx(m)} y={cap.Hh - 10} text-anchor="middle" class="obj-label">{new Date(m).toLocaleDateString('en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' })}</text>)}
+      <line x1={cap.L} x2={cap.W - cap.Rr} y1={cap.ty(fig.hill_au)} y2={cap.ty(fig.hill_au)} stroke="#e9a160" stroke-dasharray="3 3"/>
+      <text x={cap.W - cap.Rr} y={cap.ty(fig.hill_au) - 4} text-anchor="end" class="obj-label">Hill sphere</text>
+      <line x1={cap.L} x2={cap.W - cap.Rr} y1={cap.ty(fig.moon_au)} y2={cap.ty(fig.moon_au)} stroke="#9fb4bb" stroke-dasharray="2 2"/>
+      <text x={cap.W - cap.Rr} y={cap.ty(fig.moon_au) - 4} text-anchor="end" class="obj-label">Moon’s distance</text>
+      <defs><clipPath id="objf-chart"><rect x={cap.L} y={cap.T} width={cap.W - cap.L - cap.Rr} height={cap.Hh - cap.T - cap.B}/></clipPath></defs>
+      <path d={cap.dist} fill="none" stroke="#11949b" stroke-width="1.6" clip-path="url(#objf-chart)"/>
+    </svg>
+    <figcaption id="objf-b-cap"><b>Distance from the Earth.</b> Shaded: the {cap.ins.days} days inside the Hill sphere, during which it went round the Earth about {cap.ins.revolutions.toFixed(1)} times in the turning frame. Its closest approach, {num(fig.closest.km)} km on {day(fig.closest.date)}, was inside the Moon’s distance.</figcaption>
+  </figure>}
+
+<p class="obj-method">{fig.method} {view === 'earth-capture'
+  ? <>Check: the Horizons state of {day(fig.start)} integrated under gravity alone (REBOUND IAS15, with the Sun, planets and Moon) stays within {num(v.max_km)} km of the Horizons positions until {day(fig.stop)}; the small difference is the solar-radiation and other non-gravitational forces in the JPL solution. </>
+  : view === 'hyperbolic'
+  ? <>Check: compared with JPL Horizons positions ({v.against.replace(/^Rec #:\s*\d+\s*\(\+COV\)\s*/, '')}, a solution that includes non-gravitational forces), every 20 days from {day('2025-06-14')} to {day('2026-06-13')}, the largest difference is {num(v.max_km)} km. </>
+  : <>Check: compared with JPL Horizons barycentric positions every 25 years from 1900 to 2150, the largest difference is {v.max_au} au. </>}
+  Computed once with <code>tools/export_object_figures.py</code> on {day(fig.made)}. An illustration, not an ephemeris.</p>
+
+<div class="obj-table-wrap">
+  <table class="obj-table">
+    <caption>Orbit of {name}: osculating heliocentric ecliptic elements at epoch {epoch} (MJD {data.epochMJD_TT} TT){Object.values(cs).some((x) => x) ? ', with 1σ uncertainties' : ''}</caption>
+    <thead><tr><th scope="col">Quantity</th><th scope="col">Value</th><th scope="col">Uncertainty (1σ)</th></tr></thead>
+    <tbody>{rows.map(([q, val, u]) => <tr><th scope="row">{q}</th><td>{val}</td><td>{u}</td></tr>)}</tbody>
+  </table>
+  <p class="obj-method">From the <a href="https://data.minorplanetcenter.net/api/get-orb" target="_blank" rel="noopener noreferrer">MPC Orbits API</a>, retrieved {data.fetched}: {data.nobs} observations over {arc}; fitted {String(data.fitDate).slice(0, 10).replace(/\//g, '-')}.</p>
+</div>
+
+<style>
+  .obj-figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 22px; margin: 26px 0 8px; }
+  .obj-figure { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 7px; padding: 14px; }
+  .obj-figure svg { display: block; width: 100%; height: auto; max-width: 420px; margin: 0 auto; }
+  .obj-wide { margin: 22px 0 8px; }
+  .obj-wide svg { max-width: 640px; }
+  .obj-label { font-size: 11px; fill: #435866; font-family: inherit; }
+  .obj-method { font-size: 13px !important; line-height: 1.6 !important; color: var(--muted) !important; }
+  .obj-table-wrap { overflow-x: auto; margin-top: 22px; }
+  .obj-table { width: 100%; min-width: 0; border-collapse: collapse; background: #fff; border: 1px solid var(--line); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+  .obj-table caption { text-align: left; font-size: 13px; color: var(--body); padding-bottom: 8px; caption-side: top; }
+  .obj-table th, .obj-table td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+  .obj-table thead th { font-size: 12px; color: var(--muted); font-weight: 640; }
+  .obj-table tbody th { font-weight: 500; color: var(--ink); }
+</style>

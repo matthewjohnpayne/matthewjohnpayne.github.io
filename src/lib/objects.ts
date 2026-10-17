@@ -24,6 +24,14 @@ export function objectStatus(e: Entry): 'live' | 'queued' | 'draft' {
 
 // Production builds include only live objects. `npm run dev` includes drafts and queued months
 // too, labelled on their pages, so they can be reviewed.
+// The figure data cached by tools/export_object_figures.py, for the views it computes.
+const figureFiles = import.meta.glob<{ default: any }>('../data/objects/*-figure.json', { eager: true });
+export function figureData(id: string) {
+  const file = figureFiles[`../data/objects/${id}-figure.json`];
+  if (!file) throw new Error(`[objects] no src/data/objects/${id}-figure.json; run tools/export_object_figures.py ${id}`);
+  return file.default;
+}
+
 export async function objectsByMonth() {
   const all = (await getCollection('objects')).sort((a, b) => b.data.month.localeCompare(a.data.month));
   return import.meta.env.DEV ? all : all.filter((e) => objectStatus(e) === 'live');
