@@ -1,0 +1,39 @@
+name: MPC staff check
+# Monthly: compare the MPC About page with src/data/mpc-staff.json (tools/check_mpc_staff.py) and open
+# a maintenance issue listing any differences. The data file is never edited automatically: roles
+# follow the MPC's wording, and former staff are added only with Matthew's say-so (AGENTS.md).
+on:
+  schedule:
+    - cron: '51 5 7 * *'   # 05:51 UTC on the 7th of each month
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare
+        id: staff
+        run: |
+          set +e
+          python3 tools/check_mpc_staff.py > staff.md; rc=$?
+          cat staff.md
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          [ $rc -eq 2 ] && echo "::warning::MPC About page unreachable or changed layout"
+          exit 0
+      - name: Open an issue
+        if: steps.staff.outputs.rc == '1'
+        run: |
+          node tools/task_issue.mjs --label maintenance --title "MPC About page differs from the staff list" \
+            --what "$(cat staff.md)" \
+            --why "The People page lists MPC staff from src/data/mpc-staff.json. Say which changes to make (or ask Claude to make them), and close this issue."

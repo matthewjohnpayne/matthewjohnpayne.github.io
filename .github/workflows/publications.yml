@@ -1,0 +1,87 @@
+name: Publications from ADS
+# Weekly: re-run Matthew's confirmed ADS query (tools/fetch_publications.py). Changed records are
+# committed automatically once the site builds; each new paper also gets a claude-task issue
+# ("/new-paper <bibcode>") for the parts that need judgement: its research theme, whether to feature
+# it, and whether it deserves a notebook or an interactive page.
+on:
+  schedule:
+    - cron: '41 4 * * 1'   # 04:41 UTC on Mondays
+  workflow_dispatch:
+permissions:
+  contents: write   # commit the generated records
+  issues: write     # task issues
+  actions: write    # start the deploy and CV workflows (a GITHUB_TOKEN push does not trigger them)
+concurrency:
+  group: auto-commit
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check the ADS token
+        id: token
+        env:
+          ADS_API_TOKEN: ${{ secrets.ADS_API_TOKEN }}
+        run: |
+          if [ -n "$ADS_API_TOKEN" ]; then echo "present=yes" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "present=no" >> "$GITHUB_OUTPUT"
+          node tools/task_issue.mjs --label maintenance \
+            --title "Add the ADS token as a repository secret" \
+            --what "The weekly publications workflow needs an ADS API token and none is set, so publications are not being refreshed." \
+            --why "In GitHub: Settings → Secrets and variables → Actions → New repository secret. Name: ADS_API_TOKEN. Value: the token from https://ui.adsabs.harvard.edu/user/settings/token (the same one saved locally in ~/.ads/dev_key). Then run the workflow again from the Actions tab, or wait for Monday."
+      - name: Fetch publications
+        if: steps.token.outputs.present == 'yes'
+        env:
+          ADS_API_TOKEN: ${{ secrets.ADS_API_TOKEN }}
+        run: python3 tools/fetch_publications.py
+      - name: Find changes
+        if: steps.token.outputs.present == 'yes'
+        id: changes
+        run: |
+          if [ -z "$(git status --porcelain -- src/content/publications src/data/collaborators.json)" ]; then
+            git checkout -- src/data/publications-meta.json   # only the fetch date changed
+            echo "changed=no" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "changed=yes" >> "$GITHUB_OUTPUT"
+          new=$(git ls-files --others --exclude-standard -- src/content/publications | xargs -r grep -h '^bibcode:' | sed -E 's/^bibcode: *"?([^"]*)"?/\1/' | tr '\n' ' ')
+          echo "new=$new" >> "$GITHUB_OUTPUT"
+          git status --short -- src/content/publications src/data
+      - name: Build the site
+        if: steps.changes.outputs.changed == 'yes'
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+      - name: Commit
+        if: steps.changes.outputs.changed == 'yes'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A src/content/publications src/data/collaborators.json src/data/publications-meta.json
+          git commit -m "Publications: weekly refresh from ADS${{ steps.changes.outputs.new && format(' (new: {0})', steps.changes.outputs.new) || '' }}"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Open a task for each new paper
+        if: steps.changes.outputs.new != ''
+        run: |
+          for b in ${{ steps.changes.outputs.new }}; do
+            f=$(grep -lF "bibcode: \"$b\"" src/content/publications/*.yaml | head -1)
+            title=$(grep -h '^title:' "$f" 2>/dev/null | sed -E 's/^title: *"?(.*[^"])"?$/\1/' || true)
+            node tools/task_issue.mjs --title "New paper: $b" \
+              --what "ADS lists a new refereed paper${title:+: \"$title\"} ($b). Its record was added to the site automatically." \
+              --why "Assign it to a research theme in src/data/research.json (the build warns until then), decide whether to feature it, and whether it deserves a notebook in science-notebooks or an interactive page." \
+              --command "claude \"/new-paper $b\""
+          done
+      - name: Rebuild the CV PDF and deploy
+        if: steps.changes.outputs.changed == 'yes'
+        run: |
+          gh workflow run cv-pdf.yml --ref main
+          gh workflow run deploy.yml --ref main

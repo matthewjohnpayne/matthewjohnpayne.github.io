@@ -11,12 +11,15 @@ import { fileURLToPath } from 'node:url';
 
 const OUT = fileURLToPath(new URL('../src/data/changelog.json', import.meta.url));
 const SKIP = [/^Initial commit$/];   // the empty placeholder repository from 2025
+// Routine commits by the scheduled workflows (data refreshes, publication updates, the CV PDF)
+// are left out; the changelog records changes made by people.
+const BOT = 'github-actions[bot]';
 
-const log = execFileSync('git', ['log', '--no-merges', '--format=%cs%x09%h%x09%s'], { encoding: 'utf8' });
+const log = execFileSync('git', ['log', '--no-merges', '--format=%cs%x09%h%x09%an%x09%s'], { encoding: 'utf8' });
 const months = [];
 for (const line of log.trim().split('\n')) {
-  const [date, hash, subject] = line.split('\t');
-  if (!subject || SKIP.some((re) => re.test(subject))) continue;
+  const [date, hash, author, subject] = line.split('\t');
+  if (!subject || author === BOT || SKIP.some((re) => re.test(subject))) continue;
   const month = date.slice(0, 7);
   if (months.at(-1)?.month !== month) months.push({ month, entries: [] });
   months.at(-1).entries.push({ date, hash, subject });

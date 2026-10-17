@@ -1,0 +1,50 @@
+name: CV PDF
+# Rebuild public/cv/Matthew_Payne_CV.pdf (tools/build_cv_pdf.sh) when its sources change, and commit
+# it if it differs. SOURCE_DATE_EPOCH and FORCE_SOURCE_DATE make the PDF reproducible, so an unchanged
+# CV produces an identical file and no commit. Also started by publications.yml after a refresh,
+# because commits made by workflows do not trigger push events.
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/data/cv.json
+      - src/content/publications/**
+      - src/content/talks/**
+      - src/content/people/**
+      - src/pages/cv/**
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write    # start the deploy
+concurrency:
+  group: auto-commit
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install TeX
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended lmodern
+      - name: Build the PDF
+        run: |
+          npm install --no-audit --no-fund
+          export SOURCE_DATE_EPOCH=$(git log -1 --format=%ct) FORCE_SOURCE_DATE=1
+          bash tools/build_cv_pdf.sh
+      - name: Commit and deploy
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/cv/Matthew_Payne_CV.pdf
+          git diff --cached --quiet && { echo "PDF unchanged."; exit 0; }
+          git commit -m "CV: rebuild the PDF"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          gh workflow run deploy.yml --ref main

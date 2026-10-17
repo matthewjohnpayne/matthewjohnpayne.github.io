@@ -23,7 +23,25 @@ the validation tools pass. Anything that changes wording opens a pull request or
 | When | Workflow | Result |
 |---|---|---|
 | Daily 06:17 UTC | `deploy.yml` | Rebuild: refreshes build-time copies, switches the Object of the Month on the 1st |
+| Mondays | `publications.yml` | Re-runs the ADS query (needs the `ADS_API_TOKEN` repository secret; opens an issue if it is missing). Changed records are committed once the site builds; each new paper gets a claude-task issue `/new-paper <bibcode>`; then starts `cv-pdf.yml` and the deploy |
+| Wednesdays | `links.yml` | Builds the site, checks every link with lychee (`lychee.toml`) and that every Google Drive link is public (`tools/check_drive_links.mjs`); problems go into one claude-task issue `/fix-links` |
+| 3rd of the month | `data-refresh.yml` | Refreshes `mpc-today.json`, `mpc-stats.json` and `card-figures.json`, records the run in `data-refresh.json`, builds, commits, deploys. The record changes every month, so there is always a commit, which keeps GitHub from pausing scheduled workflows (it does so after 60 days without commits) |
+| 5th of the month | `epoch-check.yml` | claude-task `/epoch-update` if the MPC standard epoch differs from `frames-ic.json` (`tools/check_mpc_epoch.py`) |
+| 7th of the month | `staff-check.yml` | Maintenance issue listing differences between the MPC About page and `mpc-staff.json` (`tools/check_mpc_staff.py`); never edits the file |
 | 20th of the month | `object-reminder.yml` | Issue if no reviewed object is queued for next month |
+| 5 Jan, 5 Apr, 5 Jul | `calendar.yml` | claude-task `/update-people`; maintenance issue to review the CV; claude-task `/review-ideas` |
+| On push (CV sources) | `cv-pdf.yml` | Rebuilds `public/cv/Matthew_Payne_CV.pdf` reproducibly and commits it if it changed |
+| Monthly | `dependabot.yml` | One grouped pull request each for npm packages and GitHub Actions |
+| Pull requests | `build-check.yml` | Build and type-check must pass |
+
+Notes:
+- Commits made by workflows (as `github-actions[bot]`) do not trigger other workflows, so the
+  committing workflows start `deploy.yml` (and `cv-pdf.yml`) themselves with `gh workflow run`.
+  They share the concurrency group `auto-commit` and rebase before pushing.
+- The changelog leaves out commits by `github-actions[bot]`.
+- Not refreshed automatically: anything tied to the MPC standard epoch (`frames-ic.json`, object
+  orbits, the mpc_orb page samples), because figures, validation and page text depend on it.
+- Every workflow can also be run by hand from the Actions tab (`workflow_dispatch`).
 
 ## Tier 3: tasks for a local Claude session
 
