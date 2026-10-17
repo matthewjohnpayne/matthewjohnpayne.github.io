@@ -5,6 +5,11 @@
 // changes your orbit rather than simply pushing you along. A dotted line shows the
 // path you are on. Shattered asteroids conserve momentum.
 //
+// In wave 3 an interstellar spacecraft, Rama (after Arthur C. Clarke), passes through on a
+// hyperbolic orbit. Hit it and it releases a pod that brakes into an orbit about the Sun (see
+// POD); match orbits with the pod to collect twin guns (two shots side by side, reloading twice as
+// fast) for as long as that ship survives.
+//
 // startKepleroids(container, { onExit, compact, onToggleSize }) builds the game inside container
 // and returns { destroy, setExpanded }. compact: a small window (shorter start text, larger ship
 // sprite); onToggleSize: shows an Expand/Shrink button and is called when it is pressed (or Esc
@@ -19,6 +24,13 @@ const ESCAPE_R = 1000;          // beyond this (about twice the view) a body has
 const DT = 1 / 240;
 const SIZES = [{ r: 34, pts: 20 }, { r: 20, pts: 50 }, { r: 11, pts: 100 }];
 const SHIP = { r: 9, thrust: 55, turn: 3.6, shot: 340, shotLife: 2.4, maxShots: 6, reload: 0.18 };
+const TWIN = { maxShots: 14, reload: 0.09, gap: 4 };   // twin guns: shot limit, reload (s), half-separation of the barrels
+// Rama: a cylinder (length L, diameter D) on a hyperbolic orbit with perihelion q and eccentricity
+// e, arriving `delay` seconds into wave 3 from radius `start`. The pod it releases has radius r and
+// brakes to a circular orbit if it is within rp of the Sun, otherwise to an ellipse with aphelion at
+// the release point and perihelion rp, so that it always comes back through the middle of the view.
+const RAMA = { wave: 3, delay: 5, L: 46, D: 16, q: [170, 260], e: [1.3, 1.6], start: 970 };
+const POD = { r: 7, rp: 250 };
 
 function mulberry(seed) {
   let a = seed >>> 0;
@@ -78,6 +90,7 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
   const keys = { left: false, right: false, thrust: false, fire: false };
   let state = 'title', ship = null, rocks = [], shots = [], sparks = [], score = 0, lives = 3, wave = 0;
   let showOrbit = true, reload = 0, respawn = 0, invuln = 0, last = 0, acc = 0, raf = 0, message = '';
+  let rama = null, pod = null, ramaTimer = -1;   // ramaTimer: seconds until Rama arrives (< 0: not due)
 
   function newShip() {
     const s = orbitState(240, 0, Math.PI / 2, 0, 1);
@@ -100,11 +113,12 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
       } while (ship && Math.hypot(st.x - ship.x, st.y - ship.y) < 180);
       rocks.push({ ...st, size: 0, shape: rockShape(0), spin: (rnd() - 0.5) * 2, rot: 0 });
     }
+    if (wave === RAMA.wave) ramaTimer = RAMA.delay;
     message = `Wave ${wave}`;
     setTimeout(() => { if (message === `Wave ${wave}`) message = ''; }, 1600);
   }
   function newGame() {
-    score = 0; lives = 3; wave = 0; shots = []; sparks = [];
+    score = 0; lives = 3; wave = 0; shots = []; sparks = []; rama = null; pod = null; ramaTimer = -1;
     newShip(); startWave();
     state = 'play'; overlay.hidden = true; canvas.focus();
   }
@@ -124,6 +138,35 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     const px = -uy / un, py = ux / un, kick = 35 + 25 * rnd();
     return [1, -1].map((sgn) => ({ x: rock.x + sgn * px * 6, y: rock.y + sgn * py * 6, vx: rock.vx + sgn * kick * px, vy: rock.vy + sgn * kick * py,
       size: rock.size + 1, shape: rockShape(rock.size + 1), spin: (rnd() - 0.5) * 3, rot: 0 }));
+  }
+
+  function launchRama() {
+    // inbound on a hyperbola: r = p / (1 + e cos f), starting where r = RAMA.start, before perihelion
+    const q = RAMA.q[0] + (RAMA.q[1] - RAMA.q[0]) * rnd(), e = RAMA.e[0] + (RAMA.e[1] - RAMA.e[0]) * rnd();
+    const p = q * (1 + e), f = -Math.acos((p / RAMA.start - 1) / e);
+    rama = { ...orbitState(q / (1 - e), e, 2 * Math.PI * rnd(), f, rnd() < 0.5 ? 1 : -1), hit: false, spin: 0 };
+    flash('Rama is passing through on a hyperbolic orbit: shoot it!', 2600);
+  }
+  /** Rama's frame: distance along its axis (which points along its motion) and across it. */
+  function ramaFrame(x, y) {
+    const v = Math.hypot(rama.vx, rama.vy) || 1, ux = rama.vx / v, uy = rama.vy / v, dx = x - rama.x, dy = y - rama.y;
+    return [dx * ux + dy * uy, -dx * uy + dy * ux];
+  }
+  const touchesRama = (x, y, pad) => { const [a, c] = ramaFrame(x, y); return Math.abs(a) < RAMA.L / 2 + pad && Math.abs(c) < RAMA.D / 2 + pad; };
+  function releasePod(shot) {
+    // the pod leaves where the shot struck and brakes at once to a tangential speed (vis-viva at
+    // aphelion r with perihelion rp), going round in the same sense as Rama
+    rama.hit = true;
+    const x = shot.x, y = shot.y, r = Math.hypot(x, y), rp = Math.min(r, POD.rp);
+    const v = Math.sqrt(2 * GM * rp / (r * (r + rp))), dir = Math.sign(rama.x * rama.vy - rama.y * rama.vx) || 1;
+    pod = { x, y, vx: -dir * v * y / r, vy: dir * v * x / r, age: 0 };
+    burst(x, y, rama.vx, rama.vy, 12, '#ffd36b');
+    flash('Rama released a pod: match its orbit to collect it', 3000);
+  }
+  function collectPod() {
+    pod = null; ship.twin = true;
+    burst(ship.x, ship.y, ship.vx, ship.vy, 16, '#ffd36b');
+    flash('Twin guns: two shots at a time, reloading twice as fast', 2600);
   }
 
   // the part of the world currently on screen, in world units
@@ -151,10 +194,11 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
       if (keys.thrust) { ship.vx += SHIP.thrust * Math.cos(ship.ang) * dt; ship.vy += SHIP.thrust * Math.sin(ship.ang) * dt; }
       stepBody(ship, dt);
       reload -= dt; invuln -= dt;
-      if (keys.fire && reload <= 0 && shots.length < SHIP.maxShots) {
-        reload = SHIP.reload;
+      const barrels = ship.twin ? [-TWIN.gap, TWIN.gap] : [0];
+      if (keys.fire && reload <= 0 && shots.length + barrels.length <= (ship.twin ? TWIN.maxShots : SHIP.maxShots)) {
+        reload = ship.twin ? TWIN.reload : SHIP.reload;
         const c = Math.cos(ship.ang), s = Math.sin(ship.ang);
-        shots.push({ x: ship.x + c * SHIP.r, y: ship.y + s * SHIP.r, vx: ship.vx + SHIP.shot * c, vy: ship.vy + SHIP.shot * s, life: SHIP.shotLife });
+        for (const g of barrels) shots.push({ x: ship.x + c * SHIP.r - s * g, y: ship.y + s * SHIP.r + c * g, vx: ship.vx + SHIP.shot * c, vy: ship.vy + SHIP.shot * s, life: SHIP.shotLife });
       }
       const r = Math.hypot(ship.x, ship.y);
       if (r < SUN_R + SHIP.r * 0.5 || r > ESCAPE_R) loseShip(r < SUN_R + 10 ? 'Burnt up in the Sun' : 'Escaped the Solar System');
@@ -178,6 +222,16 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     }
     for (const p of sparks) { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; }
     sparks = sparks.filter((p) => p.life > 0);
+    if (ramaTimer >= 0 && (ramaTimer -= dt) < 0) launchRama();
+    if (rama) {
+      stepBody(rama, dt); rama.spin += dt;
+      // gone for good once it is outbound beyond range (a hyperbola never returns)
+      if (Math.hypot(rama.x, rama.y) > ESCAPE_R && rama.x * rama.vx + rama.y * rama.vy > 0) { if (!rama.hit) flash('Rama has left the Solar System'); rama = null; }
+    }
+    if (pod) {
+      stepBody(pod, dt); pod.age += dt;
+      if (ship.alive && Math.hypot(ship.x - pod.x, ship.y - pod.y) < SHIP.r + POD.r) collectPod();
+    }
 
     // shots against rocks
     const born = [];
@@ -188,10 +242,17 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
       }
     }
     rocks = rocks.filter((k) => !k.dead).concat(born);
+    // shots against Rama: the first hit releases the pod; later ones glance off
+    if (rama) for (const s of shots) {
+      if (s.life <= 0 || !touchesRama(s.x, s.y, 1)) continue;
+      s.life = 0;
+      if (!rama.hit) releasePod(s); else burst(s.x, s.y, rama.vx, rama.vy, 3, '#c9d3dd');
+    }
     shots = shots.filter((s) => s.life > 0);
     // rocks against the ship
     if (ship.alive && invuln <= 0) {
       for (const k of rocks) if (Math.hypot(ship.x - k.x, ship.y - k.y) < SIZES[k.size].r + SHIP.r * 0.7) { loseShip('Hit by an asteroid'); break; }
+      if (ship.alive && rama && touchesRama(ship.x, ship.y, SHIP.r * 0.7)) loseShip('Flew into Rama');
     }
     if (!rocks.length && state === 'play') { score += 250 * wave; startWave(); }
   }
@@ -216,6 +277,38 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     view = { s: Math.min(w, h) / WORLD, cx: w / 2, cy: h / 2, w, h };
   }
   const X = (x) => view.cx + x * view.s, Y = (y) => view.cy + y * view.s;
+  function orbitLine(b, colour) {
+    const c = { x: b.x, y: b.y, vx: b.vx, vy: b.vy };
+    const r0 = Math.hypot(c.x, c.y), v2 = c.vx * c.vx + c.vy * c.vy, en = v2 / 2 - GM / r0;
+    const period = en < 0 ? 2 * Math.PI * Math.sqrt((-GM / (2 * en)) ** 3 / GM) : 8;
+    const T = Math.min(period * 1.01, 12), n = 360, dt = T / n;
+    ctx.strokeStyle = colour; ctx.setLineDash([3, 5]); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(X(c.x), Y(c.y));
+    for (let k = 0; k < n; k++) {
+      for (let j = 0; j < 4; j++) stepBody(c, dt / 4);
+      const r = Math.hypot(c.x, c.y);
+      ctx.lineTo(X(c.x), Y(c.y));
+      if (r < SUN_R || r > ESCAPE_R) break;
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+  function drawRama() {
+    // a cylinder seen side on, its axis along its motion; two bands drift round it as it spins
+    const v = Math.hypot(rama.vx, rama.vy) || 1, ux = rama.vx / v, uy = rama.vy / v;
+    const k = Math.max(1, 0.6 / view.s), hl = RAMA.L / 2 * k, hd = RAMA.D / 2 * k;
+    const pt = (a, c) => [X(rama.x) + (a * ux - c * uy) * view.s, Y(rama.y) + (a * uy + c * ux) * view.s];
+    ctx.strokeStyle = rama.hit ? '#8e99a4' : '#c9d3dd'; ctx.lineWidth = 1.6; ctx.beginPath();
+    ctx.moveTo(...pt(-hl, -hd)); ctx.lineTo(...pt(hl, -hd));
+    for (let j = 1; j <= 12; j++) ctx.lineTo(...pt(hl + 0.35 * hd * Math.sin(j * Math.PI / 12), -hd * Math.cos(j * Math.PI / 12)));
+    ctx.lineTo(...pt(-hl, hd));
+    for (let j = 1; j <= 12; j++) ctx.lineTo(...pt(-hl - 0.35 * hd * Math.sin(j * Math.PI / 12), hd * Math.cos(j * Math.PI / 12)));
+    ctx.stroke();
+    ctx.lineWidth = 1; ctx.beginPath();
+    for (const off of [0, Math.PI]) {
+      const c = hd * Math.cos((reduced ? 0.6 : rama.spin * 1.5) + off);
+      ctx.moveTo(...pt(-hl, c)); ctx.lineTo(...pt(hl, c));
+    }
+    ctx.stroke();
+  }
   function draw() {
     const { w, h, s } = view;
     ctx.fillStyle = '#050a14'; ctx.fillRect(0, 0, w, h);
@@ -224,21 +317,9 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     g.addColorStop(0, '#fff4c2'); g.addColorStop(0.35, '#ffcf66'); g.addColorStop(1, 'rgba(255,170,60,0)');
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(X(0), Y(0), SUN_R * 3 * s, 0, 2 * Math.PI); ctx.fill();
     if (!ship) return;
-    // the ship's path: integrate a copy ballistically for up to one orbit or 8 s
-    if (showOrbit && ship.alive && state === 'play') {
-      const c = { x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy };
-      const r0 = Math.hypot(c.x, c.y), v2 = c.vx * c.vx + c.vy * c.vy, en = v2 / 2 - GM / r0;
-      const period = en < 0 ? 2 * Math.PI * Math.sqrt((-GM / (2 * en)) ** 3 / GM) : 8;
-      const T = Math.min(period * 1.01, 12), n = 360, dt = T / n;
-      ctx.strokeStyle = 'rgba(36,185,190,0.55)'; ctx.setLineDash([3, 5]); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(X(c.x), Y(c.y));
-      for (let k = 0; k < n; k++) {
-        for (let j = 0; j < 4; j++) stepBody(c, dt / 4);
-        const r = Math.hypot(c.x, c.y);
-        ctx.lineTo(X(c.x), Y(c.y));
-        if (r < SUN_R || r > ESCAPE_R) break;
-      }
-      ctx.stroke(); ctx.setLineDash([]);
-    }
+    // the ship's path, and the pod's: integrate a copy ballistically for up to one orbit or 8 s
+    if (showOrbit && ship.alive && state === 'play') orbitLine(ship, 'rgba(36,185,190,0.55)');
+    if (showOrbit && pod) orbitLine(pod, 'rgba(255,211,107,0.5)');
     ctx.strokeStyle = '#d8c3a5'; ctx.lineWidth = 1.6;
     for (const k of rocks) {
       ctx.beginPath();
@@ -248,21 +329,28 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     // off-screen asteroids: an arrow at the edge pointing to each, with the time until it is back
     const hx = view.cx / s - 14 / s, hy = view.cy / s - 14 / s;
     ctx.font = '12px system-ui, sans-serif'; ctx.textBaseline = 'middle';
-    for (const k of rocks) {
-      if (inView(k.x, k.y, SIZES[k.size].r)) continue;
-      const f = Math.min(hx / Math.abs(k.x || 1e-9), hy / Math.abs(k.y || 1e-9));
-      const ex = X(k.x * f), ey = Y(k.y * f), ang = Math.atan2(k.y, k.x), z = 9 - 1.5 * k.size;
-      ctx.fillStyle = 'rgba(216,195,165,0.85)'; ctx.beginPath();
+    const arrow = (x, y, z, colour, label) => {
+      const f = Math.min(hx / Math.abs(x || 1e-9), hy / Math.abs(y || 1e-9));
+      const ex = X(x * f), ey = Y(y * f), ang = Math.atan2(y, x);
+      ctx.fillStyle = colour; ctx.beginPath();
       ctx.moveTo(ex + z * Math.cos(ang), ey + z * Math.sin(ang));
       ctx.lineTo(ex + z * Math.cos(ang + 2.5), ey + z * Math.sin(ang + 2.5));
       ctx.lineTo(ex + z * Math.cos(ang - 2.5), ey + z * Math.sin(ang - 2.5));
       ctx.closePath(); ctx.fill();
-      if (k.back > 0 && Number.isFinite(k.back)) {
-        const label = `back in ${Math.max(1, Math.round(k.back))} s`;
-        ctx.fillStyle = 'rgba(216,195,165,0.8)';
-        ctx.textAlign = ex > view.cx ? 'right' : 'left';
-        ctx.fillText(label, ex - 18 * Math.cos(ang), ey - 18 * Math.sin(ang));
-      }
+      if (label) { ctx.textAlign = ex > view.cx ? 'right' : 'left'; ctx.fillText(label, ex - 18 * Math.cos(ang), ey - 18 * Math.sin(ang)); }
+    };
+    for (const k of rocks) {
+      if (inView(k.x, k.y, SIZES[k.size].r)) continue;
+      arrow(k.x, k.y, 9 - 1.5 * k.size, 'rgba(216,195,165,0.85)', k.back > 0 && Number.isFinite(k.back) ? `back in ${Math.max(1, Math.round(k.back))} s` : '');
+    }
+    if (rama && !inView(rama.x, rama.y, RAMA.L / 2) && rama.x * rama.vx + rama.y * rama.vy < 0) arrow(rama.x, rama.y, 10, 'rgba(201,211,221,0.9)', 'Rama approaching');
+    if (pod && !inView(pod.x, pod.y, POD.r)) arrow(pod.x, pod.y, 9, 'rgba(255,211,107,0.9)', 'pod');
+    if (rama) drawRama();
+    if (pod) {
+      // a pulsing golden diamond
+      const z = POD.r * (reduced ? 1 : 1 + 0.15 * Math.sin(pod.age * 6)) * Math.max(1, 0.6 / s);
+      ctx.fillStyle = '#ffd36b'; ctx.beginPath();
+      ctx.moveTo(X(pod.x), Y(pod.y) - z); ctx.lineTo(X(pod.x) + z, Y(pod.y)); ctx.lineTo(X(pod.x), Y(pod.y) + z); ctx.lineTo(X(pod.x) - z, Y(pod.y)); ctx.closePath(); ctx.fill();
     }
     ctx.fillStyle = '#ffffff';
     for (const sh of shots) { ctx.beginPath(); ctx.arc(X(sh.x), Y(sh.y), 1.8, 0, 2 * Math.PI); ctx.fill(); }
@@ -286,7 +374,7 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
       const hz = ship.x * ship.vy - ship.y * ship.vx, e = Math.sqrt(Math.max(0, 1 + 2 * en * hz * hz / GM ** 2));
       orbit = en < 0 ? ` · your orbit: e = ${e.toFixed(2)}${hz < 0 ? ' (clockwise)' : ''}` : ' · on an escape orbit!';
     }
-    hud.textContent = `Score ${score.toLocaleString('en')} · ships ${Math.max(lives, 0)} · wave ${wave}${orbit}`;
+    hud.textContent = `Score ${score.toLocaleString('en')} · ships ${Math.max(lives, 0)} · wave ${wave}${ship && ship.alive && ship.twin ? ' · twin guns' : ''}${orbit}`;
   }
 
   // ---------------------------------------------------------------- the loop
@@ -368,5 +456,5 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     canvas.focus();
   }
   // _debug: access to the game's state, for automated tests only
-  return { destroy, setExpanded, _debug: () => ({ rocks, ship, view }) };
+  return { destroy, setExpanded, _debug: () => ({ rocks, ship, view, rama, pod, shots, wave, setWave: (n) => { wave = n - 1; startWave(); } }) };
 }
