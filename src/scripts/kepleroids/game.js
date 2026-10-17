@@ -161,7 +161,6 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     const v = Math.sqrt(2 * GM * rp / (r * (r + rp))), dir = Math.sign(rama.x * rama.vy - rama.y * rama.vx) || 1;
     pod = { x, y, vx: -dir * v * y / r, vy: dir * v * x / r, age: 0 };
     burst(x, y, rama.vx, rama.vy, 12, '#ffd36b');
-    flash('Rama released a pod: match its orbit to collect it', 3000);
   }
   function collectPod() {
     pod = null; ship.twin = true;
