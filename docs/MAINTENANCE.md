@@ -3,6 +3,41 @@
 The aim is that the site keeps itself current. Machines update facts; anything involving wording
 or judgement reaches Matthew as a task, with the command to do it already written.
 
+## At a glance (set up October 2026)
+
+| Tier | What | Where it lives |
+|---|---|---|
+| 1 | Data fetched live in each visitor's browser, with a copy saved at build time as fallback | `src/scripts/{mpcstats,mpctoday,releases,notebooks}/`, snapshots in `src/data/` |
+| 2 | Scheduled GitHub Actions that refresh factual data, check the site, and open issues | `.github/workflows/*.yml`, `.github/dependabot.yml`, `lychee.toml`, checker scripts in `tools/` |
+| 3 | Tasks that need judgement, run by Matthew in a local Claude Code session | `.claude/skills/<name>/SKILL.md`, shared rules `.claude/task-rules.md`, `tools/tasks.sh` |
+
+The companion repository `matthewjohnpayne/science-notebooks` has its own weekly notebook check
+(`.github/workflows/notebooks.yml`) and a `/fix-notebook` skill; see its README.
+
+**Configuration on GitHub**
+- Repository secret `ADS_API_TOKEN` (Settings → Secrets and variables → Actions), used only by
+  `publications.yml`. Added by Matthew on 2026-10-17. Never put it in the repository or page code.
+- Settings → Pages: source "GitHub Actions".
+- Issue labels `claude-task` and `maintenance` are created automatically the first time
+  `tools/task_issue.mjs` needs them.
+- Workflows use the built-in `GITHUB_TOKEN` with the least permissions each needs; no other secrets.
+
+**What Matthew sees**
+- GitHub emails each new issue. `claude-task` issues contain the exact command to paste into a
+  terminal; `maintenance` issues just need a look. `tools/tasks.sh` (or `/tasks` in Claude) lists
+  everything open.
+- Automatic commits appear as `github-actions[bot]` and are left out of the site changelog.
+- Dependabot opens monthly pull requests; `build-check.yml` must pass before merging.
+
+**Running, pausing and checking**
+- Every workflow can be run by hand: Actions tab → the workflow → "Run workflow"
+  (`gh workflow run <file> --repo matthewjohnpayne/matthewjohnpayne.github.io`).
+- To pause one: Actions tab → the workflow → "…" → "Disable workflow".
+- GitHub pauses scheduled workflows after 60 days without commits; `data-refresh.yml` commits every
+  month to prevent this. If it ever happens, GitHub emails, and re-enabling is one click.
+- Nothing automated pushes wording, people's details, or anything needing judgement: those always
+  come as issues. Local Claude tasks never push without Matthew's go-ahead.
+
 ## Tier 1: updated in the visitor's browser
 
 Pages fetch live data when someone opens them, and fall back to a copy saved at build time.

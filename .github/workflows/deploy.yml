@@ -1,4 +1,8 @@
 name: Publish to GitHub Pages
+# Build the Astro site and publish it to GitHub Pages: on every push to main, daily at 06:17 UTC (so
+# build-time copies of live data stay fresh and a queued Object of the Month appears on the 1st), by
+# hand, and when another workflow that committed data starts it (`gh workflow run deploy.yml`).
+# Part of the site's automation; see docs/MAINTENANCE.md.
 on:
   push:
     branches: [main]

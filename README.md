@@ -93,7 +93,25 @@ For a custom domain, update `site` in `astro.config.mjs` and configure the domai
 
 This is **an educational gravitational model, not real-orbit propagation**. The visual scene is heliocentric; Jupiter's force contributes while its orbit lies outside the displayed inner-system view. Orbit traces on the homepage are real results of the numerical model, not hand-drawn decorations. Scientific figures on the three informational cards are illustrative and should later be replaced with verified output from your notebooks.
 
+## Automation: keeping the site up to date
+
+The site is set up to keep itself current, in three tiers documented in **`docs/MAINTENANCE.md`**:
+
+1. **In the browser:** MPC statistics, Today at the MPC, software releases (PyPI) and notebook
+   update dates (GitHub) are fetched live by each visitor, with build-time copies as fallback.
+2. **Scheduled on GitHub:** a daily rebuild; weekly ADS publication refresh and link check; monthly
+   data refresh, MPC epoch check and staff check; Object of the Month reminder; yearly reminders;
+   CV PDF rebuild; Dependabot. Factual data is committed automatically once the build passes;
+   anything needing judgement opens an issue.
+3. **Local Claude tasks:** issues labelled `claude-task` give a command such as
+   `claude "/new-paper <bibcode>"`; the skills are in `.claude/skills/`. Run `tools/tasks.sh` to list
+   open tasks.
+
+The ADS token is the repository secret `ADS_API_TOKEN`; locally it is read from `~/.ads/dev_key`.
+
 ## Project notes
+
+- `docs/MAINTENANCE.md`: the automation above, in detail.
 
 - `docs/CONTEXT.md`: why the site is built the way it is, data sources and decisions.
 - `docs/ROADMAP.md`: open work, content ideas (including demo notebooks) and a log of what is done.

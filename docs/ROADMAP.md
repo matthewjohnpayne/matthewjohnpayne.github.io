@@ -9,7 +9,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 - [ ] **Software list:** Matthew is supplying a curated, up-to-date list, one entry at a time; so far digest2 (2026-10-14). Copy `src/content/software/_TEMPLATE.yaml` for each entry.
 - [ ] **Students and postdocs:** current positions and links added 2026-10-14 (see `docs/UPDATING_PEOPLE.md`; repeat yearly). Still open: pages for the current students (Kim Armas, Amanda Fanale, Milagros Tamara Giraldo) once they have them, and Tyler Valentine's current position.
 - [ ] **MPC staff:** Matthew to check the former-staff list (from archived MPC pages, 2013 onwards), add roles where blank, and add earlier staff.
-- [ ] **An ADS API token** for future publication refreshes. Optionally, a GitHub Action could refresh them on a schedule, with the token stored as a repository secret.
+- [x] **ADS API token** (2026-10-17): saved locally in `~/.ads/dev_key` and as the repository secret `ADS_API_TOKEN`; `publications.yml` refreshes weekly.
 - [ ] **Review the new wording:**
   - the theme summaries in `src/data/research.json` (titles approved; summaries written from paper titles);
   - the Jupiter copy on the reference-frames page;
@@ -57,6 +57,8 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 - **Cross-links:** link each research theme to its software, tutorials and interactive pages, and each collaborator to the themes you share.
 
 ## Done
+
+- 2026-10-17: **Automation in three tiers** (`docs/MAINTENANCE.md`): live browser data (software releases, notebook dates), scheduled workflows (publications, links, data refresh, epoch, staff, calendar, CV PDF, Dependabot, notebook tests in science-notebooks), and local Claude skills for tasks that need judgement. Also: FAQ, Today at the MPC, Object of the Month with a queue (Kamoʻoalewa, 2010 JO179, 3I/ATLAS, 2006 RH120 drafted), open problems with literature checks, notes, changelog, status lines, and the orbit-determination essay (2024 YR4).
 
 - 2026-10-15: CV page `/cv/` with a PDF download, generated from `src/data/cv.json` (from the 2021 and 2024 CVs) plus the site's publications, talks and people records. Workflow in `docs/CV.md`.
 
