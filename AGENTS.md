@@ -5,6 +5,7 @@ This repository is a **personal scientific website** for Matthew Payne, astrophy
 **Start here:**
 - `docs/CONTEXT.md` explains why the site is built the way it is: audience, design intent, data sources and decisions already made. Read it before changing structure or content.
 - `docs/ROADMAP.md` is the list of open work and content ideas. Pick up from there, and update it when you finish or add something.
+- Maintenance tasks: see `docs/MAINTENANCE.md` and `.claude/skills/` (one skill per recurring task, with shared rules in `.claude/task-rules.md`).
 
 ## Principles
 

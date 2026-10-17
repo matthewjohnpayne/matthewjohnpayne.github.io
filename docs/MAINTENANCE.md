@@ -35,9 +35,26 @@ Scheduled workflows open GitHub issues for anything that needs judgement or a lo
 cd ~/git_repos/ScientistWebsite && claude "/new-paper 2026AJ....172..123P"
 ```
 
-GitHub emails each new issue. The commands are Claude Code skills kept in this repository (under
-`.claude/`), so they behave the same way every time and follow `AGENTS.md`. Each one finishes by
-committing locally, closing its issue, and asking before pushing.
+GitHub emails each new issue. To see everything open, run `tools/tasks.sh`, or `/tasks` inside a
+Claude session.
+
+The commands are Claude Code project skills in `.claude/skills/<name>/SKILL.md`. All of them follow
+the shared rules in `.claude/task-rules.md` (a summary of `AGENTS.md`: never invent, verify sources,
+protect private data, real validated physics, accessibility, drafts), find and close their issue,
+commit locally, and end by asking Matthew whether to push. They only run when invoked
+(`disable-model-invocation: true`); arguments follow the command name.
+
+| Command | When | What it does |
+|---|---|---|
+| `/new-paper <bibcode>` | Weekly ADS refresh finds a new paper | Makes sure the record exists; reads the paper; assigns its research theme; asks about `featured` and whether to build a science notebook and/or interactive page, then builds them following the existing pattern; adds cross-links |
+| `/object-of-month <designation> <YYYY-MM>` | Reminder on the 20th, or any time | Drafts the essay with verified sources, saves the MPC orbit, computes the figures; `reviewed: false` for Matthew |
+| `/epoch-update` | Monthly check finds a new MPC standard epoch | Refetches initial conditions, re-runs the affected exports and validations, updates numbers quoted on pages; featured objects keep their saved orbits |
+| `/review-ideas [id]` | Yearly reminder | Re-checks ADS and arXiv for each open problem, updates its "since then" section, recommends removal of answered ones |
+| `/update-people [file]` | Yearly reminder | Follows `docs/UPDATING_PEOPLE.md` for students' and postdocs' current positions |
+| `/add-talk <link or path>` | A new talk | Follows `docs/TALKS.md`: public, redacted PDF and a talk record; Matthew sets sharing |
+| `/fix-links [issue]` | Weekly link check | Confirms and repairs broken links at their source |
+| `/tasks` | Any time | Lists open `claude-task` and `maintenance` issues with their commands, and offers to run one |
 
 Issue labels: `claude-task` (run the command in the issue) and `maintenance` (needs a look, no
-command).
+command). To add a task type: a skill in `.claude/skills/`, a workflow step that calls
+`tools/task_issue.mjs` with `--command 'claude "/<skill> <args>"'`, and a row in this table.
