@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ObjectOrbit from '../../components/ObjectOrbit.astro';
+import { render } from 'astro:content';
+import { objectsByMonth, orbitData, monthLabel } from '../../lib/objects';
+
+export async function getStaticPaths() {
+  return (await objectsByMonth()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const o = entry.data;
+const root = import.meta.env.BASE_URL;
+const href = (h: string) => h.startsWith('http') ? h : root + h.replace(/^\//, '');
+const external = (h: string) => h.startsWith('http');
+---
+<BaseLayout title={`${o.name}: Object of the Month`} description={o.summary}>
+  <section class="inner-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">OBJECT OF THE MONTH · {monthLabel(o.month).toUpperCase()}</p>
+      <h1>{o.name}</h1>
+      <p>{o.summary}</p>
+    </div>
+  </section>
+  <section class="site-content rf-prose obj-page">
+    <div class="content-width rf-prose-inner">
+      <Content />
+      <h2>The orbit</h2>
+      <ObjectOrbit data={orbitData(entry.id)} name={o.name} view={o.view} />
+      {o.related.length > 0 && <>
+        <h2>Explore further</h2>
+        <ul>{o.related.map((r) => <li><a href={href(r.href)} target={external(r.href) ? '_blank' : undefined} rel={external(r.href) ? 'noopener noreferrer' : undefined}>{r.label}</a></li>)}</ul>
+      </>}
+      <h2>Sources</h2>
+      <ol class="obj-sources">{o.sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a></li>)}</ol>
+      <p class="back-row"><a href={`${root}objects/`}>← All objects of the month</a></p>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .obj-sources li { font-size: 14px !important; line-height: 1.6 !important; }
+</style>

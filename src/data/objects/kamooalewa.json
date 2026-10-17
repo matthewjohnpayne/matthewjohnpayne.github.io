@@ -1,0 +1,76 @@
+{
+ "designation": "469219",
+ "fetched": "2026-10-17",
+ "source": "MPC Orbits API (https://data.minorplanetcenter.net/api/get-orb), mpc_orb format",
+ "names": {
+  "citation": "(469219) Kamoʻoalewa = 2016 HO3",
+  "designation_count": 1,
+  "iau_designation": "(469219)",
+  "iau_name": "",
+  "name": "Kamoʻoalewa",
+  "orbfit_name": "469219",
+  "packed_permid": "k9219",
+  "packed_primary_provisional_designation": "K16H03O",
+  "packed_secondary_provisional_designations": [],
+  "permid": "469219",
+  "unpacked_primary_provisional_designation": "2016 HO3",
+  "unpacked_secondary_provisional_designations": []
+ },
+ "epochMJD_TT": 61200.0,
+ "orbitType": "Apollo",
+ "kep": {
+  "a": 1.0008105283848825,
+  "e": 0.10224063487342,
+  "i": 7.8027375123822,
+  "node": 65.5931636414869,
+  "argperi": 304.3633645901002,
+  "mean_anomaly": 243.3868969850502
+ },
+ "kepSigma": {
+  "a": 2.2371e-09,
+  "e": 9.85098e-08,
+  "i": 6.87344e-06,
+  "node": 6.78719e-06,
+  "argperi": 1.06811e-05,
+  "mean_anomaly": 1.232e-05
+ },
+ "com": {
+  "q": 0.89848702457481,
+  "e": 0.10224063487342,
+  "i": 7.8027375123822,
+  "node": 65.5931636414869,
+  "argperi": 304.3633645901002,
+  "peri_time": 61318.4598221022
+ },
+ "comSigma": {
+  "q": 9.67057e-08,
+  "e": 9.85098e-08,
+  "i": 6.87344e-06,
+  "node": 6.78719e-06,
+  "argperi": 1.06811e-05,
+  "peri_time": 1.25966e-05
+ },
+ "state": [
+  -0.470394902003121,
+  -0.943675759331497,
+  0.00526456208710714,
+  0.0150248393948145,
+  -0.0059137837884027,
+  -0.00220974310204384
+ ],
+ "H": 24.308,
+ "G": 0.15,
+ "periodDays": 365.7010649250644,
+ "arc": "2004-2025",
+ "nobs": 335,
+ "nopp": 12,
+ "rms": 0.83912,
+ "fitDate": "2026-10-01 22:10:42",
+ "frame": {
+  "EclipticObliquityArcseconds": "84381.448",
+  "eph": "DE431",
+  "force_model": "AST17",
+  "refframe": "ICRF",
+  "refsys": "Ecliptic"
+ }
+}

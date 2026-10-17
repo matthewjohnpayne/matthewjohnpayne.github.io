@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHero from '../../components/SectionHero.astro';
+import { objectsByMonth, monthLabel } from '../../lib/objects';
+const entries = await objectsByMonth();
+const root = import.meta.env.BASE_URL;
+---
+<BaseLayout title="Object of the Month" description="One small body each month: why its orbit is interesting, how it was found, and what we know about it, with its orbit from the Minor Planet Center.">
+  <SectionHero eyebrow="OBJECT OF THE MONTH" title="Small bodies worth a closer look" lead="Each month, one asteroid, comet or distant object with an interesting orbit or story: how it was found, why it moves as it does, and what we know about it. Orbits come from the Minor Planet Center; every claim is linked to its source." />
+  <section class="site-content page-content">
+    <div class="content-width">
+      <div class="resource-grid">
+        {entries.map((e) => <article class="resource-item">
+          <p class="section-kicker">{monthLabel(e.data.month).toUpperCase()}</p>
+          <h3>{e.data.name}</h3>
+          <p>{e.data.summary}</p>
+          <a class="text-link" href={`${root}objects/${e.id}/`}>Read more <span aria-hidden="true">→</span></a>
+        </article>)}
+      </div>
+      <p class="back-row"><a href={`${root}mpc/`}>← The Minor Planet Center</a></p>
+    </div>
+  </section>
+</BaseLayout>
