@@ -1,6 +1,7 @@
 {
-  "_comment": "Status line for each interactive page (src/components/PageStatus.astro). `checked` repeats, in short, the validation the page itself states, with the tools/ directory that checks it; change both together. `basedOn` lists the paper (ADS bibcode) and notebook or code the page adapts. `files` are the paths whose latest commit gives the 'Updated' date. To add a page, add an entry keyed by its path and put <PageStatus page=\"...\" /> at the end of its hero.",
+  "_comment": "Status line for each interactive page (src/components/PageStatus.astro). `checked` repeats, in short, the validation the page itself states, with the tools/ directory that checks it; change both together. `basedOn` lists the paper (ADS bibcode) and notebook or code the page adapts. `files` are the paths whose latest commit gives the 'Updated' date. To add a page, add an entry keyed by its path and put <PageStatus page=\"...\" /> at the end of its hero. Every entry is also listed on /explore/ (src/lib/interactive.ts): optional `explore` sets its title, one-line teaser, area (solar-system | detection | exoplanets | moons | software), `featured` (an order number: shown on the homepage strip) and `visual` (a thumbnail kind in src/components/ExploreThumb.astro); without it the title, summary and area come from the tutorial or software record whose `interactive` points to the page.",
   "teaching/orbit-determination": {
+    "explore": {"title": "How do you find an orbit?", "teaser": "From the first night's observations of 2024 YR4 to its orbit, with every calculation running in your browser.", "area": "detection", "featured": 1, "visual": "sightline"},
     "checked": "Started from JPL's orbit, matches JPL Horizons for all 409 observations to 0.021″; Gauss's method and the least-squares fits agree with an independent Python reference.",
     "tool": "validate_od",
     "basedOn": [{ "label": "MPC Observations API", "href": "https://docs.minorplanetcenter.net/mpc-ops-docs/apis/get-obs/" },
@@ -8,12 +9,14 @@
     "files": ["src/pages/teaching/orbit-determination.astro", "src/scripts/od", "public/data/od"]
   },
   "teaching/reference-frames": {
+    "explore": {"title": "Same orbit. Different point of view.", "teaser": "Kamoʻoalewa, Hektor and Hilda from one N-body integration, drawn in five reference frames.", "area": "solar-system", "visual": "orbit"},
     "checked": "Agrees with REBOUND's IAS15 integrator to within 35 km for Earth–Kamoʻoalewa, and 50 m for Jupiter–Hektor and Jupiter–Hilda, over 400 years.",
     "tool": "validate_frames",
     "basedOn": [{ "label": "MPC tutorial notebook", "href": "https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_frames/" }],
     "files": ["src/pages/teaching/reference-frames.astro", "src/scripts/frames", "src/data/frames-ic.json"]
   },
   "teaching/resonance-overlap": {
+    "explore": {"title": "When do close planets become chaotic?", "teaser": "Map where neighbouring resonances overlap and pairs of close planets become chaotic.", "area": "exoplanets", "visual": "resonance"},
     "checked": "Agrees with the notebook on whether an orbit is chaotic for 747 of 750 test pixels; the other three lie on the boundary.",
     "tool": "validate_overlap",
     "basedOn": [{ "label": "Deck, Payne & Holman (2013)", "bibcode": "2013ApJ...774..129D" },
@@ -21,6 +24,7 @@
     "files": ["src/pages/teaching/resonance-overlap.astro", "src/scripts/overlap", "src/data/overlap-maps.json", "public/data/overlap"]
   },
   "teaching/transit-timing": {
+    "explore": {"title": "Can a planet hide from transit timing?", "teaser": "How inclined and retrograde companions change the timing of a planet's transits.", "area": "exoplanets", "featured": 5},
     "checked": "RMS TTVs agree with the notebook's REBOUND (IAS15) runs to about one part in ten thousand (median) over 64 systems.",
     "tool": "validate_ttv",
     "basedOn": [{ "label": "Payne, Ford & Veras (2010)", "bibcode": "2010ApJ...712L..86P" },
@@ -28,6 +32,7 @@
     "files": ["src/pages/teaching/transit-timing.astro", "src/scripts/ttv", "public/data/ttv"]
   },
   "teaching/heliolinc": {
+    "explore": {"title": "Linking asteroids by guessing their distance", "teaser": "Link tracklets from different nights by guessing each asteroid's distance from the Sun, as in HelioLinC.", "area": "detection", "featured": 2},
     "checked": "Finds exactly the same numbers of pure, valid and erroneous clusters as the notebook in seven of seven tests.",
     "tool": "validate_heliolinc",
     "basedOn": [{ "label": "Holman, Payne et al. (2018)", "bibcode": "2018AJ....156..135H" },
@@ -35,6 +40,7 @@
     "files": ["src/pages/teaching/heliolinc.astro", "src/scripts/heliolinc", "src/data/heliolinc.json", "public/data/heliolinc"]
   },
   "teaching/interstellar-objects": {
+    "explore": {"title": "Which interstellar visitors will Rubin see?", "teaser": "Where in the sky, and how often, the Rubin Observatory's survey should find interstellar objects.", "area": "solar-system", "featured": 4, "visual": "hyperbola"},
     "checked": "Positions agree with the notebook to 10⁻¹¹ au for 57 objects, and visibility on all 62,472 nights.",
     "tool": "validate_iso",
     "basedOn": [{ "label": "Hoover, Seligman & Payne (2022)", "bibcode": "2022PSJ.....3...71H" },
@@ -42,6 +48,7 @@
     "files": ["src/pages/teaching/interstellar-objects.astro", "src/scripts/iso", "public/data/iso"]
   },
   "teaching/run-dmc": {
+    "explore": {"title": "Fitting planets that pull on each other", "teaser": "Fit radial velocities with full N-body models of interacting planets.", "area": "exoplanets"},
     "checked": "The N-body model agrees with the notebook's REBOUND model to 0.02 m/s, and the log posterior near the best fit to 0.015.",
     "tool": "validate_rvdemc",
     "basedOn": [{ "label": "Nelson et al. (2014)", "bibcode": "2014ApJS..210...11N" },
@@ -49,6 +56,7 @@
     "files": ["src/pages/teaching/run-dmc.astro", "src/scripts/rvdemc", "src/data/rvdemc.json"]
   },
   "teaching/laplace-resonance": {
+    "explore": {"title": "Three planets in step: the Laplace resonance of GJ 876", "teaser": "Follow the resonant angles of three planets locked together around the star GJ 876.", "area": "exoplanets"},
     "checked": "Agrees with REBOUND's IAS15 on the star's radial velocity to 10⁻⁴ m/s over 200 days, and on every libration amplitude to within 0.1°.",
     "tool": "validate_rvlaplace",
     "basedOn": [{ "label": "Nelson et al. (2016)", "bibcode": "2016MNRAS.455.2484N" },
@@ -56,6 +64,7 @@
     "files": ["src/pages/teaching/laplace-resonance.astro", "src/scripts/rvlaplace"]
   },
   "teaching/shift-and-stack": {
+    "explore": {"title": "Finding moving objects hidden in the noise", "teaser": "Recover objects too faint to detect on any one night by stacking detections along trial motions.", "area": "detection"},
     "checked": "Gives exactly the same clusters as the notebook on the same catalogue.",
     "tool": "validate_sns",
     "basedOn": [{ "label": "Stetzler et al. (2025)", "bibcode": "2025AJ....170..352S" },
@@ -63,6 +72,7 @@
     "files": ["src/pages/teaching/shift-and-stack.astro", "src/scripts/sns"]
   },
   "teaching/exomoons": {
+    "explore": {"title": "How do planets lose their moons around white dwarfs?", "teaser": "As a dying star loses mass, its planets' orbits widen and their moons can be set free.", "area": "moons"},
     "checked": "For 160 test moons, agrees with REBOUND on the fate of all 159 that the page can follow.",
     "tool": "validate_exomoons",
     "basedOn": [{ "label": "Payne et al. (2016)", "bibcode": "2016MNRAS.457..217P" },
@@ -70,6 +80,7 @@
     "files": ["src/pages/teaching/exomoons.astro", "src/scripts/exomoons", "public/data/exomoons"]
   },
   "teaching/cassini-planet-nine": {
+    "explore": {"title": "Could Cassini have felt Planet Nine?", "teaser": "Would a distant planet's tidal pull on Saturn show up in the Cassini ranging data?", "area": "solar-system", "featured": 3},
     "checked": "Matches the notebook's results to better than 10⁻⁶.",
     "tool": "validate_cassini",
     "basedOn": [{ "label": "Holman & Payne (2016)", "bibcode": "2016AJ....152...94H" },
@@ -77,12 +88,14 @@
     "files": ["src/pages/teaching/cassini-planet-nine.astro", "src/scripts/cassini", "public/data/cassini"]
   },
   "software/mpc-orb": {
+    "explore": {"title": "What’s in an orbit file?", "teaser": "Explore the fields of an MPC orbit in the mpc_orb JSON format.", "area": "software"},
     "checked": "Two-body motion agrees with REBOUND to under a metre over 50 years. Not an ephemeris.",
     "tool": "validate_mpcorb",
     "basedOn": [{ "label": "mpc_orb", "href": "https://github.com/Smithsonian/mpc-public/tree/main/mpc_orb" }],
     "files": ["src/pages/software/mpc-orb.astro", "src/scripts/mpcorb", "public/data/mpc_orb"]
   },
   "software/wis": {
+    "explore": {"title": "Where is the observatory?", "teaser": "Find where an observatory was, on the ground or in space, from its MPC code.", "area": "software", "featured": 6},
     "checked": "Observatory positions agree with wis to within about 200 m from 2000 to 2026; spacecraft positions to within 500 m.",
     "tool": "validate_wis",
     "basedOn": [{ "label": "wis", "href": "https://github.com/Smithsonian/mpc-public/tree/main/wis" }],

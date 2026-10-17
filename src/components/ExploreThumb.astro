@@ -1,0 +1,49 @@
+---
+// Thumbnail for an /explore/ card. `visual` names a computed figure: the homepage card figures
+// (ScienceVisual kinds "orbit", "resonance", "loops", "scatter"), or "hyperbola" (drawn here, exactly:
+// a hyperbolic path past the Sun with Earth's orbit for scale) and "sightline" (an observation is a
+// direction: candidate positions along one line of sight from the Earth). Without one, a typographic panel.
+import ScienceVisual from './ScienceVisual.astro';
+interface Props { visual?: string; area: string; label: string }
+const { visual, area, label } = Astro.props;
+const shared = ['orbit', 'resonance', 'loops', 'scatter'];
+
+// Hyperbola with perihelion distance q and eccentricity e (focus at the Sun), r = q(1+e)/(1+e cos f).
+const hyperbola = visual === 'hyperbola' ? (() => {
+  const W = 360, H = 160, sx = 170, sy = 82, au = 38, q = 1.36, e = 6;   // 3I/ATLAS-like: q ≈ 1.36 au, e ≈ 6
+  const fmax = Math.acos(-1 / e) - 0.035;
+  const pts = Array.from({ length: 241 }, (_, k) => {
+    const f = -fmax + (2 * fmax * k) / 240, r = (q * (1 + e)) / (1 + e * Math.cos(f));
+    return `${(sx + r * au * Math.cos(f + 2.4)).toFixed(1)},${(sy - r * au * Math.sin(f + 2.4)).toFixed(1)}`;
+  });
+  return { W, H, sx, sy, au, d: 'M' + pts.join(' L') };
+})() : undefined;
+const sight = visual === 'sightline' ? (() => {
+  const ex = 70, ey = 120, ang = -0.42, n = 7;
+  const pts = Array.from({ length: n }, (_, k) => { const d = 46 + k * 36; return { x: ex + d * Math.cos(ang), y: ey + d * Math.sin(ang), o: 1 - k * 0.12 }; });
+  return { ex, ey, end: { x: ex + 330 * Math.cos(ang), y: ey + 330 * Math.sin(ang) }, pts };
+})() : undefined;
+---
+{visual && shared.includes(visual) ? <ScienceVisual kind={visual} /> :
+ hyperbola ? (
+  <svg viewBox={`0 0 ${hyperbola.W} ${hyperbola.H}`} xmlns="http://www.w3.org/2000/svg" class="science-art" role="img" aria-label="A hyperbolic path passing the Sun, with Earth's orbit for scale, as an interstellar object would follow">
+    <defs><clipPath id="xt-clip"><rect width={hyperbola.W} height={hyperbola.H} /></clipPath></defs>
+    <circle cx={hyperbola.sx} cy={hyperbola.sy} r={hyperbola.au} stroke="#b9cdd2" stroke-width="1" stroke-dasharray="4 3" fill="none" />
+    <path d={hyperbola.d} stroke="#ec9d58" stroke-width="1.8" fill="none" clip-path="url(#xt-clip)" />
+    <circle cx={hyperbola.sx} cy={hyperbola.sy} r="6" fill="#ec9d58" />
+  </svg>
+ ) : sight ? (
+  <svg viewBox="0 0 360 160" xmlns="http://www.w3.org/2000/svg" class="science-art" role="img" aria-label="A line of sight from the Earth with possible positions of an asteroid at different distances along it">
+    <circle cx="30" cy="150" r="6" fill="#ec9d58" />
+    <line x1={sight.ex} y1={sight.ey} x2={sight.end.x.toFixed(1)} y2={sight.end.y.toFixed(1)} stroke="#81b3be" stroke-width="1.2" stroke-dasharray="5 4" />
+    {sight.pts.map((p) => <circle cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r="4" fill="#128f9c" fill-opacity={p.o.toFixed(2)} />)}
+    <circle cx={sight.ex} cy={sight.ey} r="5" fill="#11949b" />
+  </svg>
+ ) : (
+  <div class={`xt-type xt-${area}`} aria-hidden="true"><span>{label}</span></div>
+ )}
+<style>
+  .xt-type { width: 100%; height: 100%; min-height: 140px; display: flex; align-items: flex-end; padding: 18px 20px; background: linear-gradient(135deg, #eef5f6, #f6f9f9); }
+  .xt-type span { font-size: 12px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase; color: #128f9c; line-height: 1.4; }
+  .xt-software span, .xt-moons span { color: #b06a2c; }
+</style>

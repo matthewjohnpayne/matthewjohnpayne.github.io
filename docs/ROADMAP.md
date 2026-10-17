@@ -58,6 +58,8 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 
 ## Done
 
+- 2026-10-17: **Explore hub** `/explore/` (in the main navigation): all interactive pages grouped by area, generated from `page-status.json`, with computed or typographic thumbnails; six featured on a homepage strip; linked from Teaching.
+
 - 2026-10-17: **Automation in three tiers** (`docs/MAINTENANCE.md`): live browser data (software releases, notebook dates), scheduled workflows (publications, links, data refresh, epoch, staff, calendar, CV PDF, Dependabot, notebook tests in science-notebooks), and local Claude skills for tasks that need judgement. Also: FAQ, Today at the MPC, Object of the Month with a queue (Kamoʻoalewa, 2010 JO179, 3I/ATLAS, 2006 RH120 drafted), open problems with literature checks, notes, changelog, status lines, and the orbit-determination essay (2024 YR4).
 
 - 2026-10-15: CV page `/cv/` with a PDF download, generated from `src/data/cv.json` (from the 2021 and 2024 CVs) plus the site's publications, talks and people records. Workflow in `docs/CV.md`.
