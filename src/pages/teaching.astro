@@ -37,6 +37,7 @@ const areas = [
   <SectionHero eyebrow={page.eyebrow} title={page.title} lead={page.lead} />
   <section class="site-content page-content">
     <div class="content-width">
+      <p class="teaching-explore">The interactive pages built from these notebooks are gathered on <a href={`${import.meta.env.BASE_URL}explore/`}>Explore</a>.</p>
       {courses.length > 0 && (
         <div class="catalogue-group">
           <div class="section-heading"><h2>Courses</h2></div>
@@ -116,6 +117,7 @@ const areas = [
   refreshNotebookDates();
 </script>
 <style>
+  .teaching-explore { margin: 0 0 28px; font-size: 15px; color: var(--body); }
   .nb-status { margin: -6px 0 18px; font-size: 13px; color: var(--body); }
   .nb-updated { margin: 8px 0 0; font-size: 13px; color: var(--body); }
   .nb-updated a { color: var(--link, #078d97); }
