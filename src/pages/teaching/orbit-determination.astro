@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 
 const root = import.meta.env.BASE_URL;
 const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
@@ -22,6 +23,7 @@ const references = [
       <h1>How do you find an orbit?</h1>
       <p>On 2024 December 27 the ATLAS telescope at Rio Hurtado, Chile, recorded a faint dot moving across the sky. Within six weeks, 56 observatories had measured its position 409 times, and the near-Earth asteroid 2024 YR4 had an orbit. This page follows the path from the first night to that orbit, with the real observations, and every calculation runs in your browser.</p>
       <p class="od-status" id="od-load-status" role="status">Loading the observations…</p>
+      <PageStatus page="teaching/orbit-determination" />
     </div>
   </section>
 

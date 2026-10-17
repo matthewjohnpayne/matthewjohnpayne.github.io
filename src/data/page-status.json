@@ -1,5 +1,12 @@
 {
   "_comment": "Status line for each interactive page (src/components/PageStatus.astro). `checked` repeats, in short, the validation the page itself states, with the tools/ directory that checks it; change both together. `basedOn` lists the paper (ADS bibcode) and notebook or code the page adapts. `files` are the paths whose latest commit gives the 'Updated' date. To add a page, add an entry keyed by its path and put <PageStatus page=\"...\" /> at the end of its hero.",
+  "teaching/orbit-determination": {
+    "checked": "Started from JPL's orbit, matches JPL Horizons for all 409 observations to 0.021″; Gauss's method and the least-squares fits agree with an independent Python reference.",
+    "tool": "validate_od",
+    "basedOn": [{ "label": "MPC Observations API", "href": "https://docs.minorplanetcenter.net/mpc-ops-docs/apis/get-obs/" },
+                { "label": "MPC orbit-determination tutorials", "href": "https://docs.minorplanetcenter.net/tutorials/iod_tutorials/" }],
+    "files": ["src/pages/teaching/orbit-determination.astro", "src/scripts/od", "public/data/od"]
+  },
   "teaching/reference-frames": {
     "checked": "Agrees with REBOUND's IAS15 integrator to within 35 km for Earth–Kamoʻoalewa, and 50 m for Jupiter–Hektor and Jupiter–Hilda, over 400 years.",
     "tool": "validate_frames",
