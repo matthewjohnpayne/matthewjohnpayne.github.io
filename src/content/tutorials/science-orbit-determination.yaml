@@ -1,0 +1,8 @@
+title: "How Do You Find an Orbit? Orbit Determination for 2024 YR4"
+summary: An interactive essay on orbit determination with the real astrometry of the near-Earth asteroid 2024 YR4, from the admissible region of its discovery night to Gauss's method and least squares on six weeks of observations, all computed in the browser.
+topic: iod
+url: https://docs.minorplanetcenter.net/tutorials/iod_tutorials/
+tools: [MPC Observations API, JPL Horizons]
+order: 0
+interactive: teaching/orbit-determination/
+urlLabel: "MPC orbit-determination tutorials"
