@@ -7,7 +7,9 @@ import faqText from '../data/faq.json';
 const root = import.meta.env.BASE_URL;
 const topics = faqText.topics as Record<string, string>;
 const levels = faqText.levels as Record<string, string>;
+// Production builds include only approved answers; `npm run dev` shows drafts too, labelled.
 const entries = (await getCollection('faq'))
+  .filter((e) => import.meta.env.DEV || e.data.status === 'approved')
   .map((e) => ({ id: e.id, ...e.data }))
   .sort((a, b) => a.order - b.order || a.question.localeCompare(b.question));
 const groups = Object.keys(topics).map((t) => ({ topic: t, items: entries.filter((e) => e.topic === t) })).filter((g) => g.items.length);
@@ -26,6 +28,7 @@ const inline = (s: string) =>
   <SectionHero eyebrow={faqText.eyebrow} title={faqText.title} lead={faqText.lead} />
   <section class="site-content page-content">
     <div class="content-width pub-layout">
+      {entries.length === 0 && <p>The first answers will appear here soon.</p>}
       <div class="pub-summary">
         {drafts > 0 && (
           <p class="faq-draft" role="note"><strong>Draft.</strong> {drafts === entries.length ? 'These answers are' : `${drafts} of these answers are`} awaiting review and may change.</p>
