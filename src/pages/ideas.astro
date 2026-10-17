@@ -37,7 +37,7 @@ const drafts = ideas.filter((i) => i.status === 'draft').length;
                 <blockquote class="idea-quote"><p>“{i.quote}”</p></blockquote>
                 <p class="pub-venue"><a href={ads(i.paper)} target="_blank" rel="noopener noreferrer">{i.citation}</a>{i.section && `, ${i.section}`}</p>
                 {i.note && <p class="idea-note">{i.note}</p>}
-                {i.since && <details class="idea-since">
+                {i.since && <details class="idea-since" open>
                   <summary>Since then: what later papers have done <span class="idea-checked">(literature checked {i.since.checked})</span></summary>
                   {i.since.paragraphs.map((p) => <p>{p}</p>)}
                   {i.since.open.length > 0 && <>
