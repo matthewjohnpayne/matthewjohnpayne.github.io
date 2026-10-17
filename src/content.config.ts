@@ -157,6 +157,14 @@ const ideas = defineCollection({
     section: z.string().optional(),      // where in the paper, e.g. "Section 6, Discussion"
     quote: z.string(),                   // the paper's own words, verbatim
     note: z.string().optional(),         // plain-English context; no new claims
+    // What later papers have done on the question, from a literature check: every statement
+    // must come from one of `sources`; `open` is our reading of what remains.
+    since: z.object({
+      checked: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+      paragraphs: z.array(z.string()).min(1),
+      open: z.array(z.string()).default([]),
+      sources: z.array(z.object({ label: z.string(), bibcode: z.string().optional(), url: z.string().url().optional() })).min(1)
+    }).optional(),
     status: z.enum(['draft', 'approved']).default('draft'),
     order: z.number().default(100)
   })

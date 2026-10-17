@@ -37,6 +37,16 @@ const drafts = ideas.filter((i) => i.status === 'draft').length;
                 <blockquote class="idea-quote"><p>“{i.quote}”</p></blockquote>
                 <p class="pub-venue"><a href={ads(i.paper)} target="_blank" rel="noopener noreferrer">{i.citation}</a>{i.section && `, ${i.section}`}</p>
                 {i.note && <p class="idea-note">{i.note}</p>}
+                {i.since && <details class="idea-since">
+                  <summary>Since then: what later papers have done <span class="idea-checked">(literature checked {i.since.checked})</span></summary>
+                  {i.since.paragraphs.map((p) => <p>{p}</p>)}
+                  {i.since.open.length > 0 && <>
+                    <p class="idea-open-h">Apparently still open (a reading of the literature, not a full review):</p>
+                    <ul>{i.since.open.map((o) => <li>{o}</li>)}</ul>
+                  </>}
+                  <p class="idea-open-h">References:</p>
+                  <ul class="idea-refs">{i.since.sources.map((s) => <li><a href={s.url ?? ads(s.bibcode!)} target="_blank" rel="noopener noreferrer">{s.label}</a></li>)}</ul>
+                </details>}
               </article>
             ))}
           </section>
@@ -53,6 +63,12 @@ const drafts = ideas.filter((i) => i.status === 'draft').length;
   .idea-badge { font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: #8a4b12; background: #fbecdc; border-radius: 3px; padding: 2px 7px; }
   .idea-quote { margin: 12px 0 0; padding: 2px 0 2px 16px; border-left: 3px solid #bed2d7; }
   .idea-quote p { margin: 0; font-size: 15px; line-height: 1.7; color: var(--body); }
+  .idea-since { margin: 10px 0 0; font-size: 14px; line-height: 1.65; color: var(--body); }
+  .idea-since summary { cursor: pointer; color: var(--link, #078d97); font-weight: 600; }
+  .idea-since p, .idea-since ul { margin: 8px 0 0; }
+  .idea-checked { font-weight: 400; color: var(--body); }
+  .idea-open-h { font-weight: 600; color: var(--ink); }
+  .idea-refs { font-size: 13px; }
   .idea-note { margin: 8px 0 0; font-size: 13px; line-height: 1.6; color: var(--body); }
   .idea-draft-note { background: #fbecdc; color: #6b3a0e; padding: 10px 12px; border-radius: 4px; }
 </style>
