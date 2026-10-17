@@ -2,6 +2,7 @@ title: "Planet Nine and the Cassini Ranging Data"
 summary: Implements the tidal model of Holman & Payne (2016) — a distant planet's pull on Saturn, Encke's method and the refit of Saturn's orbit — checks it against full ephemeris fits, and maps over the sky how massive and how close a planet the 2004–2014 Cassini ranging could have missed.
 topic: science
 url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/cassini_planet9/cassini_planet9.ipynb
+book: https://matthewjohnpayne.github.io/science-notebooks/cassini-planet9/
 tools: [SciPy, NumPy, Matplotlib]
 order: 11
 interactive: teaching/cassini-planet-nine/

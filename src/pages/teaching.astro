@@ -83,6 +83,7 @@ const areas = [
                       {nb && <p class="nb-updated" data-nb-folder={folder}>Notebook updated <a href={nb.url} target="_blank" rel="noopener noreferrer"><time datetime={nb.date}>{shortDate(nb.date)}</time><span class="visually-hidden"> (commit on GitHub, opens new tab)</span></a></p>}
                       <div class="item-links">
                         {data.interactive && <a class="text-link" href={`${root}${data.interactive.replace(/^\//, '')}`}>Interactive version →</a>}
+                        {data.book && <a class="text-link" href={data.book} target="_blank" rel="noopener noreferrer">Read online ↗</a>}
                         <a class="text-link" href={data.url} target="_blank" rel="noopener noreferrer">Open notebook ↗</a>
                       </div>
                     </article>
@@ -107,7 +108,7 @@ const areas = [
           )}
         </div>
       ))}
-      <div class="editorial-note"><div><span class="status-dot"></span> Source</div><p>The science notebooks are in my <a href="https://github.com/matthewjohnpayne/science-notebooks" target="_blank" rel="noopener noreferrer">science-notebooks</a> repository. I wrote the other notebooks for the Minor Planet Center's public documentation. They are published in the <a href="https://docs.minorplanetcenter.net/tutorials/" target="_blank" rel="noopener noreferrer">MPC tutorials</a>, which remain the authoritative versions. Interactive browser adaptations are linked here as they are built.</p></div>
+      <div class="editorial-note"><div><span class="status-dot"></span> Source</div><p>The science notebooks are in my <a href="https://github.com/matthewjohnpayne/science-notebooks" target="_blank" rel="noopener noreferrer">science-notebooks</a> repository, and can be read with their figures as an <a href="https://matthewjohnpayne.github.io/science-notebooks/" target="_blank" rel="noopener noreferrer">online book</a>. I wrote the other notebooks for the Minor Planet Center's public documentation. They are published in the <a href="https://docs.minorplanetcenter.net/tutorials/" target="_blank" rel="noopener noreferrer">MPC tutorials</a>, which remain the authoritative versions. Interactive browser adaptations are linked here as they are built.</p></div>
       <p class="back-row"><a href={root}>← Return to homepage</a></p>
     </div>
   </section>

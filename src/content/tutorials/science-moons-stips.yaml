@@ -2,6 +2,7 @@ title: "Can Moons Survive in Tightly Packed Planetary Systems?"
 summary: Repeats, at smaller scale, the REBOUND experiments of Payne, Deck, Holman & Perets (2013) — a lunar-mass moon around one of two planets packed as closely as stability allows — and maps which prograde and retrograde moon orbits survive.
 topic: science
 url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/moons_stips/moons_stips.ipynb
+book: https://matthewjohnpayne.github.io/science-notebooks/moons-stips/
 tools: [REBOUND, NumPy, Matplotlib]
 order: 9
 area: moons

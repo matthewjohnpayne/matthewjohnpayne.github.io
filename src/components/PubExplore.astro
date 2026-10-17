@@ -4,6 +4,7 @@ interface Props { e?: Explore }
 const { e } = Astro.props;
 const parts = e ? [
   e.interactive && { href: e.interactive, text: 'Interactive page →', ext: false },
+  e.book && { href: e.book, text: 'Read online ↗', ext: true },
   e.notebook && { href: e.notebook, text: 'Notebook ↗', ext: true },
   ...e.code.map((c) => ({ href: c.href, text: `Code: ${c.name} →`, ext: false }))
 ].filter(Boolean) as { href: string; text: string; ext: boolean }[] : [];

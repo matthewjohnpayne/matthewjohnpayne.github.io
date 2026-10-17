@@ -17,6 +17,8 @@ const tutorials = defineCollection({
     tools: z.array(z.string()).default([]),
     // Site-relative path of an interactive adaptation, once one exists.
     interactive: z.string().optional(),
+    // The notebook's chapter in the online book (matthewjohnpayne.github.io/science-notebooks/).
+    book: z.url().optional(),
     // Label for the `url` link when it is not a notebook (default "Open notebook").
     urlLabel: z.string().optional(),
     // Research area of a science notebook, for grouping on the Teaching page.

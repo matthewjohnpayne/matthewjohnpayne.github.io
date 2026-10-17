@@ -2,6 +2,7 @@ title: "Shift-and-Stack on Detection Catalogues"
 summary: Reproduces, on a simulated survey, the catalogue shift-and-stack of Stetzler et al. (2025) — stacking low-threshold detections instead of pixels to find faint moving objects — and compares it with image-based stacking.
 topic: science
 url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/shift_and_stack/shift_and_stack.ipynb
+book: https://matthewjohnpayne.github.io/science-notebooks/shift-and-stack/
 tools: [NumPy, SciPy, Matplotlib]
 order: 6
 interactive: teaching/shift-and-stack/

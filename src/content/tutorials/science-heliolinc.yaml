@@ -2,6 +2,7 @@ title: "HelioLinC: Linking Asteroid Detections by Guessing Their Distance"
 summary: How do you tell which of thousands of tracklets belong to the same asteroid? Reproduces the HelioLinC method of Holman, Payne et al. (2018) on a simulated month of survey data from real MPCORB orbits.
 topic: science
 url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/heliolinc/heliolinc.ipynb
+book: https://matthewjohnpayne.github.io/science-notebooks/heliolinc/
 tools: [NumPy, SciPy, Matplotlib]
 order: 2
 interactive: teaching/heliolinc/

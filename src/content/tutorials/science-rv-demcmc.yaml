@@ -2,6 +2,7 @@ title: "N-body Radial Velocities and Differential-Evolution MCMC"
 summary: Follows Nelson, Ford & Payne (2014, RUN DMC) — fits a simulated resonant planet pair with Keplerian and N-body models, and compares differential-evolution MCMC with a random walk on the N-body posterior's narrow ridge.
 topic: science
 url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/rv_demcmc/rv_demcmc.ipynb
+book: https://matthewjohnpayne.github.io/science-notebooks/rv-demcmc/
 tools: [REBOUND, NumPy, SciPy, Matplotlib]
 order: 8
 interactive: teaching/run-dmc/
