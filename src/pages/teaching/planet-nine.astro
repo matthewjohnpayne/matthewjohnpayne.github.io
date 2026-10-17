@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const root = import.meta.env.BASE_URL;
+const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/planet_nine/planet_nine.ipynb';
+const paper = 'https://ui.adsabs.harvard.edu/abs/2018AJ....156..263L/abstract';
+const ads = (bib: string) => `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(bib)}/abstract`;
+const presets = [['paper', 'The paper’s example (a = 369 au)'], ['circ', 'Closer in (a = 170 au)'], ['flip', 'Further out (a = 480 au)'], ['aligned', 'Starting aligned']];
+const references = [
+  ['Batygin, K. & Brown, M. E. (2016), AJ 151, 22', '2016AJ....151...22B'],
+  ['Batygin, K. & Morbidelli, A. (2017), AJ 154, 229', '2017AJ....154..229B'],
+  ['Beust, H. (2016), A&A 590, L2', '2016A&A...590L...2B'],
+  ['Hadden, S., Li, G., Payne, M. J. & Holman, M. J. (2018), AJ 155, 249', '2018AJ....155..249H'],
+  ['Li, G., Hadden, S., Payne, M. & Holman, M. J. (2018), AJ 156, 263', '2018AJ....156..263L'],
+  ['Trujillo, C. A. & Sheppard, S. S. (2014), Nature 507, 471', '2014Natur.507..471T']
+];
+---
+<BaseLayout title="Can Planet Nine herd the distant TNOs?" description="An interactive guide to the secular dynamics of distant trans-Neptunian objects under a hypothetical Planet Nine, after Li, Hadden, Payne & Holman (2018), with every orbit evolved in your browser.">
+  <section class="inner-hero rf-hero">
+    <div class="content-width inner-hero-content">
+      <p class="eyebrow">INTERACTIVE TUTORIAL · PLANET NINE</p>
+      <h1>Can Planet Nine herd the distant TNOs?</h1>
+      <p>The most distant known trans-Neptunian objects (TNOs) seem to have their orbits pointing the same way. One proposed explanation is an undiscovered planet, “Planet Nine”, a few hundred au from the Sun. This page follows <a href={paper} target="_blank" rel="noopener noreferrer">Li, Hadden, Payne &amp; Holman (2018)</a>: how the slow, secular pull of an eccentric outer planet can line up the TNOs’ orbits, and sometimes flip them over. Every evolution runs in your browser.</p>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="p9-one">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">1</p>
+        <div><h2>Four billion years of one TNO</h2><p>Planet Nine’s pull, averaged over both orbits, slowly twists the TNO’s orbit. Set it up and press Evolve.</p></div>
+      </div>
+      <div class="tt-presets" role="group" aria-label="Example TNOs">
+        <span class="tt-presets-label">Examples:</span>
+        {presets.map(([k, l]) => <button type="button" class="ro-chip" data-preset={k}>{l}</button>)}
+      </div>
+      <div class="tt-layout">
+        <div class="tt-controls">
+          <div class="ro-control"><label for="p9-a">TNO’s semi-major axis: <output id="p9-a-out" class="hl-value"></output></label><input id="p9-a" type="range" min="150" max="600" step="1" value="368.75" /></div>
+          <div class="ro-control"><label for="p9-rp">Its pericentre distance: <output id="p9-rp-out" class="hl-value"></output></label><input id="p9-rp" type="range" min="30" max="150" step="0.1" value="49" /></div>
+          <div class="ro-control"><label for="p9-i">Its inclination: <output id="p9-i-out" class="hl-value"></output></label><input id="p9-i" type="range" min="0" max="40" step="1" value="10" /></div>
+          <div class="ro-control"><label for="p9-dv">Its longitude of pericentre, relative to Planet Nine’s: <output id="p9-dv-out" class="hl-value"></output></label><input id="p9-dv" type="range" min="0" max="359" step="1" value="180" /></div>
+          <details class="tt-more">
+            <summary>More: orientation, Planet Nine and time</summary>
+            <div class="ro-control"><label for="p9-w">TNO’s argument of pericentre: <output id="p9-w-out"></output></label><input id="p9-w" type="range" min="0" max="359" step="1" value="0" /></div>
+            <div class="ro-control"><label for="p9-m9">Planet Nine’s mass: <output id="p9-m9-out"></output></label><input id="p9-m9" type="range" min="2" max="20" step="1" value="10" /></div>
+            <div class="ro-control"><label for="p9-a9">Planet Nine’s semi-major axis: <output id="p9-a9-out"></output></label><input id="p9-a9" type="range" min="300" max="900" step="10" value="500" /></div>
+            <div class="ro-control"><label for="p9-e9">Planet Nine’s eccentricity: <output id="p9-e9-out"></output></label><input id="p9-e9" type="range" min="0.1" max="0.8" step="0.05" value="0.6" /></div>
+            <div class="ro-control"><label for="p9-t">Evolve for: <output id="p9-t-out"></output></label><input id="p9-t" type="range" min="5e8" max="4e9" step="5e8" value="4e9" /></div>
+            <label class="iso-check"><input type="checkbox" id="p9-j2" checked /> Include the giant planets (as an averaged J₂ term)</label>
+          </details>
+          <button type="button" class="rf-button" id="p9-run">Evolve</button>
+          <p class="ro-progress" id="p9-status" role="status">Choose an example, or set an orbit and press Evolve.</p>
+        </div>
+        <div>
+          <div class="ro-stage tt-stage-plot"><canvas id="p9-traj" role="img" aria-label="The TNO's path in pericentre distance against longitude of pericentre relative to Planet Nine, coloured by inclination"></canvas></div>
+          <ul class="tt-key" aria-label="Colour key: inclination">
+            {[0, 45, 90, 135, 180].map((v) => <li><span style={`background:${['#440154', '#3e4989', '#26828e', '#35b779', '#fde725'][v / 45]}`}></span>{v}°</li>)}
+          </ul>
+          <div class="em-pair">
+            <div class="ro-stage p9-stage-small"><canvas id="p9-inc" role="img" aria-label="Inclination against time"></canvas></div>
+            <div class="ro-stage p9-stage-small"><canvas id="p9-peri" role="img" aria-label="Pericentre distance against time"></canvas></div>
+          </div>
+        </div>
+      </div>
+      <div class="rf-explain hl-explain">
+        <p><b>Reading the plot.</b> Each dot is the TNO’s orbit at one moment, placed by the direction of its pericentre relative to Planet Nine’s (Δϖ) and its pericentre distance, and coloured by its inclination. Planet Nine here is the paper’s: 10 Earth masses, semi-major axis 500 au, eccentricity 0.6. Close in (try a = 170 au), the giant planets make the orbit precess quickly and Δϖ circulates. Further out, Planet Nine’s pull wins and Δϖ <i>librates</i> around 180°: the orbit stays anti-aligned with Planet Nine’s, the kind of clustering seen in the distant TNOs.</p>
+        <p><b>Flips.</b> When a TNO’s orbit becomes very eccentric, Planet Nine can tilt it right over, through 90° to a retrograde orbit. The giant planets’ precession can suppress these flips while keeping the libration, for pericentres of roughly 30 to 80 au, which is where such TNOs are seen.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab ro-lab-map" id="p9-ensemble">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">2</p>
+        <div><h2>A population of TNOs</h2><p>The notebook’s ensemble: TNOs that start anti-aligned with Planet Nine, after 3 billion years, with pericentres between 30 and 80 au.</p></div>
+      </div>
+      <fieldset class="ro-segmented iso-quant">
+        <legend>Inclination</legend>
+        <label><input type="radio" name="p9-bin" value="all" checked /><span>All</span></label>
+        <label><input type="radio" name="p9-bin" value="low" /><span>below 40°</span></label>
+        <label><input type="radio" name="p9-bin" value="high" /><span>60–120°</span></label>
+        <label><input type="radio" name="p9-bin" value="retro" /><span>above 140°</span></label>
+      </fieldset>
+      <div class="em-pair">
+        <div class="ro-stage tt-stage-plot"><canvas id="p9-ens" role="img" aria-label="Geometrical longitude of pericentre against semi-major axis for the ensemble"></canvas></div>
+        <div class="ro-stage tt-stage-plot"><canvas id="p9-hist" role="img" aria-label="Histogram of the geometrical longitude of pericentre"></canvas></div>
+      </div>
+      <p class="ro-hover" id="p9-data-status" role="status">The notebook’s results load when you reach this section.</p>
+      <div class="rf-explain hl-explain">
+        <p><b>θe</b> is the direction of the pericentre projected onto the plane of the planets, what observers measure for the clustering; for a low-inclination orbit it is the same as ϖ. Low-inclination TNOs cluster around Δθe ≈ 180°, opposite Planet Nine’s pericentre, as the paper found. In the notebook’s ensemble the steeply inclined ones avoid alignment too, but differently: for inclinations of 60–120° they bunch near 90° and 270°. There are only a few dozen of them, so those histograms are noisy.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content ro-lab" id="p9-flips">
+    <div class="content-width">
+      <div class="ro-head">
+        <p class="ro-step">3</p>
+        <div><h2>Which orbits flip?</h2><p>Each cell is one TNO, started anti-aligned at 5° inclination and evolved for 4 billion years: red if its orbit flips past 90°.</p></div>
+      </div>
+      <fieldset class="ro-segmented">
+        <legend>Giant planets</legend>
+        <label><input type="radio" name="p9-flipj2" value="on" checked /><span>Included</span></label>
+        <label><input type="radio" name="p9-flipj2" value="off" /><span>Left out</span></label>
+      </fieldset>
+      <div class="ro-stage tt-stage-plot p9-stage-flip"><canvas id="p9-flip" role="img" aria-label="Map of semi-major axis and pericentre, red where the TNO's orbit flips"></canvas></div>
+      <div class="rf-explain hl-explain">
+        <p><b>The giant planets protect the visible TNOs.</b> Without them, orbits with pericentres above about 100 au flip over much of the map. None flips below 80 au (the dashed line), but only because the calculation stops once a pericentre falls below 10 au: Planet Nine on its own flips those orbits only after making them almost radial, as the notebook’s N-body check shows. With the giant planets, the flipping region shrinks, and below 80 au inclinations stay under 25° except in two isolated cells at 30 au. This is the paper’s Figure 13 (arXiv version), recomputed in the notebook.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      <h2>How this page works</h2>
+      <ul>
+        <li><b>Secular dynamics.</b> Over millions of years, what matters is Planet Nine’s pull averaged over both orbits. The paper averages the interaction energy directly (its Eq. 1); here, as in the notebook, the force is averaged over both orbits and fed into Gauss’s equations for the TNO’s eccentricity and angular-momentum vectors, which is equivalent. Where the two orbits nearly cross, the sampling is refined and a 2 au softening smooths the crossing.</li>
+        <li><b>The giant planets</b> enter as the averaged quadrupole (J₂) of their orbits (the paper’s Eq. 2), which also makes Planet Nine’s orbit precess (its Eq. 3).</li>
+        <li><b>Validation.</b> The page’s equations match the notebook’s to better than 10⁻¹⁴, and a one-billion-year trajectory agrees to 0.03° (<code>tools/validate_planet9/</code>). The notebook compares the secular model with a direct REBOUND N-body integration.</li>
+        <li><b>Limitations.</b> Secular dynamics leaves out mean-motion resonances with Planet Nine, close encounters, and scattering by Neptune, which removes TNOs whose pericentres fall much below 30 au. Like the notebook, the page stops following a TNO once its pericentre falls below 10 au.</li>
+      </ul>
+
+      <h2>References</h2>
+      <ul class="ro-refs">
+        {references.map(([text, bib]) => <li>{text}. <a href={ads(bib)} target="_blank" rel="noopener noreferrer">ADS</a></li>)}
+      </ul>
+      <div class="rf-links">
+        <a class="text-link" href={notebook} target="_blank" rel="noopener noreferrer">Read the full notebook ↗</a>
+        <a class="text-link" href={paper} target="_blank" rel="noopener noreferrer">Read the paper ↗</a>
+        <a class="text-link" href={`${root}teaching/`}>All tutorials →</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { startPlanet9 } from '../../scripts/planet9/app.js';
+    startPlanet9(import.meta.env.BASE_URL);
+  </script>
+</BaseLayout>

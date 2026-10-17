@@ -94,6 +94,14 @@
                 { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/cassini_planet9/cassini_planet9.ipynb" }],
     "files": ["src/pages/teaching/cassini-planet-nine.astro", "src/scripts/cassini", "public/data/cassini"]
   },
+  "teaching/planet-nine": {
+    "explore": {"title": "Can Planet Nine herd the distant TNOs?", "teaser": "Evolve a distant TNO for four billion years under an eccentric Planet Nine, and watch orbits line up or flip.", "area": "solar-system"},
+    "checked": "The averaged equations match the notebook's to better than 10⁻¹⁴; a one-billion-year orbit agrees to 0.03°.",
+    "tool": "validate_planet9",
+    "basedOn": [{ "label": "Li, Hadden, Payne & Holman (2018)", "bibcode": "2018AJ....156..263L" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/planet_nine/planet_nine.ipynb" }],
+    "files": ["src/pages/teaching/planet-nine.astro", "src/scripts/planet9", "public/data/planet9"]
+  },
   "software/mpc-orb": {
     "explore": {"title": "What’s in an orbit file?", "teaser": "Explore the fields of an MPC orbit in the mpc_orb JSON format.", "area": "software"},
     "checked": "Two-body motion agrees with REBOUND to under a metre over 50 years. Not an ephemeris.",

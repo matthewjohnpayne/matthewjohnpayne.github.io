@@ -1,0 +1,10 @@
+title: "Planet Nine and the Secular Dynamics of Distant TNOs"
+summary: Reproduces the secular analysis of Li, Hadden, Payne & Holman (2018) by direct numerical averaging — checked against analytic rates and a REBOUND N-body run — and follows TNOs under an eccentric Planet Nine for four billion years, to see their orbits cluster and flip.
+topic: science
+url: https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/planet_nine/planet_nine.ipynb
+book: https://matthewjohnpayne.github.io/science-notebooks/planet-nine/
+tools: [REBOUND, SciPy, NumPy, Matplotlib]
+order: 10
+interactive: teaching/planet-nine/
+area: solar-system
+papers: ["2018AJ....156..263L"]

@@ -85,6 +85,16 @@
       "summary": "Planet Nine, trans-Neptunian objects, Neptune Trojans, Centaurs and the DECam Ecliptic Exploration Project (DEEP).",
       "links": [
         {
+          "label": "Interactive: can Planet Nine herd the distant TNOs?",
+          "group": "Planet Nine",
+          "href": "/teaching/planet-nine/"
+        },
+        {
+          "label": "Notebook: Planet Nine and the secular dynamics of distant TNOs (Li, Hadden, Payne & Holman 2018)",
+          "group": "Planet Nine",
+          "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/planet_nine/planet_nine.ipynb"
+        },
+        {
           "label": "Interactive: could Cassini have felt Planet Nine?",
           "group": "Planet Nine",
           "href": "/teaching/cassini-planet-nine/"

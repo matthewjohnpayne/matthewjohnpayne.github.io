@@ -5,7 +5,7 @@ answer:
   - "Nobody knows yet: no such planet has been found. *Planet Nine* is a hypothesis. In 2016 Batygin and Brown showed that the orbits of the most distant known Kuiper Belt objects are clustered, with only a 0.007% probability of that being chance in their analysis, and that a distant, eccentric planet of about ten Earth masses or more could keep them aligned."
   - "A planet that far away would be very faint, so its gravity offers another way to look for it. Matt Holman and I (Holman & Payne 2016) asked whether its tidal pull on Saturn would show up in radio ranging to the Cassini spacecraft, and found that the measurements limit where in the sky such a planet could be. A companion study used the astrometry of Pluto and other trans-Neptunian objects in the same way."
   - "Direct searches continue. A 2025 search of Pan-STARRS1 data that I worked on with colleagues (Holman, Napier, Payne & Kurlander) found 692 Solar System objects, 109 of them not previously in the MPC's database, but no Planet Nine; it showed that the remaining room for Planet Nine is concentrated in the plane of the Milky Way."
-  - "The interactive page on this site lets you explore the Cassini constraint."
+  - "Two interactive pages on this site let you explore these ideas: whether Cassini could have felt Planet Nine, and how Planet Nine's slow, secular pull could line up the orbits of the distant TNOs, following Li, Hadden, Payne & Holman (2018)."
 sources:
   - label: "Batygin & Brown (2016), Evidence for a Distant Giant Planet in the Solar System, AJ 151, 22"
     url: "https://doi.org/10.3847/0004-6256/151/2/22"
@@ -13,11 +13,15 @@ sources:
     url: "https://doi.org/10.3847/0004-6256/152/4/94"
   - label: "Holman & Payne (2016), Observational Constraints on Planet Nine: Astrometry of Pluto and Other Trans-Neptunian Objects, AJ 152, 80"
     url: "https://doi.org/10.3847/0004-6256/152/4/80"
+  - label: "Li, Hadden, Payne & Holman (2018), The Secular Dynamics of TNOs and Planet Nine Interactions, AJ 156, 263"
+    url: "https://doi.org/10.3847/1538-3881/aae83b"
   - label: "Holman, Napier, Payne & Kurlander (2025), A Pan-STARRS Search for Distant Planets: Part 1, PSJ 6, 152"
     url: "https://doi.org/10.3847/PSJ/addd03"
 related:
   - label: "Could Cassini have felt Planet Nine? (interactive)"
     href: "/teaching/cassini-planet-nine/"
+  - label: "Can Planet Nine herd the distant TNOs? (interactive)"
+    href: "/teaching/planet-nine/"
 status: approved
 checked: "2026-10-17"
 order: 10
