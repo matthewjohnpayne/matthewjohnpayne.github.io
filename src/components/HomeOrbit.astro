@@ -1,31 +1,13 @@
 ---
-// The homepage hero diagram: an eccentric Keplerian orbit, drawn exactly (the central mass at
-// one focus), in the style of the "Research at a glance" cards. It is also a button: pressing
-// it opens Kepleroids in a large window, a not-very-hidden easter egg.
-const W = 400, H = 260;
-const a = 150, e = 0.7, b = a * Math.sqrt(1 - e * e), c = a * e;
-const cx = W / 2 + 10, cy = H / 2;
-const sun = { x: cx - c, y: cy };                       // the occupied focus; perihelion to its left
-const at = (fDeg: number) => {                          // position at true anomaly f (degrees), from perihelion
-  const f = (fDeg * Math.PI) / 180, r = (a * (1 - e * e)) / (1 + e * Math.cos(f));
-  return { x: sun.x - r * Math.cos(f), y: sun.y - r * Math.sin(f) };
-};
-const p = at(118);
-// a faint wedge swept by the radius vector, as in Kepler's second law
-const wedge = Array.from({ length: 25 }, (_, k) => at(118 - 26 + (26 * k) / 24));
-const wedgePath = `M${sun.x},${sun.y} ` + wedge.map((q) => `L${q.x.toFixed(1)},${q.y.toFixed(1)}`).join(' ') + ' Z';
+// The homepage hero diagram: orbits that all pass through one perihelion, from a circle through
+// ellipses to a parabola and hyperbolas (src/components/HeroKepler.astro), drawn exactly from
+// Kepler's laws in the style of the "Research at a glance" cards. It is also a button: pressing it
+// opens Kepleroids in a large window, a not-very-hidden easter egg.
+import HeroKepler from './HeroKepler.astro';
 ---
-<button type="button" class="feature-card hero-orbit" id="hero-orbit" aria-label="Diagram of an eccentric orbit around a central mass. Opens a game.">
+<button type="button" class="feature-card hero-orbit" id="hero-orbit" aria-label="Diagram of orbits sharing one closest point to the Sun: a circle, ellipses, a parabola and hyperbolas. Opens a game.">
   <span class="feature-illustration hero-orbit-art">
-    <svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" class="science-art" aria-hidden="true">
-      <line x1={cx - a - 14} y1={cy} x2={cx + a + 14} y2={cy} stroke="#d8e4e7" stroke-width="1"/>
-      <path d={wedgePath} fill="rgba(18,143,156,0.10)"/>
-      <ellipse cx={cx} cy={cy} rx={a} ry={b} stroke="#128f9c" stroke-width="1.8" fill="none"/>
-      <line x1={sun.x} y1={sun.y} x2={p.x} y2={p.y} stroke="#81b3be" stroke-width="1.2"/>
-      <g stroke="#b9cdd2" stroke-width="1"><line x1={cx + c - 4} y1={cy - 4} x2={cx + c + 4} y2={cy + 4}/><line x1={cx + c - 4} y1={cy + 4} x2={cx + c + 4} y2={cy - 4}/></g>
-      <circle cx={sun.x} cy={sun.y} r="8" fill="#ec9d58"/>
-      <circle cx={p.x} cy={p.y} r="5" fill="#11949b"/>
-    </svg>
+    <HeroKepler />
   </span>
 </button>
 <div class="bl-modal" id="bl-modal" hidden>
