@@ -3,4 +3,7 @@ date: "2024-04-16"
 event: "CfA Colloquium"
 location: "Center for Astrophysics | Harvard & Smithsonian"
 kind: colloquium
+materials:
+  - label: "Slides (PDF)"
+    url: "https://drive.google.com/file/d/1ComSY90WkQzeMZKEoz-DpCn4dGdClISs/view"
 source: "Google Drive, MPC_Public/2024_04_CfA - Videos; inventoried 2026-10-15"
