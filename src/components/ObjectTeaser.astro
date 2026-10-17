@@ -1,7 +1,7 @@
 ---
 // A link to the current Object of the Month, for the homepage and the MPC page.
-import { objectsByMonth, monthLabel } from '../lib/objects';
-const [current] = await objectsByMonth();
+import { currentObject, monthLabel } from '../lib/objects';
+const current = await currentObject();
 const root = import.meta.env.BASE_URL;
 ---
 {current && <a class="obj-teaser" href={`${root}objects/${current.id}/`}>

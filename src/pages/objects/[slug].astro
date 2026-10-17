@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ObjectOrbit from '../../components/ObjectOrbit.astro';
 import { render } from 'astro:content';
-import { objectsByMonth, orbitData, monthLabel } from '../../lib/objects';
+import { objectsByMonth, objectStatus, orbitData, monthLabel } from '../../lib/objects';
 
 export async function getStaticPaths() {
   return (await objectsByMonth()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
@@ -10,6 +10,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const o = entry.data;
+const status = objectStatus(entry);
 const root = import.meta.env.BASE_URL;
 const href = (h: string) => h.startsWith('http') ? h : root + h.replace(/^\//, '');
 const external = (h: string) => h.startsWith('http');
@@ -24,6 +25,7 @@ const external = (h: string) => h.startsWith('http');
   </section>
   <section class="site-content rf-prose obj-page">
     <div class="content-width rf-prose-inner">
+      {status !== 'live' && <p class="obj-status" role="note"><strong>{status === 'draft' ? 'Draft.' : 'Queued.'}</strong> {status === 'draft' ? 'Not yet reviewed, so it is not on the live site.' : `Reviewed; it appears on the live site on 1 ${monthLabel(o.month)}.`}</p>}
       <Content />
       <h2>The orbit</h2>
       <ObjectOrbit data={orbitData(entry.id)} name={o.name} view={o.view} />
@@ -38,5 +40,6 @@ const external = (h: string) => h.startsWith('http');
   </section>
 </BaseLayout>
 <style>
+  .obj-status { background: #fff6e8; border: 1px solid #efd3a8; border-radius: 6px; padding: 10px 12px; color: var(--ink); }
   .obj-sources li { font-size: 14px !important; line-height: 1.6 !important; }
 </style>
