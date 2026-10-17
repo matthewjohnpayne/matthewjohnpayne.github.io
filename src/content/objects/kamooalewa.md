@@ -32,7 +32,7 @@ sources:
     url: "https://skyandtelescope.org/astronomy-news/china-launches-tianwen-2-asteroid-sample-return-mission/"
   - label: "The Planetary Society, Planetary Radio, “Tianwen-2: China closes in on Kamoʻoalewa” (24 June 2026)"
     url: "https://www.planetary.org/planetary-radio/2026-tianwen-2"
-reviewed: false
+reviewed: true
 ---
 
 Kamoʻoalewa was found on 27 April 2016 by the Pan-STARRS 1 telescope on Haleakalā, Maui, and given the provisional designation 2016 HO<sub>3</sub> ([MPC](https://www.minorplanetcenter.net/db_search/show_object?object_id=469219)). In 2019 Hawaiian-language students named it through the A Hua He Inoa programme at the ʻImiloa Astronomy Center in Hilo. In ʻōlelo Hawaiʻi the name alludes to a celestial object that oscillates, like the asteroid's path in the sky as seen from Earth ([UH News](https://www.hawaii.edu/news/2026/06/05/uh-discovered-kamooalewa/)).
