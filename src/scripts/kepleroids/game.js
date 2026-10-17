@@ -6,7 +6,7 @@
 // path you are on. Shattered asteroids conserve momentum.
 //
 // In wave 3 an interstellar spacecraft, Rama (after Arthur C. Clarke), passes through on a
-// hyperbolic orbit. Hit it and it releases a pod that brakes into an orbit about the Sun (see
+// hyperbolic orbit, and again once in each later wave until it has been hit. Hit it and it releases a pod that brakes into an orbit about the Sun (see
 // POD); match orbits with the pod to collect twin guns (two shots side by side, reloading twice as
 // fast) for as long as that ship survives. Rama arrives unannounced: players find out what it
 // does by trying.
@@ -91,7 +91,8 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
   const keys = { left: false, right: false, thrust: false, fire: false };
   let state = 'title', ship = null, rocks = [], shots = [], sparks = [], score = 0, lives = 3, wave = 0;
   let showOrbit = true, reload = 0, respawn = 0, invuln = 0, last = 0, acc = 0, raf = 0, message = '';
-  let rama = null, pod = null, ramaTimer = -1;   // ramaTimer: seconds until Rama arrives (< 0: not due)
+  // ramaTimer: seconds until Rama arrives (< 0: not due); ramaHit: Rama has been hit this game
+  let rama = null, pod = null, ramaTimer = -1, ramaHit = false;
 
   function newShip() {
     const s = orbitState(240, 0, Math.PI / 2, 0, 1);
@@ -114,12 +115,12 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
       } while (ship && Math.hypot(st.x - ship.x, st.y - ship.y) < 180);
       rocks.push({ ...st, size: 0, shape: rockShape(0), spin: (rnd() - 0.5) * 2, rot: 0 });
     }
-    if (wave === RAMA.wave) ramaTimer = RAMA.delay;
+    if (wave >= RAMA.wave && !ramaHit) ramaTimer = RAMA.delay;
     message = `Wave ${wave}`;
     setTimeout(() => { if (message === `Wave ${wave}`) message = ''; }, 1600);
   }
   function newGame() {
-    score = 0; lives = 3; wave = 0; shots = []; sparks = []; rama = null; pod = null; ramaTimer = -1;
+    score = 0; lives = 3; wave = 0; shots = []; sparks = []; rama = null; pod = null; ramaTimer = -1; ramaHit = false;
     newShip(); startWave();
     state = 'play'; overlay.hidden = true; canvas.focus();
   }
@@ -156,7 +157,7 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
   function releasePod(shot) {
     // the pod leaves where the shot struck and brakes at once to a tangential speed (vis-viva at
     // aphelion r with perihelion rp), going round in the same sense as Rama
-    rama.hit = true;
+    rama.hit = ramaHit = true;
     const x = shot.x, y = shot.y, r = Math.hypot(x, y), rp = Math.min(r, POD.rp);
     const v = Math.sqrt(2 * GM * rp / (r * (r + rp))), dir = Math.sign(rama.x * rama.vy - rama.y * rama.vx) || 1;
     pod = { x, y, vx: -dir * v * y / r, vy: dir * v * x / r, age: 0 };
@@ -221,7 +222,7 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     }
     for (const p of sparks) { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; }
     sparks = sparks.filter((p) => p.life > 0);
-    if (ramaTimer >= 0 && (ramaTimer -= dt) < 0) launchRama();
+    if (ramaTimer >= 0 && (ramaTimer -= dt) < 0 && !rama) launchRama();   // one still passing from the last wave counts
     if (rama) {
       stepBody(rama, dt); rama.spin += dt;
       // gone for good once it is outbound beyond range (a hyperbola never returns)
