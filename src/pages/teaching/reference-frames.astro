@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 import ic from '../../data/frames-ic.json';
 
 const root = import.meta.env.BASE_URL;
@@ -78,6 +79,7 @@ const parts = (text: string) => text.split('{p}');
       <p class="eyebrow">INTERACTIVE TUTORIAL · REFERENCE FRAMES</p>
       <h1>Same orbit. Different point of view.</h1>
       <p>A reference frame is a choice of origin and of how the axes behave. Neither choice changes the physics, but both change what a trajectory looks like. Below, one integration of three asteroids is computed in your browser, then drawn in five frames: Earth’s quasi-satellite (469219) Kamoʻoalewa, and Jupiter’s companions (624) Hektor and (153) Hilda.</p>
+      <PageStatus page="teaching/reference-frames" />
     </div>
   </section>
 

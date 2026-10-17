@@ -22,6 +22,7 @@ const nav = [
     {noindex && <meta name="robots" content="noindex" />}
     <title>{title === site.name ? `${site.name} — Astrophysicist` : `${title} — ${site.name}`}</title>
     <link rel="icon" type="image/svg+xml" href={asset('assets/favicon.svg')} />
+    <slot name="head" />
   </head>
   <body>
     <header class="site-header">

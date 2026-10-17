@@ -1,0 +1,33 @@
+---
+// One-line status for an interactive page: how it was checked, what it is based on, and when it
+// last changed. Entries live in src/data/page-status.json, keyed by page path (e.g. "teaching/heliolinc").
+import status from '../data/page-status.json';
+import { lastCommitDate } from '../lib/gitDates';
+
+interface Props { page: string; }
+const { page } = Astro.props;
+type Source = { label: string; href?: string; bibcode?: string };
+type Entry = { checked: string; tool: string; basedOn: Source[]; files: string[] };
+const entry = (status as unknown as Record<string, Entry>)[page];
+if (!entry) throw new Error(`PageStatus: no entry for "${page}" in src/data/page-status.json`);
+const repo = 'https://github.com/matthewjohnpayne/matthewjohnpayne.github.io/tree/main/tools/';
+const href = (s: Source) => s.href ?? `https://ui.adsabs.harvard.edu/abs/${encodeURIComponent(s.bibcode!)}/abstract`;
+const date = lastCommitDate(entry.files);
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const when = date && (([y, m, d]) => `${d} ${MONTHS[m - 1]} ${y}`)(date.split('-').map(Number));
+---
+<dl class="page-status" aria-label="About this page">
+  <div><dt>Checked</dt><dd>{entry.checked} <a href={`${repo}${entry.tool}`} target="_blank" rel="noopener noreferrer">How<span class="visually-hidden"> it was checked (opens new tab)</span> ↗</a></dd></div>
+  <div><dt>Based on</dt><dd>{entry.basedOn.map((s, i) => <>{i > 0 && ' · '}<a href={href(s)} target="_blank" rel="noopener noreferrer">{s.label}</a></>)}</dd></div>
+  {when && <div><dt>Updated</dt><dd><time datetime={date}>{when}</time></dd></div>}
+</dl>
+
+<style>
+  .page-status { margin: 28px 0 0; padding: 14px 0 0; border-top: 1px solid rgba(183, 203, 214, .25); display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 13px; line-height: 1.55; color: #b7cbd6; max-width: 900px; }
+  .page-status div { display: flex; gap: 8px; min-width: 0; }
+  .page-status div:first-child { flex-basis: 100%; }
+  .page-status dt { flex: none; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; font-size: 10.5px; color: #4fced2; padding-top: 2px; }
+  .page-status dd { margin: 0; }
+  .page-status a { color: #e5f1f4; text-decoration: underline; text-underline-offset: 2px; }
+  .page-status a:hover, .page-status a:focus-visible { color: #4fced2; }
+</style>

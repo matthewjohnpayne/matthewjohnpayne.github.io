@@ -1,0 +1,9 @@
+title: "What would a next-generation digest2 look like?"
+area: software
+paper: "2019PASP..131f4501K"
+citation: "Keys, Vereš, Payne et al. (2019), PASP 131, 064501"
+section: "Discussion: Future directions"
+quote: "The discrete population bins (in q,e,i, H) need to be replaced with a smooth 4-dimensional function, perhaps also incorporating additional orbital elements to allow improved discrimination of (e.g.) Hildas and Jupiter Trojans. […] Replacing the synthetic two-detection approach with a robust statistical treatment of all submitted detections, allowing for a significantly improved handling of NEOs that exhibit non-linear motion during close-approach."
+note: "The same list called for per-observation uncertainties from ADES, which a later paper took up (Vereš et al. 2023, PASP 135, 104505)."
+status: draft
+order: 70

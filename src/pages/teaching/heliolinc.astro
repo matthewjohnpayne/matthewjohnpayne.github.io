@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 import meta from '../../data/heliolinc.json';
 
 const root = import.meta.env.BASE_URL;
@@ -26,6 +27,7 @@ const references = [
       <p class="eyebrow">INTERACTIVE TUTORIAL · LINKING ASTEROID DETECTIONS</p>
       <h1>Linking asteroids by guessing their distance</h1>
       <p>A survey sees each asteroid as a tracklet: a few detections over an hour, giving a position and a direction of motion. To find an orbit, tracklets from different nights must be recognised as the same object, among hundreds of asteroids per square degree. HelioLinC (<a href={paper} target="_blank" rel="noopener noreferrer">Holman, Payne et al. 2018</a>) guesses each object’s distance from the Sun and its rate of change, transforms every tracklet to the Sun’s point of view at one moment, and lets the tracklets of each asteroid pile up together. Every step on this page runs in your browser.</p>
+      <PageStatus page="teaching/heliolinc" />
     </div>
   </section>
 

@@ -1,0 +1,43 @@
+---
+// Short dated notes. Not linked from the navigation until Matthew publishes the first.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHero from '../../components/SectionHero.astro';
+import { getNotes, longDate } from '../../lib/notes';
+
+const root = import.meta.env.BASE_URL;
+const notes = await getNotes();
+const tags = [...new Set(notes.flatMap((n) => n.data.tags))].sort();
+const drafts = notes.filter((n) => n.data.status === 'draft').length;
+---
+<BaseLayout title="Notes" description="Short notes by Matthew Payne on orbits, numerical methods and working with astronomical data." noindex={notes.length === 0 || drafts > 0}>
+  <link slot="head" rel="alternate" type="application/atom+xml" title="Notes — Matthew Payne" href={`${root}notes/feed.xml`} />
+  <SectionHero eyebrow="NOTES" title="Notes" lead="Short notes on things I have learned or checked: orbits, numerical methods and working with astronomical data." />
+  <section class="site-content page-content">
+    <div class="content-width pub-layout">
+      <div class="pub-summary">
+        <p><b>{notes.length} {notes.length === 1 ? 'note' : 'notes'}</b>, newest first.</p>
+        {drafts > 0 && <p class="note-draft-note">Draft preview: {drafts} {drafts === 1 ? 'note is' : 'notes are'} awaiting Matthew's review and will not appear on the published site until published.</p>}
+        {tags.length > 0 && <p>Topics: {tags.join(', ')}.</p>}
+        <p class="pub-source"><a href={`${root}notes/feed.xml`}>Atom feed</a></p>
+      </div>
+      <div>
+        {notes.length === 0 && <p>No notes yet.</p>}
+        {notes.map((n) => (
+          <article class="pub-item">
+            <p class="talk-date">{longDate(n.data.date)}{n.data.status === 'draft' && <span class="note-badge">Draft</span>}</p>
+            <h2 class="pub-title note-title"><a href={`${root}notes/${n.id}/`}>{n.data.title}</a></h2>
+            <p class="pub-authors">{n.data.summary}</p>
+          </article>
+        ))}
+        <p class="back-row"><a href={root}>← Return to homepage</a></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .note-title { font-size: 17px; margin: 4px 0 0; }
+  .note-title a:hover { color: var(--teal); text-decoration: underline; text-underline-offset: 3px; }
+  .note-badge { margin-left: 10px; font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: #8a4b12; background: #fbecdc; border-radius: 3px; padding: 2px 7px; }
+  .note-draft-note { background: #fbecdc; color: #6b3a0e; padding: 10px 12px; border-radius: 4px; }
+</style>

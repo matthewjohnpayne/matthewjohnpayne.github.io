@@ -1,0 +1,355 @@
+{
+ "generated": "2026-10-17",
+ "months": [
+  {
+   "month": "2026-10",
+   "entries": [
+    {
+     "date": "2026-10-16",
+     "hash": "73f1fa6",
+     "subject": "Talks: 2019 Yale seminar and AAS 235 poster, with public PDFs"
+    },
+    {
+     "date": "2026-10-16",
+     "hash": "01a0a01",
+     "subject": "Talks: link the 14 new public slide PDFs"
+    },
+    {
+     "date": "2026-10-16",
+     "hash": "d8c0b1f",
+     "subject": "Teaching and Research: the 2010 JO179 resonance notebook"
+    },
+    {
+     "date": "2026-10-16",
+     "hash": "11b96e5",
+     "subject": "Teaching: could Cassini have felt Planet Nine? (Holman & Payne 2016)"
+    },
+    {
+     "date": "2026-10-16",
+     "hash": "078e0bf",
+     "subject": "wis page: compare up to six observatories at once"
+    },
+    {
+     "date": "2026-10-16",
+     "hash": "6f0b7fa",
+     "subject": "Teaching: exomoons around white dwarfs page, and the moons-in-STIPs notebook"
+    },
+    {
+     "date": "2026-10-16",
+     "hash": "5a6dc88",
+     "subject": "Software: link mpc_orb to the MPC orbit tutorials that use it"
+    },
+    {
+     "date": "2026-10-16",
+     "hash": "84288d6",
+     "subject": "People: roles for Sonia Keys and David Bell among former MPC staff"
+    },
+    {
+     "date": "2026-10-16",
+     "hash": "7def6a2",
+     "subject": "MPC at a glance: fetch the latest figures in the viewer's browser"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "c360647",
+     "subject": "Software: interactive pages for mpc_orb and wis"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "7e9f7a6",
+     "subject": "Link software with papers and tutorials in both directions"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "9d19f08",
+     "subject": "Homepage and MPC page: MPC at a glance, from the MPC Summary API"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "37b41c8",
+     "subject": "Software: add mpc_orb and wis from Smithsonian/mpc-public"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "0030a64",
+     "subject": "Cross-links: papers link to the notebooks and pages that reproduce them"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "4357b12",
+     "subject": "Teaching page: group science notebooks by research area"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "62478b7",
+     "subject": "Research page: group each topic's interactive page and notebook"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "f0f8397",
+     "subject": "Accessibility: colour contrast and labels from a site-wide audit"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "a9ef2cf",
+     "subject": "RUN DMC page: show DEMCMC's burn-in instead of hiding it"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "6cd4f02",
+     "subject": "RUN DMC interactive page (after Nelson, Ford & Payne 2014)"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "19dd06d",
+     "subject": "Shift-and-stack page: show search results in their own plot in section 3"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "6c7ed2d",
+     "subject": "Laplace resonance of GJ 876: interactive page (after Nelson et al. 2016)"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "1fc3b57",
+     "subject": "Shift-and-stack interactive page (after Stetzler et al. 2025)"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "adf48cf",
+     "subject": "Reference frames: integrate 400 years and show Kamo'oalewa leaving the quasi-satellite state"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "e293695",
+     "subject": "Homepage cards: computed figures in place of illustrations"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "8922e0c",
+     "subject": "Kepleroids: show where off-screen asteroids are and when they return"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "ca8d68d",
+     "subject": "Rename the game to Kepleroids, with the subtitle \"Asteroids, if Kepler had designed it\""
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "906740c",
+     "subject": "Homepage: Keplerian orbit diagram that opens Blastroids"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "c291fdb",
+     "subject": "Blastroids: an orbital Asteroids game, in the homepage hero"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "9acd723",
+     "subject": "CV: email address mpayne@sao.si.edu"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "99acea2",
+     "subject": "Interstellar objects interactive page (after Hoover, Seligman & Payne 2022)"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "e4b1517",
+     "subject": "Talks: link public PDF copies of seven talks"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "ebd1484",
+     "subject": "CV: two 2026 Smithsonian grants (Co-I)"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "d3e6ce2",
+     "subject": "CV: IAWN Steering Committee membership"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "60df225",
+     "subject": "CV page with PDF download"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "96effa8",
+     "subject": "Talks: name the 2025 ADASSx conference"
+    },
+    {
+     "date": "2026-10-15",
+     "hash": "09a75d2",
+     "subject": "Talks page"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "d2e6a9d",
+     "subject": "Interactive transit-timing tutorial"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "c5b8ded",
+     "subject": "People: current positions and links for students and postdocs"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "7242d84",
+     "subject": "Procedure for updating students' and postdocs' current pages"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "2b73a1d",
+     "subject": "HelioLinC page: report a worker failure instead of waiting forever"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "9ba950c",
+     "subject": "Interactive HelioLinC tutorial"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "ccf8df6",
+     "subject": "Roadmap: HelioLinC notebook written"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "dc1f3e6",
+     "subject": "People: second role line for Sam Hadden (CfA Fellow, 2018-2021)"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "9ca6e8b",
+     "subject": "People: add Devin Hoover (undergraduate researcher, 2022)"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "8734bf5",
+     "subject": "People: add Jonathan Sullivan (undergraduate researcher, 2022)"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "856a1ed",
+     "subject": "MPC staff: Peter Veres is former staff"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "b9b8b73",
+     "subject": "People: Mike Alexandersen postdoc 2020-2022, MPC staff since 2022"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "339aa06",
+     "subject": "People: David Hernandez postdoc ended 2022"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "1b39865",
+     "subject": "MPC staff: David Bell is former staff"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "84e1c50",
+     "subject": "Record that the site is live"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "0cc68b0",
+     "subject": "People: link SPARK, add Bridgewater State University"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "111d29b",
+     "subject": "Add three current students to People"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "8bb6f42",
+     "subject": "Fourth homepage card for the resonance-overlap page"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "be7babd",
+     "subject": "Interactive resonance-overlap tutorial"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "3d6c2f3",
+     "subject": "Roadmap: resonance-overlap notebook at full resolution"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "6b97953",
+     "subject": "People: list only former MPC staff Matthew Payne worked with directly"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "ab68023",
+     "subject": "People: students and postdocs (from 2021 CV) and MPC staff, current and former"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "248ab46",
+     "subject": "Software: add digest2 with its tutorials; link it from the Detection theme"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "ec4afa4",
+     "subject": "Notes: science-notebooks repo created; software list pending"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "ca06611",
+     "subject": "Software: remove all entries pending a curated list from Matthew Payne"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "9395840",
+     "subject": "Research themes, People from co-authorship, project notes"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "3d833e8",
+     "subject": "Publications: refereed papers from NASA ADS"
+    },
+    {
+     "date": "2026-10-14",
+     "hash": "2f224ec",
+     "subject": "Reference frames: add Jupiter with Hektor and Hilda; link demo from homepage"
+    },
+    {
+     "date": "2026-10-13",
+     "hash": "078db78",
+     "subject": "Add interactive reference-frames tutorial: Kamoʻoalewa in five frames"
+    },
+    {
+     "date": "2026-10-13",
+     "hash": "26671c7",
+     "subject": "Teaching: add PHYS 422 course and all 30 MPC tutorial notebooks"
+    },
+    {
+     "date": "2026-10-13",
+     "hash": "678e715",
+     "subject": "Add validated content collections; build Teaching and Software pages from them"
+    },
+    {
+     "date": "2026-10-13",
+     "hash": "16c5494",
+     "subject": "Add package-lock.json from first successful build; drop unused import"
+    },
+    {
+     "date": "2026-10-12",
+     "hash": "1d870fc",
+     "subject": "Serve from matthewjohnpayne.github.io root; scope MIT license to code"
+    },
+    {
+     "date": "2026-10-12",
+     "hash": "10ab108",
+     "subject": "Import ScientistWebsite v0.1 as generated by ChatGPT (unmodified)"
+    }
+   ]
+  }
+ ]
+}

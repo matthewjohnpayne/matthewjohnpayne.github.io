@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 
 const root = import.meta.env.BASE_URL;
 const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/shift_and_stack/shift_and_stack.ipynb';
@@ -17,6 +18,7 @@ const references = [
       <p class="eyebrow">INTERACTIVE TUTORIAL · SHIFT-AND-STACK</p>
       <h1>Finding moving objects hidden in the noise</h1>
       <p>Surveys normally keep only detections five times brighter than the noise, which throws away the faintest asteroids and Kuiper belt objects. <i>Shift-and-stack</i> finds them by adding up many images along a guessed trajectory. <a href={paper} target="_blank" rel="noopener noreferrer">Stetzler et al. (2025)</a> showed it can be done far faster by stacking <i>catalogues</i> of faint detections instead of pixels. Try it here.</p>
+      <PageStatus page="teaching/shift-and-stack" />
     </div>
   </section>
 

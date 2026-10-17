@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageStatus from '../../components/PageStatus.astro';
 
 const root = import.meta.env.BASE_URL;
 const notebook = 'https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/iso_lsst/iso_lsst.ipynb';
@@ -28,6 +29,7 @@ const references = [
       <p class="eyebrow">INTERACTIVE TUTORIAL · INTERSTELLAR OBJECTS</p>
       <h1>Which interstellar visitors will Rubin see?</h1>
       <p>Three objects from other planetary systems have been seen passing through the Solar System: 1I/ʻOumuamua in 2017, 2I/Borisov in 2019 and 3I/ATLAS in 2025. The Vera C. Rubin Observatory’s Legacy Survey of Space and Time (LSST) should find many more. This page follows <a href={paper} target="_blank" rel="noopener noreferrer">Hoover, Seligman &amp; Payne (2022)</a>: where interstellar objects come from, which of them Rubin could see, and which a spacecraft could reach. Every orbit is computed in your browser.</p>
+      <PageStatus page="teaching/interstellar-objects" />
     </div>
   </section>
 

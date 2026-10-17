@@ -1,0 +1,50 @@
+---
+// The site's change log, generated from git by tools/export_changelog.mjs (run on every deploy).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHero from '../components/SectionHero.astro';
+import log from '../data/changelog.json';
+
+const root = import.meta.env.BASE_URL;
+const commit = (h: string) => `https://github.com/matthewjohnpayne/matthewjohnpayne.github.io/commit/${h}`;
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const monthName = (m: string) => { const [y, mo] = m.split('-').map(Number); return `${MONTHS[mo - 1]} ${y}`; };
+const day = (d: string) => `${Number(d.slice(8, 10))} ${MONTHS[Number(d.slice(5, 7)) - 1].slice(0, 3)}`;
+const total = log.months.reduce((n, m) => n + m.entries.length, 0);
+---
+<BaseLayout title="Changelog" description="Every change to Matthew Payne's website, newest first, from its git history.">
+  <SectionHero eyebrow="ABOUT THIS SITE" title="Changelog" lead="Every change to this site, newest first, taken from its version history." />
+  <section class="site-content page-content">
+    <div class="content-width pub-layout">
+      <div class="pub-summary">
+        <p><b>{total} changes</b> since {monthName(log.months.at(-1)!.month)}.</p>
+        <p class="pub-source">Each entry links to the change on <a href="https://github.com/matthewjohnpayne/matthewjohnpayne.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+      </div>
+      <div>
+        {log.months.map((m) => (
+          <section class="pub-year">
+            <h2>{monthName(m.month)}</h2>
+            <ol class="cl-list">
+              {m.entries.map((e) => (
+                <li class="pub-item cl-item">
+                  <time class="cl-date" datetime={e.date}>{day(e.date)}</time>
+                  <span class="cl-subject">{e.subject}</span>
+                  <a class="cl-hash" href={commit(e.hash)} target="_blank" rel="noopener noreferrer"><span class="visually-hidden">Change </span>{e.hash}<span class="visually-hidden"> on GitHub (opens new tab)</span></a>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))}
+        <p class="back-row"><a href={root}>← Return to homepage</a></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cl-list { list-style: none; padding: 0; margin: 0; border-top: 2px solid #bed2d7; }
+  .cl-item { display: grid; grid-template-columns: 4.2em minmax(0, 1fr) auto; gap: 4px 16px; align-items: baseline; padding: 10px 0; font-size: 14px; line-height: 1.55; }
+  .cl-date { color: var(--muted); font-size: 13px; }
+  .cl-subject { color: var(--ink); overflow-wrap: anywhere; }
+  .cl-hash { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--teal); }
+  .cl-hash:hover { text-decoration: underline; }
+</style>

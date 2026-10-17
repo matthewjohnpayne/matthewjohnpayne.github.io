@@ -1,0 +1,23 @@
+---
+// "What I'm doing now" (after nownownow.com). Content comes only from Matthew, in src/data/now.json.
+// Not linked from the navigation; noindex until it has content.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHero from '../components/SectionHero.astro';
+import now from '../data/now.json';
+
+const root = import.meta.env.BASE_URL;
+const sections = now.sections.filter((s) => s.items.length > 0);
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const when = (d: string) => { const [y, m, day] = d.split('-').map(Number); return `${day} ${MONTHS[m - 1]} ${y}`; };
+---
+<BaseLayout title="Now" description="What Matthew Payne is working on at the moment." noindex={sections.length === 0}>
+  <SectionHero eyebrow="NOW" title="What I’m doing now" lead={now.updated ? `Updated ${when(now.updated)}.` : 'This page has not been written yet.'} />
+  <section class="site-content rf-prose">
+    <div class="content-width rf-prose-inner">
+      {sections.map((s) => (
+        <><h2>{s.heading}</h2><ul>{s.items.map((i: string) => <li>{i}</li>)}</ul></>
+      ))}
+      <p class="back-row"><a href={root}>← Return to homepage</a></p>
+    </div>
+  </section>
+</BaseLayout>

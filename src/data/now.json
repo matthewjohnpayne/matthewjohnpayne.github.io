@@ -1,0 +1,9 @@
+{
+  "_comment": "The /now page (nownownow.com style): what Matthew is focused on at the moment. Written by Matthew only; set `updated` (YYYY-MM-DD) whenever the text changes. Sections with no items are not shown. The page is not linked from the navigation until it has content.",
+  "updated": "",
+  "sections": [
+    { "heading": "At the Minor Planet Center", "items": [] },
+    { "heading": "Research", "items": [] },
+    { "heading": "Talks and teaching", "items": [] }
+  ]
+}

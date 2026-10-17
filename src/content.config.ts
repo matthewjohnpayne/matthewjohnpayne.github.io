@@ -142,4 +142,37 @@ const faq = defineCollection({
   })
 });
 
-export const collections = { tutorials, courses, software, publications, people, talks, faq };
+// Open problems, each taken from the future-work or open-questions passage of one of
+// Matthew Payne's refereed papers. Drafts appear only under `npm run dev`; the built
+// site shows an idea once Matthew sets status: approved.
+const ideas = defineCollection({
+  loader: glob({ pattern, base: './src/content/ideas' }),
+  schema: z.object({
+    title: z.string(),                   // the question, in a line
+    area: z.enum(['exoplanets', 'moons', 'solar-system', 'detection', 'software']),
+    paper: z.string(),                   // ADS bibcode of the paper the idea comes from
+    citation: z.string(),                // e.g. "Deck, Payne & Holman (2013), ApJ 774, 129"
+    section: z.string().optional(),      // where in the paper, e.g. "Section 6, Discussion"
+    quote: z.string(),                   // the paper's own words, verbatim
+    note: z.string().optional(),         // plain-English context; no new claims
+    status: z.enum(['draft', 'approved']).default('draft'),
+    order: z.number().default(100)
+  })
+});
+
+// Short dated notes ("today I learned"). Markdown, one file each. Drafts are not
+// built or included in the feed (they appear only under `npm run dev`); Matthew sets
+// status: published.
+const notes = defineCollection({
+  loader: glob({ pattern: '[^_]*.md', base: './src/content/notes' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    tags: z.array(z.string()).default([]),
+    summary: z.string(),
+    status: z.enum(['draft', 'published']).default('draft'),
+    source: z.string().optional()        // where the fact was verified; not shown
+  })
+});
+
+export const collections = { tutorials, courses, software, publications, people, talks, faq, ideas, notes };

@@ -1,0 +1,9 @@
+title: "Can catalogue shift-and-stack reach the depth of ideal image stacking?"
+area: detection
+paper: "2025AJ....170..352S"
+citation: "Stetzler, Jurić, Bernardinelli et al. (2025), AJ 170, 352"
+section: "Conclusions"
+quote: "The algorithm does not reach the theoretical limit expected from ideal coaddition. One possible reason for this is due to our limited method of results filtering. […] Additionally, it is possible that this is due to the metric used for accumulating signal: the number of detections across epochs in an aperture of variable size. A different metric, perhaps the detection likelihood could be accumulated instead, mimicking the approach of Whidden et al. (2019)."
+note: "The shift-and-stack page on this site runs the paper's algorithm on a synthetic catalogue."
+status: draft
+order: 60

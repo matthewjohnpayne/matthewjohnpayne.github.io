@@ -1,0 +1,84 @@
+{
+  "_comment": "Status line for each interactive page (src/components/PageStatus.astro). `checked` repeats, in short, the validation the page itself states, with the tools/ directory that checks it; change both together. `basedOn` lists the paper (ADS bibcode) and notebook or code the page adapts. `files` are the paths whose latest commit gives the 'Updated' date. To add a page, add an entry keyed by its path and put <PageStatus page=\"...\" /> at the end of its hero.",
+  "teaching/reference-frames": {
+    "checked": "Agrees with REBOUND's IAS15 integrator to within 35 km for Earth–Kamoʻoalewa, and 50 m for Jupiter–Hektor and Jupiter–Hilda, over 400 years.",
+    "tool": "validate_frames",
+    "basedOn": [{ "label": "MPC tutorial notebook", "href": "https://docs.minorplanetcenter.net/tutorials/notebooks/mpc_tutorial_orbit_frames/" }],
+    "files": ["src/pages/teaching/reference-frames.astro", "src/scripts/frames", "src/data/frames-ic.json"]
+  },
+  "teaching/resonance-overlap": {
+    "checked": "Agrees with the notebook on whether an orbit is chaotic for 747 of 750 test pixels; the other three lie on the boundary.",
+    "tool": "validate_overlap",
+    "basedOn": [{ "label": "Deck, Payne & Holman (2013)", "bibcode": "2013ApJ...774..129D" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/resonance_overlap/resonance_overlap.ipynb" }],
+    "files": ["src/pages/teaching/resonance-overlap.astro", "src/scripts/overlap", "src/data/overlap-maps.json", "public/data/overlap"]
+  },
+  "teaching/transit-timing": {
+    "checked": "RMS TTVs agree with the notebook's REBOUND (IAS15) runs to about one part in ten thousand (median) over 64 systems.",
+    "tool": "validate_ttv",
+    "basedOn": [{ "label": "Payne, Ford & Veras (2010)", "bibcode": "2010ApJ...712L..86P" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/ttv_inclined/ttv_inclined.ipynb" }],
+    "files": ["src/pages/teaching/transit-timing.astro", "src/scripts/ttv", "public/data/ttv"]
+  },
+  "teaching/heliolinc": {
+    "checked": "Finds exactly the same numbers of pure, valid and erroneous clusters as the notebook in seven of seven tests.",
+    "tool": "validate_heliolinc",
+    "basedOn": [{ "label": "Holman, Payne et al. (2018)", "bibcode": "2018AJ....156..135H" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/heliolinc/heliolinc.ipynb" }],
+    "files": ["src/pages/teaching/heliolinc.astro", "src/scripts/heliolinc", "src/data/heliolinc.json", "public/data/heliolinc"]
+  },
+  "teaching/interstellar-objects": {
+    "checked": "Positions agree with the notebook to 10⁻¹¹ au for 57 objects, and visibility on all 62,472 nights.",
+    "tool": "validate_iso",
+    "basedOn": [{ "label": "Hoover, Seligman & Payne (2022)", "bibcode": "2022PSJ.....3...71H" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/iso_lsst/iso_lsst.ipynb" }],
+    "files": ["src/pages/teaching/interstellar-objects.astro", "src/scripts/iso", "public/data/iso"]
+  },
+  "teaching/run-dmc": {
+    "checked": "The N-body model agrees with the notebook's REBOUND model to 0.02 m/s, and the log posterior near the best fit to 0.015.",
+    "tool": "validate_rvdemc",
+    "basedOn": [{ "label": "Nelson et al. (2014)", "bibcode": "2014ApJS..210...11N" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/rv_demcmc/rv_demcmc.ipynb" }],
+    "files": ["src/pages/teaching/run-dmc.astro", "src/scripts/rvdemc", "src/data/rvdemc.json"]
+  },
+  "teaching/laplace-resonance": {
+    "checked": "Agrees with REBOUND's IAS15 on the star's radial velocity to 10⁻⁴ m/s over 200 days, and on every libration amplitude to within 0.1°.",
+    "tool": "validate_rvlaplace",
+    "basedOn": [{ "label": "Nelson et al. (2016)", "bibcode": "2016MNRAS.455.2484N" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/laplace_gj876/laplace_gj876.ipynb" }],
+    "files": ["src/pages/teaching/laplace-resonance.astro", "src/scripts/rvlaplace"]
+  },
+  "teaching/shift-and-stack": {
+    "checked": "Gives exactly the same clusters as the notebook on the same catalogue.",
+    "tool": "validate_sns",
+    "basedOn": [{ "label": "Stetzler et al. (2025)", "bibcode": "2025AJ....170..352S" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/shift_and_stack/shift_and_stack.ipynb" }],
+    "files": ["src/pages/teaching/shift-and-stack.astro", "src/scripts/sns"]
+  },
+  "teaching/exomoons": {
+    "checked": "For 160 test moons, agrees with REBOUND on the fate of all 159 that the page can follow.",
+    "tool": "validate_exomoons",
+    "basedOn": [{ "label": "Payne et al. (2016)", "bibcode": "2016MNRAS.457..217P" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/exomoons_wd/exomoons_wd.ipynb" }],
+    "files": ["src/pages/teaching/exomoons.astro", "src/scripts/exomoons", "public/data/exomoons"]
+  },
+  "teaching/cassini-planet-nine": {
+    "checked": "Matches the notebook's results to better than 10⁻⁶.",
+    "tool": "validate_cassini",
+    "basedOn": [{ "label": "Holman & Payne (2016)", "bibcode": "2016AJ....152...94H" },
+                { "label": "Notebook", "href": "https://github.com/matthewjohnpayne/science-notebooks/blob/main/notebooks/cassini_planet9/cassini_planet9.ipynb" }],
+    "files": ["src/pages/teaching/cassini-planet-nine.astro", "src/scripts/cassini", "public/data/cassini"]
+  },
+  "software/mpc-orb": {
+    "checked": "Two-body motion agrees with REBOUND to under a metre over 50 years. Not an ephemeris.",
+    "tool": "validate_mpcorb",
+    "basedOn": [{ "label": "mpc_orb", "href": "https://github.com/Smithsonian/mpc-public/tree/main/mpc_orb" }],
+    "files": ["src/pages/software/mpc-orb.astro", "src/scripts/mpcorb", "public/data/mpc_orb"]
+  },
+  "software/wis": {
+    "checked": "Observatory positions agree with wis to within about 200 m from 2000 to 2026; spacecraft positions to within 500 m.",
+    "tool": "validate_wis",
+    "basedOn": [{ "label": "wis", "href": "https://github.com/Smithsonian/mpc-public/tree/main/wis" }],
+    "files": ["src/pages/software/wis.astro", "src/scripts/wis", "public/data/wis"]
+  }
+}
