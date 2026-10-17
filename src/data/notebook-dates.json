@@ -1,0 +1,49 @@
+{
+ "fetched": "2026-10-17",
+ "notebooks": {
+  "cassini_planet9": {
+   "date": "2026-10-16",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/5ae2ab25b7d680e6b01870d57d98a6ef4c888068"
+  },
+  "exomoons_wd": {
+   "date": "2026-10-16",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/8808c2069b228e9d7648a88608f2b7efaf665fcd"
+  },
+  "heliolinc": {
+   "date": "2026-10-14",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/abbaaa0942b041caf2feec2c9955065e744f74a8"
+  },
+  "iso_lsst": {
+   "date": "2026-10-15",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/69433a25608c58fc4c2944c7978fadbf121f5fde"
+  },
+  "jo179_resonance": {
+   "date": "2026-10-16",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/9510d64f3a466e33779f1a9cb6532a7a809b6293"
+  },
+  "laplace_gj876": {
+   "date": "2026-10-15",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/0ebeffbebdb597480c84dcae025bc5af18216ccf"
+  },
+  "moons_stips": {
+   "date": "2026-10-16",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/b9ea042897ea53fe1d8ef004b4e17f8b55c17b9e"
+  },
+  "resonance_overlap": {
+   "date": "2026-10-14",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/7576a3c1e7bc2e983df5469a2085fbe5fe76d851"
+  },
+  "rv_demcmc": {
+   "date": "2026-10-15",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/7a0aca52b0494a6e23ae07a9281dfef6773c0ba2"
+  },
+  "shift_and_stack": {
+   "date": "2026-10-15",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/f4c13b231953f6f34578fc52cb1a3c3141633176"
+  },
+  "ttv_inclined": {
+   "date": "2026-10-15",
+   "url": "https://github.com/matthewjohnpayne/science-notebooks/commit/064795a6e2c0d1f028a5ec08fe213580c4037004"
+  }
+ }
+}

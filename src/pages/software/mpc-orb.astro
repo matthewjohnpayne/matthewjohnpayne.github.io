@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageStatus from '../../components/PageStatus.astro';
+import LatestRelease from '../../components/LatestRelease.astro';
 
 const root = import.meta.env.BASE_URL;
 const repo = 'https://github.com/Smithsonian/mpc-public/tree/main/mpc_orb';
@@ -14,6 +15,7 @@ const api = 'https://docs.minorplanetcenter.net/mpc-ops-docs/apis/get-orb/';
       <h1>What’s in an orbit file?</h1>
       <p>The Minor Planet Center publishes the best-fit orbit of every asteroid and comet as an <a href={docs} target="_blank" rel="noopener noreferrer"><code>mpc_orb.json</code></a> file: the orbit written three ways, its uncertainty, and how the fit was made. Pick an object, or load a file of your own, and see what the numbers mean.</p>
       <PageStatus page="software/mpc-orb" />
+      <LatestRelease pkg="mpc_orb" tone="dark" />
     </div>
   </section>
 

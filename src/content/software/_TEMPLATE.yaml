@@ -4,6 +4,7 @@
 name: ""
 summary: ""          # one or two sentences, in Matthew's words or the repo's own description
 repo: https://github.com/
+pypi: ""            # optional: PyPI project name, to show its latest release
 language: ""         # optional
 featured: false      # featured entries appear first, under "Selected projects"
 order: 100
