@@ -4,7 +4,7 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 
 ## Waiting on Matthew
 
-- [ ] **Biography and CV details** for the homepage and an About section. Do not draft from public sources without his review.
+- [ ] **About page** `/about/` drafted 2026-10-17 (noindex, not in the navigation) from the MPC staff page, `cv.json` and facts Matthew gave: hired as MPC project scientist April 2017; Acting Director February 2021, Director 2022; asteroid (20592) Payne named in WGSBN Bulletin 6, no. 11, certificate presented at ACM 2026 (the MPC citation's birth year is deliberately not used). Orbit figure from `tools/export_about_asteroid.py`. Matthew to review, optionally write the "Outside work" section, then approve linking it. The MPC's own About page still says project scientist "from 2018"; Matthew to ask for it to be corrected.
 - [ ] **Portrait photo**, with permission (`public/assets/matthew.jpg`, then `site.json`).
 - [ ] **Software list:** Matthew is supplying a curated, up-to-date list, one entry at a time; so far digest2 (2026-10-14). Copy `src/content/software/_TEMPLATE.yaml` for each entry.
 - [ ] **Students and postdocs:** current positions and links added 2026-10-14 (see `docs/UPDATING_PEOPLE.md`; repeat yearly). Still open: pages for the current students (Kim Armas, Amanda Fanale, Milagros Tamara Giraldo) once they have them, and Tyler Valentine's current position.

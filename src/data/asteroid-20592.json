@@ -1,0 +1,33 @@
+{
+ "designation": "(20592) Payne",
+ "provisional": "1999 RV177",
+ "otherDesignations": [
+  "1982 QA1",
+  "1998 MF10"
+ ],
+ "fetched": "2026-10-17",
+ "source": "MPC Orbits API (https://data.minorplanetcenter.net/api/get-orb), mpc_orb format",
+ "epochMJD_TT": 61200.0,
+ "orbitType": "Main Belt",
+ "kep": {
+  "a": 3.168401750388916,
+  "e": 0.100865135087747,
+  "i": 9.9701118402293,
+  "node": 160.4531532915235,
+  "argperi": 203.8123110649146,
+  "mean_anomaly": 258.8544573655724
+ },
+ "kepSigma": {
+  "a": 3.55484e-09,
+  "e": 9.29625e-09,
+  "i": 9.57039e-07,
+  "node": 6.23382e-06,
+  "argperi": 7.97861e-06,
+  "mean_anomaly": 5.02505e-06
+ },
+ "H": 13.393,
+ "periodDays": 2059.9600298972064,
+ "arc": "1982-2026",
+ "nobs": 3206,
+ "nopp": 26
+}
