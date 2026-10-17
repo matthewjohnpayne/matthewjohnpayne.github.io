@@ -15,6 +15,6 @@ sources:
     url: "https://www.projectpluto.com/sat_id2.htm"
   - label: "MPC helpdesk"
     url: "https://mpc-service.atlassian.net/servicedesk/customer/portals"
-status: draft
+status: approved
 checked: "2026-10-17"
 order: 40

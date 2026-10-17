@@ -10,6 +10,6 @@ sources:
     url: "https://cneos.jpl.nasa.gov/sentry/torino_scale.html"
   - label: "The Palermo Technical Impact Hazard Scale, NASA JPL CNEOS"
     url: "https://cneos.jpl.nasa.gov/sentry/palermo_scale.html"
-status: draft
+status: approved
 checked: "2026-10-17"
 order: 20

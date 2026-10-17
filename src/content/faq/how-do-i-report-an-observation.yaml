@@ -15,6 +15,6 @@ sources:
     url: "https://docs.minorplanetcenter.net/mpc-ops-docs/faqs/"
   - label: "MPC tutorials"
     url: "https://docs.minorplanetcenter.net/tutorials/"
-status: draft
+status: approved
 checked: "2026-10-17"
 order: 30

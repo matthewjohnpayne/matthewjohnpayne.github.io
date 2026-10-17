@@ -12,6 +12,6 @@ sources:
     url: "https://docs.minorplanetcenter.net/mpc-ops-docs/astrometry/discoveries-and-credit/"
   - label: "IAU Working Group Small Body Nomenclature"
     url: "https://www.wgsbn-iau.org/"
-status: draft
+status: approved
 checked: "2026-10-17"
 order: 10

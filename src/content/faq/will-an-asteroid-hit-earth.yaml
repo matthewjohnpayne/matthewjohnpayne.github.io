@@ -18,6 +18,6 @@ sources:
     url: "https://cneos.jpl.nasa.gov/sentry/torino_scale.html"
   - label: "Risk list, ESA Near-Earth Objects Coordination Centre"
     url: "https://neo.ssa.esa.int/risk-list"
-status: draft
+status: approved
 checked: "2026-10-17"
 order: 10
