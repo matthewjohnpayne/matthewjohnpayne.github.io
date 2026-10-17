@@ -3,7 +3,7 @@ title: "Six integrations for an all-sky map"
 date: "2026-10-16"
 tags: [planet-nine, numerical-methods]
 summary: "The tidal pull of a distant planet is linear in a symmetric tensor, so six basis integrations give the signal for every direction and mass."
-status: draft
+status: published
 source: "Holman & Payne (2016) Eq. 7; science-notebooks notebooks/cassini_planet9/cassini.py (BASIS, tensor_coeffs, responses, signature)."
 ---
 

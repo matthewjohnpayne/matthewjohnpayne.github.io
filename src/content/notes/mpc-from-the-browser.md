@@ -3,7 +3,7 @@ title: "Which MPC data a static web page can load"
 date: "2026-10-17"
 tags: [mpc, web]
 summary: "Several MPC pages and the Summary API can be fetched from any website; the orbit API allows this site but cannot be called from a browser."
-status: draft
+status: published
 source: "curl with an Origin header, 2026-10-17; src/scripts/mpcstats/summary.js; tools/export_mpcorb_samples.py."
 ---
 

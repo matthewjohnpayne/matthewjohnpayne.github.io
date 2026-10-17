@@ -3,7 +3,7 @@ title: "A sign to watch in Encke's method"
 date: "2026-10-16"
 tags: [orbits, numerical-methods, planet-nine]
 summary: "Linearising the Encke equation gives −h Δr, not +h Δr; Holman & Payne (2016) print the plus sign."
-status: draft
+status: published
 source: "arXiv 1604.03180 source, Eq. 4; science-notebooks notebooks/cassini_planet9/cassini.py docstring; derivation below."
 ---
 
