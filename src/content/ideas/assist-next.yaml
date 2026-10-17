@@ -32,5 +32,5 @@ since:
       url: "https://github.com/matthewholman/assist"
     - label: "ASSIST issue 129, Jupiter J2+Galilean moon potential (e.g. 2004 TZ387) (June 2026)"
       url: "https://github.com/matthewholman/assist/issues/129"
-status: draft
+status: approved
 order: 80

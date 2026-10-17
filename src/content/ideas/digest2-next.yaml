@@ -33,5 +33,5 @@ since:
       bibcode: "2025epsc.conf.1095S"
     - label: "digest2 source code and documentation (v2.8.2), Smithsonian/mpc-public"
       url: "https://github.com/Smithsonian/mpc-public/tree/main/digest2"
-status: draft
+status: approved
 order: 70
