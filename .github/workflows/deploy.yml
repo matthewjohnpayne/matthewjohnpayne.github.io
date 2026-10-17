@@ -30,6 +30,8 @@ jobs:
       - name: Update the changelog from git
         run: node tools/export_changelog.mjs
       - name: Build Astro site
+        env:
+          GITHUB_TOKEN: ${{ github.token }}   # notebook dates from the GitHub API, without the anonymous rate limit
         run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
