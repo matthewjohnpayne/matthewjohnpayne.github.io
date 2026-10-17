@@ -8,7 +8,8 @@
 // In wave 3 an interstellar spacecraft, Rama (after Arthur C. Clarke), passes through on a
 // hyperbolic orbit. Hit it and it releases a pod that brakes into an orbit about the Sun (see
 // POD); match orbits with the pod to collect twin guns (two shots side by side, reloading twice as
-// fast) for as long as that ship survives.
+// fast) for as long as that ship survives. Rama arrives unannounced: players find out what it
+// does by trying.
 //
 // startKepleroids(container, { onExit, compact, onToggleSize }) builds the game inside container
 // and returns { destroy, setExpanded }. compact: a small window (shorter start text, larger ship
@@ -145,7 +146,6 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     const q = RAMA.q[0] + (RAMA.q[1] - RAMA.q[0]) * rnd(), e = RAMA.e[0] + (RAMA.e[1] - RAMA.e[0]) * rnd();
     const p = q * (1 + e), f = -Math.acos((p / RAMA.start - 1) / e);
     rama = { ...orbitState(q / (1 - e), e, 2 * Math.PI * rnd(), f, rnd() < 0.5 ? 1 : -1), hit: false, spin: 0 };
-    flash('Rama is passing through on a hyperbolic orbit: shoot it!', 2600);
   }
   /** Rama's frame: distance along its axis (which points along its motion) and across it. */
   function ramaFrame(x, y) {
@@ -343,7 +343,6 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
       if (inView(k.x, k.y, SIZES[k.size].r)) continue;
       arrow(k.x, k.y, 9 - 1.5 * k.size, 'rgba(216,195,165,0.85)', k.back > 0 && Number.isFinite(k.back) ? `back in ${Math.max(1, Math.round(k.back))} s` : '');
     }
-    if (rama && !inView(rama.x, rama.y, RAMA.L / 2) && rama.x * rama.vx + rama.y * rama.vy < 0) arrow(rama.x, rama.y, 10, 'rgba(201,211,221,0.9)', 'Rama approaching');
     if (pod && !inView(pod.x, pod.y, POD.r)) arrow(pod.x, pod.y, 9, 'rgba(255,211,107,0.9)', 'pod');
     if (rama) drawRama();
     if (pod) {
