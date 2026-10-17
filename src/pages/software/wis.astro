@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageStatus from '../../components/PageStatus.astro';
+import LatestRelease from '../../components/LatestRelease.astro';
 
 const root = import.meta.env.BASE_URL;
 const repo = 'https://github.com/Smithsonian/mpc-public/tree/main/wis';
@@ -14,6 +15,7 @@ const quick = [['X05', 'Rubin'], ['F51', 'Pan-STARRS 1'], ['703', 'Catalina'], [
       <h1>Where is the observatory?</h1>
       <p>Every observation sent to the Minor Planet Center names the observatory it was made from, by a three-character code. To use the observation, the MPC needs to know where that observatory was, to within metres, at the instant it was made: on the spinning Earth, or in space. The MPC’s <a href={repo} target="_blank" rel="noopener noreferrer"><code>wis</code></a> package (“Where Is Satellite/observatory”) does this. Here is why it matters.</p>
       <PageStatus page="software/wis" />
+      <LatestRelease pkg="wis" tone="dark" />
     </div>
   </section>
 

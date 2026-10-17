@@ -1,6 +1,7 @@
 name: digest2
 summary: "Short-arc orbit classification for minor-planet tracklets. From as few as two observations, digest2 scores how likely an object is to belong to each of 14 orbit classes; it has been used operationally at the Minor Planet Center for over 15 years to identify near-Earth object candidates for the NEO Confirmation Page."
 repo: https://github.com/Smithsonian/mpc-public/tree/main/digest2
+pypi: digest2
 language: C, Python
 featured: true
 order: 1

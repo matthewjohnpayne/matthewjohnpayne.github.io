@@ -1,6 +1,7 @@
 name: wis
 summary: "“Where Is Satellite/Observatory”: heliocentric positions of observatories from NASA/JPL SPICE kernels. It handles every MPC observatory code, on the ground through the MPC Observatory Codes API and in space for TESS, Kepler/K2, Gaia, Hubble and JWST, and downloads and refreshes the kernels it needs automatically."
 repo: https://github.com/Smithsonian/mpc-public/tree/main/wis
+pypi: wis
 language: Python
 featured: true
 order: 3

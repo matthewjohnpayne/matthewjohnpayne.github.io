@@ -1,0 +1,27 @@
+---
+// "Latest release vX.Y.Z, <date> (PyPI)" for a package; the browser refreshes it from PyPI.
+import { latestRelease } from '../lib/softwareReleases';
+import { longDate } from '../scripts/releases/pypi.js';
+interface Props { pkg: string; tone?: 'light' | 'dark' }
+const { pkg, tone = 'light' } = Astro.props;
+const rel = await latestRelease(pkg);
+---
+{rel && (
+  <p class:list={['sw-release', `sw-release-${tone}`]} data-pypi={pkg} aria-live="polite">
+    Latest release <a data-rel-link href={rel.url} target="_blank" rel="noopener noreferrer">v{rel.version}</a>,{' '}
+    <time datetime={rel.date}>{longDate(rel.date)}</time>{' '}
+    <span class="sw-release-src">(<span data-rel-src>{rel.fromSnapshot ? 'PyPI, saved copy' : 'PyPI, when the site was built'}</span>)</span>
+  </p>
+)}
+<script>
+  import { refreshReleases } from '../scripts/releases/refresh.js';
+  refreshReleases();
+</script>
+<style>
+  .sw-release { margin: 10px 0 0; font-size: 13px; line-height: 1.5; }
+  .sw-release-light { color: var(--body); }
+  .sw-release-light a { color: var(--link, #078d97); }
+  .sw-release-dark { color: #b7cbd6; }
+  .sw-release-dark a { color: #e5f1f4; text-decoration: underline; text-underline-offset: 2px; }
+  .sw-release-src { opacity: .85; }
+</style>

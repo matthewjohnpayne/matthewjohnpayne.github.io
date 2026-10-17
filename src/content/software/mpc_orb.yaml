@@ -1,6 +1,7 @@
 name: mpc_orb
 summary: "A standard JSON format, mpc_orb.json, for exchanging the best-fit orbit of a solar-system body: orbital elements, covariance, fit statistics, metadata and optional non-gravitational terms. The MPC publishes its orbits in this format; the Python package validates files against the JSON schema and parses them into convenient objects."
 repo: https://github.com/Smithsonian/mpc-public/tree/main/mpc_orb
+pypi: mpc_orb
 language: Python, JSON Schema
 featured: true
 order: 2

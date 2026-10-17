@@ -1,0 +1,23 @@
+{
+ "fetched": "2026-10-17",
+ "releases": {
+  "digest2": {
+   "pkg": "digest2",
+   "version": "2.8.2",
+   "date": "2026-08-06",
+   "url": "https://pypi.org/project/digest2/2.8.2/"
+  },
+  "mpc_orb": {
+   "pkg": "mpc_orb",
+   "version": "0.2.6",
+   "date": "2026-04-23",
+   "url": "https://pypi.org/project/mpc_orb/0.2.6/"
+  },
+  "wis": {
+   "pkg": "wis",
+   "version": "2.2.0",
+   "date": "2026-10-01",
+   "url": "https://pypi.org/project/wis/2.2.0/"
+  }
+ }
+}

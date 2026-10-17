@@ -57,6 +57,8 @@ const software = defineCollection({
     papers: z.array(z.string()).default([]),
     // Site-relative path of an interactive page built on the code.
     interactive: z.string().optional(),
+    // PyPI project name; the Software pages show its latest release (src/components/LatestRelease.astro).
+    pypi: z.string().optional(),
     order: z.number().default(100)
   })
 });
