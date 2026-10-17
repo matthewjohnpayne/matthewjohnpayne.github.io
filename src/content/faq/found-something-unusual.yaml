@@ -2,14 +2,17 @@ question: "I think I've photographed an unknown moving object. What should I do?
 topic: mpc
 level: beginner
 answer:
-  - "First check whether it is already known. The MPC's [MPChecker](https://minorplanetcenter.net/cgi-bin/checkmp.cgi) lists the known asteroids and comets near a given position at a given time; you will need the right ascension, declination and the time of the image."
-  - "If nothing known is nearby, the MPC's advice is that the object is probably an artificial satellite, which the MPC does not track; online satellite-identification tools can help."
-  - "If you are still convinced it is a new natural object, the next steps are to obtain an observatory code, measure the object's position and time accurately, and submit the measurements to the MPC (see “How do I report an observation or a discovery to the MPC?” above). Questions the documentation does not answer can go to the MPC's helpdesk."
+  - "First check whether it is something already known. There are two kinds of known moving object to rule out: natural ones, such as asteroids and comets, and artificial satellites."
+  - "For asteroids and comets, use the MPC's [MPChecker](https://minorplanetcenter.net/cgi-bin/checkmp.cgi), which lists the known objects near a given position at a given time; you will need the right ascension, declination and time of the image. The MPC's [own guidance](https://docs.minorplanetcenter.net/mpc-ops-docs/faqs/#faq-moving-object) describes this step. The MPC does not track artificial satellites, so for those use a satellite-identification tool such as Project Pluto's [sat_id](https://www.projectpluto.com/sat_id2.htm), which the MPC suggests."
+  - "How fast the object moves is a strong clue. Asteroids and comets move slowly against the stars: their motion usually only shows up between images taken minutes or hours apart. If your object crosses the sky in seconds or minutes, or leaves a long streak in a single short exposure, it is almost certainly an artificial satellite or a meteor. The MPC does not need or want observations of either."
+  - "If you are still convinced it is a new natural object, the next steps are to obtain an [observatory code](https://docs.minorplanetcenter.net/mpc-ops-docs/observatory-and-program-codes/observatory-codes/#how-do-i-get-an-observatory-code), measure the object's position and time accurately, and submit the measurements to the MPC (see “How do I report an observation or a discovery to the MPC?” above). Questions the documentation does not answer can go to the MPC's helpdesk."
 sources:
-  - label: "MPC frequently asked questions"
-    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/faqs/"
+  - label: "MPC frequently asked questions: “What is this moving object in my image?”"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/faqs/#faq-moving-object"
   - label: "MPChecker, Minor Planet Center"
     url: "https://minorplanetcenter.net/cgi-bin/checkmp.cgi"
+  - label: "sat_id, artificial satellite identification, Project Pluto"
+    url: "https://www.projectpluto.com/sat_id2.htm"
   - label: "MPC helpdesk"
     url: "https://mpc-service.atlassian.net/servicedesk/customer/portals"
 status: draft
