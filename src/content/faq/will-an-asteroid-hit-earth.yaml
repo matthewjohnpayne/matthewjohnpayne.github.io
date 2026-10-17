@@ -3,12 +3,17 @@ topic: impacts
 level: beginner
 answer:
   - "Small pieces of asteroids and comets reach Earth all the time; most burn up in the atmosphere as meteors. The Torino Scale, used to rate possible impacts, puts such objects at level 0, “no hazard”."
-  - "Larger objects are what planetary defense is about. NASA JPL's [Sentry](https://cneos.jpl.nasa.gov/sentry/) system automatically updates the orbit of every near-Earth asteroid as new observations arrive and checks whether it could hit Earth over at least the next 100 years. ESA keeps a similar [risk list](https://neo.ssa.esa.int/risk-list)."
+  - "Larger objects are what planetary defense is about, and the Minor Planet Center is the first link in the chain. Observatories around the world send their measurements of asteroid and comet positions to the MPC, the one place where all such observations are received. The MPC checks them, links them to known objects or identifies new ones, computes orbits, and publishes the observations and orbits for everyone to use. Possible new near-Earth objects go on the MPC's [NEO Confirmation Page](https://minorplanetcenter.net/iau/NEO/toconfirm_tabular.html), so that other observers can follow them up."
+  - "Impact risk is then assessed from the MPC's data. NASA JPL's [Sentry](https://cneos.jpl.nasa.gov/sentry/) system receives the observations and orbits of near-Earth asteroids from the MPC, computes a new orbit whenever new observations arrive, and checks whether the asteroid could hit Earth over at least the next 100 years. JPL's [Scout](https://cneos.jpl.nasa.gov/scout/) gives a rapid first assessment of objects still on the Confirmation Page. ESA's NEO Coordination Centre makes its own independent calculations and keeps a similar [risk list](https://neo.ssa.esa.int/risk-list)."
   - "Most objects that appear on these lists are later removed. In Sentry's words, “by far the most likely outcome is that the object will eventually be removed as new observations become available.” The next questions explain the ratings and why this happens."
   - "For the current situation, check the Sentry and ESA risk lists directly: both give each object's Torino and Palermo ratings."
 sources:
+  - label: "NEO Confirmation Page, Minor Planet Center"
+    url: "https://minorplanetcenter.net/iau/NEO/toconfirm_tabular.html"
   - label: "Introduction to Sentry, NASA JPL Center for Near-Earth Object Studies"
     url: "https://cneos.jpl.nasa.gov/sentry/intro.html"
+  - label: "Introduction to Scout, NASA JPL CNEOS"
+    url: "https://cneos.jpl.nasa.gov/scout/intro.html"
   - label: "The Torino Impact Hazard Scale, NASA JPL CNEOS"
     url: "https://cneos.jpl.nasa.gov/sentry/torino_scale.html"
   - label: "Risk list, ESA Near-Earth Objects Coordination Centre"
