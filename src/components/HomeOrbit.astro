@@ -33,10 +33,10 @@ const wedgePath = `M${sun.x},${sun.y} ` + wedge.map((q) => `L${q.x.toFixed(1)},$
 </div>
 <script>
   import { startKepleroids } from '../scripts/kepleroids/game.js';
-  const button = document.getElementById('hero-orbit');
-  const modal = document.getElementById('bl-modal');
-  const mount = document.getElementById('bl-mount');
-  let game = null;
+  const button = document.getElementById('hero-orbit') as HTMLButtonElement;
+  const modal = document.getElementById('bl-modal') as HTMLElement;
+  const mount = document.getElementById('bl-mount') as HTMLElement;
+  let game: { destroy(): void } | null = null;
   function close() {
     if (game) { game.destroy(); game = null; }
     modal.hidden = true;
@@ -47,8 +47,9 @@ const wedgePath = `M${sun.x},${sun.y} ` + wedge.map((q) => `L${q.x.toFixed(1)},$
     modal.hidden = false;
     document.body.classList.add('bl-modal-open');
     // Esc and the Quit button call onExit, after the game has removed itself
-    game = startKepleroids(mount, { onExit: () => { game = null; close(); } });
-    mount.querySelector('.bl-start')?.focus();
+    const onExit: any = () => { game = null; close(); };
+    game = startKepleroids(mount, { onExit });
+    mount.querySelector<HTMLElement>('.bl-start')?.focus();
   });
   modal.addEventListener('click', (ev) => { if (ev.target === modal) close(); });
 </script>

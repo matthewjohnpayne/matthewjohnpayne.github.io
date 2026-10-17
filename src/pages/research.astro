@@ -86,7 +86,7 @@ const external = (h: string) => h.startsWith('http');
                 <span>
                   <a class="pub-title" href={p.url} target="_blank" rel="noopener noreferrer" set:html={titleHtml(p.title)} />
                   <span class="theme-venue">{p.venue}{p.authorPosition === 1 && ' · first author'}</span>
-                  <PubExplore e={exploreMap.get(p.bibcode)} />
+                  <PubExplore e={exploreMap.get(p.bibcode ?? "")} />
                 </span>
               </li>
             ))}

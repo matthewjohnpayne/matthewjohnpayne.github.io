@@ -72,7 +72,7 @@ const ordinal = (n: number) => n + (suffix[(n % 100 - 20) % 10] || suffix[n % 10
                       {p.venue}{p.volume && `, ${p.volume}`}{p.page && `, ${p.page}`}
                       {p.doi && <> · <a href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener noreferrer">DOI</a></>}
                     </p>
-                    <PubExplore e={exploreMap.get(p.bibcode)} />
+                    <PubExplore e={exploreMap.get(p.bibcode ?? "")} />
                   </li>
                 );
               })}
