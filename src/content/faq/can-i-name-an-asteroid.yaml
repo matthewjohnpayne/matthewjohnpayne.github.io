@@ -1,0 +1,17 @@
+question: "Can I name an asteroid, or buy a name for one?"
+topic: naming
+level: beginner
+answer:
+  - "No one can buy an asteroid or its name. As the MPC puts it, “it is not possible to buy a minor planet.”"
+  - "Names are proposed by an object's discoverer, and only after the object has been *numbered*, which usually takes observations at several oppositions (“four well-observed oppositions will usually suffice”). The discoverer of a numbered object has the privilege of proposing a name for ten years after numbering. The proposals are judged by the International Astronomical Union's [Working Group Small Body Nomenclature](https://www.wgsbn-iau.org/) (WGSBN), and a name becomes official when it is published in the WGSBN Bulletin. The Minor Planet Center itself does not choose names."
+  - "The MPC's suggestion for anyone who wants to name an asteroid is to discover one. From discovery to official name can take many decades."
+sources:
+  - label: "How are minor planets named?, MPC documentation"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/designations/how-asteroids-are-named/"
+  - label: "Discoveries, credit and naming, Guide to Minor Body Astrometry"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/astrometry/discoveries-and-credit/"
+  - label: "IAU Working Group Small Body Nomenclature"
+    url: "https://www.wgsbn-iau.org/"
+status: draft
+checked: "2026-10-17"
+order: 10

@@ -1,0 +1,140 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHero from '../components/SectionHero.astro';
+import faqText from '../data/faq.json';
+
+const root = import.meta.env.BASE_URL;
+const topics = faqText.topics as Record<string, string>;
+const levels = faqText.levels as Record<string, string>;
+const entries = (await getCollection('faq'))
+  .map((e) => ({ id: e.id, ...e.data }))
+  .sort((a, b) => a.order - b.order || a.question.localeCompare(b.question));
+const groups = Object.keys(topics).map((t) => ({ topic: t, items: entries.filter((e) => e.topic === t) })).filter((g) => g.items.length);
+const drafts = entries.filter((e) => e.status === 'draft').length;
+const counts = Object.fromEntries(Object.keys(levels).map((l) => [l, entries.filter((e) => e.level === l).length]));
+
+// Answers are plain text with [text](url) links and *italic*; everything else is escaped.
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const href = (u: string) => (u.startsWith('/') ? `${root}${u.slice(1)}` : u);
+const inline = (s: string) =>
+  esc(s)
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, u) => `<a href="${href(u)}">${t}</a>`)
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+---
+<BaseLayout title={faqText.title} description={faqText.lead}>
+  <SectionHero eyebrow={faqText.eyebrow} title={faqText.title} lead={faqText.lead} />
+  <section class="site-content page-content">
+    <div class="content-width pub-layout">
+      <div class="pub-summary">
+        {drafts > 0 && (
+          <p class="faq-draft" role="note"><strong>Draft.</strong> {drafts === entries.length ? 'These answers are' : `${drafts} of these answers are`} awaiting review and may change.</p>
+        )}
+        <nav aria-label="Questions on this page">
+          <p><b>{entries.length} questions</b></p>
+          <ol class="faq-toc">
+            {groups.map((g) => (
+              <li>{topics[g.topic]}
+                <ol>{g.items.map((e) => <li data-level={e.level}><a href={`#${e.id}`}>{e.question}</a></li>)}</ol>
+              </li>
+            ))}
+          </ol>
+        </nav>
+        <fieldset class="pub-filter" id="faq-filter" hidden>
+          <legend>Show</legend>
+          {Object.entries(levels).filter(([l]) => counts[l] > 0).map(([l, label]) => (
+            <label><input type="checkbox" value={l} checked /> {label} ({counts[l]})</label>
+          ))}
+        </fieldset>
+        <p class="pub-source" id="faq-status" aria-live="polite"></p>
+      </div>
+      <div class="faq-body">
+        {groups.map((g) => (
+          <section class="faq-group" aria-labelledby={`topic-${g.topic}`}>
+            <h2 id={`topic-${g.topic}`}>{topics[g.topic]}</h2>
+            {g.items.map((e) => (
+              <article class="faq-item" id={e.id} data-level={e.level}>
+                <h3><a class="faq-anchor" href={`#${e.id}`}>{e.question}</a></h3>
+                <p class="faq-meta"><span class={`faq-level faq-level-${e.level}`}>{levels[e.level]}</span>{e.status === 'draft' && <span class="faq-status">Draft</span>}</p>
+                {e.answer.map((p) => <p set:html={inline(p)} />)}
+                {e.related.length > 0 && (
+                  <div class="item-links">
+                    {e.related.map((r) => <a class="text-link" href={href(r.href)}>{r.label} →</a>)}
+                  </div>
+                )}
+                <details class="faq-sources">
+                  <summary>Sources ({e.sources.length}), checked {e.checked}</summary>
+                  <ul>{e.sources.map((s) => <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}<span class="visually-hidden"> (opens in a new tab)</span></a></li>)}</ul>
+                </details>
+              </article>
+            ))}
+          </section>
+        ))}
+        <section class="faq-limits" aria-labelledby="faq-limits-h">
+          <h2 id="faq-limits-h">About these answers</h2>
+          {faqText.limits.map((p) => <p>{p}</p>)}
+          <p><a class="text-link" href={faqText.helpdesk} target="_blank" rel="noopener noreferrer">MPC helpdesk ↗</a></p>
+        </section>
+        <p class="back-row"><a href={root}>← Return to homepage</a></p>
+      </div>
+    </div>
+  </section>
+  <script>
+    const fs = document.getElementById('faq-filter');
+    const status = document.getElementById('faq-status');
+    if (fs && status) {
+      fs.hidden = false;
+      const boxes = [...fs.querySelectorAll<HTMLInputElement>('input')];
+      const update = () => {
+        const on = new Set(boxes.filter((b) => b.checked).map((b) => b.value));
+        let shown = 0;
+        document.querySelectorAll<HTMLElement>('.faq-item, .faq-toc li[data-level]').forEach((el) => {
+          el.hidden = !on.has(el.dataset.level!);
+          if (el.classList.contains('faq-item') && !el.hidden) shown++;
+        });
+        document.querySelectorAll<HTMLElement>('.faq-group').forEach((g) => { g.hidden = !g.querySelector('.faq-item:not([hidden])'); });
+        document.querySelectorAll<HTMLElement>('.faq-toc > li').forEach((li) => { li.hidden = !li.querySelector('li[data-level]:not([hidden])'); });
+        status.textContent = `Showing ${shown} of ${document.querySelectorAll('.faq-item').length} questions.`;
+      };
+      boxes.forEach((b) => b.addEventListener('change', update));
+      // A link to a hidden question shows it again.
+      const reveal = () => {
+        const el = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+        if (el && el.classList.contains('faq-item') && el.hidden) {
+          boxes.forEach((b) => { if (b.value === el.dataset.level) b.checked = true; });
+          update();
+          el.scrollIntoView();
+        }
+      };
+      window.addEventListener('hashchange', reveal);
+      reveal();
+    }
+  </script>
+</BaseLayout>
+
+<style>
+  .faq-draft{background:#fff6e8;border:1px solid #efd3a8;border-radius:6px;padding:10px 12px;color:var(--ink)}
+  .faq-toc,.faq-toc ol{list-style:none;margin:0;padding:0}
+  .faq-toc>li{margin:0 0 12px;font-weight:650;color:var(--ink);font-size:13px}
+  .faq-toc ol li{font-weight:400;margin:5px 0 0}
+  .faq-toc a{color:var(--teal)}
+  .faq-toc a:hover{text-decoration:underline;text-underline-offset:3px}
+  .faq-group{margin-bottom:44px}
+  .faq-group h2{font-size:clamp(22px,2.2vw,28px);font-weight:620;letter-spacing:-.03em;margin:0 0 6px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .faq-item{padding:22px 0 24px;border-bottom:1px solid var(--line);scroll-margin-top:24px}
+  .faq-item h3{font-size:18px;font-weight:660;letter-spacing:-.02em;margin:0 0 8px;line-height:1.35}
+  .faq-anchor{color:var(--ink)}
+  .faq-anchor:hover{color:var(--teal);text-decoration:underline;text-underline-offset:4px}
+  .faq-item p{font-size:15px;line-height:1.72;color:var(--body);margin:0 0 12px;max-width:72ch}
+  .faq-item p a{color:var(--teal);text-decoration:underline;text-underline-offset:2px}
+  .faq-meta{display:flex;gap:8px;margin:0 0 12px!important}
+  .faq-level,.faq-status{font-size:11px;font-weight:650;letter-spacing:.03em;padding:2px 8px;border-radius:99px;background:#e6f1f2;color:#145a61}
+  .faq-status{background:#fff0dc;color:#7a4a12}
+  .faq-sources{margin-top:14px;font-size:13px;color:var(--muted)}
+  .faq-sources summary{cursor:pointer;color:var(--ink);font-weight:600}
+  .faq-sources ul{margin:10px 0 0;padding-left:20px;line-height:1.6}
+  .faq-sources a{color:var(--teal);overflow-wrap:anywhere}
+  .faq-limits{background:#edf3f4;border-radius:6px;padding:22px 24px;margin-top:10px}
+  .faq-limits h2{font-size:18px;margin:0 0 10px}
+  .faq-limits p{font-size:14px;line-height:1.65;color:var(--body);margin:0 0 10px}
+</style>

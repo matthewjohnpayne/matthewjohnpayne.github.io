@@ -123,4 +123,23 @@ const talks = defineCollection({
   })
 });
 
-export const collections = { tutorials, courses, software, publications, people, talks };
+// Questions and answers for the public (/faq/). Answers are drafts until Matthew approves them;
+// every factual statement must be supported by one of the listed sources.
+const faq = defineCollection({
+  loader: glob({ pattern, base: './src/content/faq' }),
+  schema: z.object({
+    question: z.string(),
+    topic: z.enum(['impacts', 'mpc', 'naming', 'distant', 'interstellar', 'near-earth']),
+    level: z.enum(['beginner', 'intermediate', 'advanced']),
+    // Paragraphs of plain text; [text](url) makes a link and *text* italic. No HTML.
+    answer: z.array(z.string()).min(1),
+    sources: z.array(z.object({ label: z.string(), url: z.url() })).min(1),
+    // Pages on this site that go further, as site-relative paths.
+    related: z.array(z.object({ label: z.string(), href: z.string() })).default([]),
+    status: z.enum(['draft', 'approved']).default('draft'),
+    checked: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),   // when the sources were last checked
+    order: z.number().default(100)
+  })
+});
+
+export const collections = { tutorials, courses, software, publications, people, talks, faq };

@@ -1,0 +1,20 @@
+question: "How do I report an observation or a discovery to the MPC?"
+topic: mpc
+level: advanced
+answer:
+  - "The MPC accepts *astrometry*: precise measurements of an object's position on the sky and the time it was observed, from a known location. Photographs or descriptions alone cannot be processed."
+  - "Each observing site needs an MPC observatory code. To get one, an observer submits measurements of at least ten numbered near-Earth asteroids fainter than 16th magnitude, each on two separate nights with three to five measurements per night and at least one magnitude per night, using the temporary code XXX and the ADES format, and then completes the observatory-code request form. The [observatory-code page](https://docs.minorplanetcenter.net/mpc-ops-docs/observatory-and-program-codes/observatory-codes/) gives the exact requirements."
+  - "Observations are submitted in ADES format through the MPC's web forms or its API. The MPC's tutorials show how to validate a file, convert older 80-column observations to ADES, and submit; the WAMO (“Where Are My Observations”) service shows whether a submission has been processed."
+  - "A new object is credited to the earliest observation in the linked set; the [Guide to Minor Body Astrometry](https://docs.minorplanetcenter.net/mpc-ops-docs/astrometry/) explains discovery credit in detail."
+sources:
+  - label: "Guide to Minor Body Astrometry, MPC"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/astrometry/"
+  - label: "Observatory codes, MPC documentation"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/observatory-and-program-codes/observatory-codes/"
+  - label: "MPC frequently asked questions"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/faqs/"
+  - label: "MPC tutorials"
+    url: "https://docs.minorplanetcenter.net/tutorials/"
+status: draft
+checked: "2026-10-17"
+order: 30

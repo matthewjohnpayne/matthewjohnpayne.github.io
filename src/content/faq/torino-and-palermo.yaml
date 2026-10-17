@@ -1,0 +1,15 @@
+question: "What are the Torino and Palermo scales?"
+topic: impacts
+level: intermediate
+answer:
+  - "Both rate a possible future impact, but for different readers."
+  - "The *Torino Scale*, adopted by the International Astronomical Union in 1999, is meant mainly for communicating with the public. It runs in whole numbers from 0 to 10 and combines the chance of an impact with how much damage it would do. Level 0 (white) means no hazard; level 1 (green) is a routine discovery whose chance of collision is extremely small and which new observations will very likely move to 0; levels 2–4 (yellow) merit attention by astronomers; 5–7 (orange) are threatening; and 8–10 (red) are certain collisions."
+  - "The *Palermo Scale* is used by specialists. It compares the chance of a particular impact with the background risk from all objects of that size or larger over the years until the date of the possible impact, and takes the base-10 logarithm. A value of 0 means the event is as likely as the background; values below −2 reflect events with no likely consequences; values between −2 and 0 merit careful monitoring; and positive values generally merit some concern."
+sources:
+  - label: "The Torino Impact Hazard Scale, NASA JPL CNEOS"
+    url: "https://cneos.jpl.nasa.gov/sentry/torino_scale.html"
+  - label: "The Palermo Technical Impact Hazard Scale, NASA JPL CNEOS"
+    url: "https://cneos.jpl.nasa.gov/sentry/palermo_scale.html"
+status: draft
+checked: "2026-10-17"
+order: 20

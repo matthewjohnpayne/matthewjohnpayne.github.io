@@ -1,0 +1,34 @@
+question: "What were ʻOumuamua, Borisov and 3I/ATLAS?"
+topic: interstellar
+level: beginner
+answer:
+  - "They are the three interstellar objects known so far: bodies that formed around other stars and are passing through the Solar System on hyperbolic orbits, not bound to the Sun. Each is seen only once, on its way in and out."
+  - "*1I/ʻOumuamua* was found by the Pan-STARRS 1 telescope on Haleakalā in October 2017. Its orbit could not be bound to the Sun, so the MPC and the International Astronomical Union created a new designation series for interstellar objects, the “I” numbers. The name, chosen by the Pan-STARRS team, is Hawaiian and reflects the idea of a scout or messenger from the distant past. It looked red and extremely elongated (Meech et al. 2017), and its path showed a small non-gravitational acceleration (Micheli et al. 2018)."
+  - "*2I/Borisov* was reported by Gennadiy Borisov on 30 August 2019 as a comet candidate; other observers confirmed its cometary activity, and in September 2019 its hyperbolic orbit and interstellar origin were confirmed. Unlike ʻOumuamua, it was clearly a comet."
+  - "*3I/ATLAS* (C/2025 N1) was discovered by the ATLAS survey telescope in Chile on 1 July 2025. Earlier observations from June quickly showed a strongly hyperbolic orbit (eccentricity about 6), and there were tentative reports of a faint coma and a short tail. The Vera C. Rubin Observatory found it in commissioning images taken ten days before discovery (Chandler et al. 2026)."
+  - "Many more are expected: Hoover, Seligman & Payne (2022) estimated that Rubin's Legacy Survey of Space and Time will detect of order 15 interstellar objects over about ten years. The interactive page on this site shows where in the sky they should appear."
+sources:
+  - label: "MPEC 2017-U181, Comet C/2017 U1 (PANSTARRS)"
+    url: "https://minorplanetcenter.net/mpec/K17/K17UI1.html"
+  - label: "MPEC 2017-V17, New designation scheme for interstellar objects"
+    url: "https://minorplanetcenter.net/mpec/K17/K17V17.html"
+  - label: "MPEC 2019-R106, Comet C/2019 Q4 (Borisov)"
+    url: "https://minorplanetcenter.net/mpec/K19/K19RA6.html"
+  - label: "MPEC 2019-S72, 2I/Borisov = C/2019 Q4 (Borisov)"
+    url: "https://minorplanetcenter.net/mpec/K19/K19S72.html"
+  - label: "MPEC 2025-N12, 3I/ATLAS = C/2025 N1 (ATLAS)"
+    url: "https://minorplanetcenter.net/mpec/K25/K25N12.html"
+  - label: "Meech et al. (2017), A brief visit from a red and extremely elongated interstellar asteroid, Nature 552, 378"
+    url: "https://doi.org/10.1038/nature25020"
+  - label: "Micheli et al. (2018), Non-gravitational acceleration in the trajectory of 1I/2017 U1 (ʻOumuamua), Nature 559, 223"
+    url: "https://doi.org/10.1038/s41586-018-0254-4"
+  - label: "Chandler et al. (2026), Rubin Observatory Observations of Interstellar Comet 3I/ATLAS (C/2025 N1), ApJL 1001, L35"
+    url: "https://doi.org/10.3847/2041-8213/ae4b3a"
+  - label: "Hoover, Seligman & Payne (2022), The Population of Interstellar Objects Detectable with the LSST, PSJ 3, 71"
+    url: "https://doi.org/10.3847/PSJ/ac58fe"
+related:
+  - label: "Interstellar objects detectable with the LSST (interactive)"
+    href: "/teaching/interstellar-objects/"
+status: draft
+checked: "2026-10-17"
+order: 10

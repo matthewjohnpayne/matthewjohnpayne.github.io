@@ -1,0 +1,20 @@
+question: "What is planetary defense, and what did DART do?"
+topic: impacts
+level: beginner
+answer:
+  - "Planetary defense means finding, tracking and understanding the asteroids and comets that could hit Earth, and preparing to respond if one is found. NASA set up its Planetary Defense Coordination Office in 2016 “to manage the agency's ongoing mission of finding, tracking, and better understanding asteroids and comets that could pose an impact hazard to Earth.”"
+  - "Internationally, the [International Asteroid Warning Network](https://iawn.net/) (IAWN), recommended by a United Nations resolution, is a collaboration of organizations and astronomers who detect, monitor and characterize potentially hazardous objects and would act as a hub for informing governments."
+  - "NASA's DART spacecraft tested one deflection technique, the kinetic impactor. In September 2022 it deliberately struck Dimorphos, a moonlet about 160 metres across that orbits the 780-metre asteroid Didymos. Dimorphos's orbit took about 11 hours 55 minutes before the impact and about 11 hours 23 minutes after it: 32 minutes shorter. Neither asteroid poses an impact threat to Earth, before or after the test."
+  - "The Minor Planet Center, which receives the world's observations of asteroids and comets, is part of this system: it is where newly found objects are first identified and their orbits first computed."
+sources:
+  - label: "Planetary Defense, NASA Science"
+    url: "https://science.nasa.gov/planetary-defense/"
+  - label: "DART, NASA Science"
+    url: "https://science.nasa.gov/planetary-defense-dart/"
+  - label: "International Asteroid Warning Network"
+    url: "https://iawn.net/"
+  - label: "About the Minor Planet Center"
+    url: "https://minorplanetcenter.net/about"
+status: draft
+checked: "2026-10-17"
+order: 40

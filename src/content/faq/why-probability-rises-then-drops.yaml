@@ -1,0 +1,18 @@
+question: "Why does an asteroid's chance of hitting Earth go up, and then suddenly drop to zero?"
+topic: impacts
+level: intermediate
+answer:
+  - "When an asteroid is first found, only a few nights of observations are available, so its orbit is uncertain. Astronomers describe this as a region of possible positions, and the impact probability is the fraction of that region that would hit Earth."
+  - "As observations accumulate, in Sentry's words, “the uncertainty region becomes more tightly constrained.” If Earth is still inside the shrinking region, it makes up a larger share of it, so the probability goes up. Once the region shrinks enough to leave Earth outside it, the probability falls to zero. A rising probability therefore usually means the orbit is being pinned down, not that the danger is growing."
+  - "Asteroid 2024 YR4 is a recent example: it was given a small chance of hitting Earth in December 2032 until further observations showed that it poses no significant risk."
+  - "The Minor Planet Center's [orbit tutorials](https://docs.minorplanetcenter.net/tutorials/orbit_tutorials/) show how to retrieve real orbits and explore their uncertainty."
+sources:
+  - label: "Introduction to Sentry, NASA JPL CNEOS"
+    url: "https://cneos.jpl.nasa.gov/sentry/intro.html"
+  - label: "Asteroid 2024 YR4, NASA Science"
+    url: "https://science.nasa.gov/solar-system/asteroids/2024-yr4/"
+  - label: "MPC orbit tutorials"
+    url: "https://docs.minorplanetcenter.net/tutorials/orbit_tutorials/"
+status: draft
+checked: "2026-10-17"
+order: 30

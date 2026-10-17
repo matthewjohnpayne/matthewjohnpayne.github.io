@@ -1,0 +1,17 @@
+question: "I think I've photographed an unknown moving object. What should I do?"
+topic: mpc
+level: beginner
+answer:
+  - "First check whether it is already known. The MPC's [MPChecker](https://minorplanetcenter.net/cgi-bin/checkmp.cgi) lists the known asteroids and comets near a given position at a given time; you will need the right ascension, declination and the time of the image."
+  - "If nothing known is nearby, the MPC's advice is that the object is probably an artificial satellite, which the MPC does not track; online satellite-identification tools can help."
+  - "If you are still convinced it is a new natural object, the next steps are to obtain an observatory code, measure the object's position and time accurately, and submit the measurements to the MPC (see “How do I report an observation or a discovery to the MPC?” above). Questions the documentation does not answer can go to the MPC's helpdesk."
+sources:
+  - label: "MPC frequently asked questions"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/faqs/"
+  - label: "MPChecker, Minor Planet Center"
+    url: "https://minorplanetcenter.net/cgi-bin/checkmp.cgi"
+  - label: "MPC helpdesk"
+    url: "https://mpc-service.atlassian.net/servicedesk/customer/portals"
+status: draft
+checked: "2026-10-17"
+order: 40

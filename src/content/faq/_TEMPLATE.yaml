@@ -1,0 +1,16 @@
+# Copy this file to add a question. Files starting with "_" are ignored.
+# Keep the voice neutral and factual; every statement must be supported by a listed source.
+question: "The question, as a member of the public would ask it?"
+topic: impacts          # impacts | mpc | naming | distant | interstellar | near-earth
+level: beginner         # beginner | intermediate | advanced
+answer:
+  - "First paragraph. [Link text](https://example.org/) and *italic* are allowed; no HTML."
+sources:
+  - label: "Source title, publisher"
+    url: "https://example.org/"
+related:
+  - label: "A page on this site"
+    href: "/teaching/reference-frames/"
+status: draft           # draft until Matthew approves the wording
+checked: "2026-10-17"   # when the sources were last checked
+order: 100

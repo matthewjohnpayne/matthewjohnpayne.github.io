@@ -1,0 +1,25 @@
+{
+  "_note": "Text around the questions on /faq/. Draft wording for Matthew to edit; the questions themselves are in src/content/faq/.",
+  "title": "Questions and answers",
+  "eyebrow": "FOR EVERYONE",
+  "lead": "Short answers to questions often asked about asteroids, comets, impacts and the Minor Planet Center, with links to the sources and to pages on this site that go further.",
+  "topics": {
+    "impacts": "Impacts and planetary defense",
+    "mpc": "The Minor Planet Center and discoveries",
+    "naming": "Names",
+    "distant": "The outer Solar System",
+    "interstellar": "Interstellar objects",
+    "near-earth": "Near Earth"
+  },
+  "levels": {
+    "beginner": "Introductory",
+    "intermediate": "Some background",
+    "advanced": "For observers"
+  },
+  "limits": [
+    "These answers are general information, not official statements of the Minor Planet Center or of any agency; the linked sources are authoritative.",
+    "Requests for help with homework or coursework, and reviews of personal theories, cannot be answered individually.",
+    "Questions about submitting observations, designations or MPC services are best sent to the MPC helpdesk, which is staffed for them."
+  ],
+  "helpdesk": "https://mpc-service.atlassian.net/servicedesk/customer/portals"
+}

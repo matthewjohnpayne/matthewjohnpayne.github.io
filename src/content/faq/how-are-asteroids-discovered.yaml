@@ -1,0 +1,27 @@
+question: "How are new asteroids discovered?"
+topic: mpc
+level: intermediate
+answer:
+  - "Asteroids give themselves away by moving against the background stars. Observers measure a moving object several times in one night, a set called a *tracklet*; the MPC asks for three to five positions per night rather than one. A single night is not enough for a new object: the MPC does not assign a new designation to an object seen on only one night unless it can be matched to an object already known. Linking tracklets from different nights is one of the main computational problems surveys face ([Holman et al. 2018](https://doi.org/10.3847/1538-3881/aad69a))."
+  - "Surveys send their measurements, the object's position and the time, to the MPC. Objects whose motion suggests they may be near-Earth objects, and whose digest2 score (a quick estimate of that likelihood) is above 65, are posted on the NEO Confirmation Page, where observatories worldwide can follow them up. Once there are enough observations the object receives a provisional designation, such as 2024 YR4, and an orbit. New near-Earth objects, distant trans-Neptunian objects and natural satellites are announced in Minor Planet Electronic Circulars (MPECs)."
+  - "Discovery credit goes to the earliest observation that is part of the linked set. As more oppositions are observed and the orbit becomes well determined, the object is *numbered*, and its discoverer may then propose a name."
+  - "Finding faint, slow objects in survey data is an active research area. The [HelioLinC](/teaching/heliolinc/) and [shift-and-stack](/teaching/shift-and-stack/) pages on this site show two methods interactively."
+sources:
+  - label: "Holman, Payne, Blankley, Janssen & Kuindersma (2018), HelioLinC: A Novel Approach to the Minor Planet Linking Problem, AJ 156, 135"
+    url: "https://doi.org/10.3847/1538-3881/aad69a"
+  - label: "Observatory codes, MPC documentation"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/observatory-and-program-codes/observatory-codes/"
+  - label: "MPC processing, Guide to Minor Body Astrometry"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/astrometry/mpc-processing/"
+  - label: "Discoveries, credit and naming, Guide to Minor Body Astrometry"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/astrometry/discoveries-and-credit/"
+  - label: "Provisional designations, MPC documentation"
+    url: "https://docs.minorplanetcenter.net/mpc-ops-docs/designations/provisional-designations/"
+related:
+  - label: "HelioLinC: linking detections by guessing the distance (interactive)"
+    href: "/teaching/heliolinc/"
+  - label: "Shift-and-stack (interactive)"
+    href: "/teaching/shift-and-stack/"
+status: draft
+checked: "2026-10-17"
+order: 20

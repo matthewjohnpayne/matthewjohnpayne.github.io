@@ -1,0 +1,24 @@
+question: "What is a minimoon?"
+topic: near-earth
+level: intermediate
+answer:
+  - "A minimoon is a small asteroid temporarily captured by the Earth–Moon system: for a while it orbits Earth, then escapes back into an orbit around the Sun. Calculations by Granvik, Vaubaillon & Jedicke (2012) suggest that at any given time there should be at least one captured object about a metre across orbiting Earth."
+  - "Only a few have been seen. *2006 RH120*, a few metres across (2–7 m, depending on how reflective it is), orbited within Earth's Hill sphere from July 2006 to July 2007. *2020 CD3*, about a metre across, was the second known; its area-to-mass ratio and colours ruled out an artificial origin. *2024 PT5*, discovered by ATLAS in August 2024, was captured from 29 September to 25 November 2024; its spectrum matches lunar rock, and it may be debris from an impact on the Moon."
+  - "Minimoons are different from quasi-satellites such as Kamoʻoalewa, which orbit the Sun, outside Earth's Hill sphere, while a 1:1 resonance keeps them close to Earth. The [reference-frames page](/teaching/reference-frames/) on this site shows Kamoʻoalewa's motion in several frames."
+sources:
+  - label: "Granvik, Vaubaillon & Jedicke (2012), The population of natural Earth satellites, Icarus 218, 262"
+    url: "https://doi.org/10.1016/j.icarus.2011.12.003"
+  - label: "Kwiatkowski et al. (2009), Photometry of 2006 RH120: an asteroid temporary captured into a geocentric orbit, A&A 495, 967"
+    url: "https://doi.org/10.1051/0004-6361:200810965"
+  - label: "Fedorets et al. (2020), Establishing Earth's Minimoon Population through Characterization of Asteroid 2020 CD3, AJ 160, 277"
+    url: "https://doi.org/10.3847/1538-3881/abc3bc"
+  - label: "Bolin et al. (2025), The Discovery and Characterization of Minimoon 2024 PT5, ApJL 978, L37"
+    url: "https://doi.org/10.3847/2041-8213/ada1d0"
+  - label: "Kareta et al. (2025), On the Lunar Origin of Near-Earth Asteroid 2024 PT5, ApJL 979, L8"
+    url: "https://doi.org/10.3847/2041-8213/ad9ea8"
+related:
+  - label: "Reference frames for Solar System dynamics (interactive)"
+    href: "/teaching/reference-frames/"
+status: draft
+checked: "2026-10-17"
+order: 10
