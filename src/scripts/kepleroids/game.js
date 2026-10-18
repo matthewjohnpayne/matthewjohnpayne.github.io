@@ -34,10 +34,11 @@ const SIZES = [{ r: 34, pts: 20 }, { r: 20, pts: 50 }, { r: 11, pts: 100 }];
 const SHIP = { r: 9, thrust: 55, turn: 3.6, shot: 340, shotLife: 2.4, maxShots: 6, reload: 0.18 };
 const TWIN = { maxShots: 14, reload: 0.09, gap: 4 };   // twin guns: shot limit, reload (s), half-separation of the barrels
 // Rama: a cylinder (length L, diameter D) on a hyperbolic orbit with perihelion q and eccentricity
-// e, arriving `delay` seconds into wave `wave` from radius `start`. The pod it releases has radius r and
+// e, arriving at a random time between delay[0] and delay[1] seconds (on average 20 s) into wave
+// `wave` and each later wave until hit (not at all in a wave cleared sooner), from radius `start`. The pod it releases has radius r and
 // brakes to a circular orbit if it is within rp of the Sun, otherwise to an ellipse with aphelion at
 // the release point and perihelion rp, so that it always comes back through the middle of the view.
-const RAMA = { wave: 2, delay: 5, L: 46, D: 16, q: [170, 260], e: [1.3, 1.6], start: 970 };
+const RAMA = { wave: 2, delay: [10, 30], L: 46, D: 16, q: [170, 260], e: [1.3, 1.6], start: 970 };
 const POD = { r: 7, rp: 250 };
 // The binary star: in wave `first`, separation a and mass ratio q (secondary/primary); after it, a
 // binary with probability `chance`, separation in aRange and mass ratio in qRange. Its period is
@@ -157,7 +158,7 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
       } while (ship && Math.hypot(st.x - ship.x, st.y - ship.y) < 180);
       rocks.push({ ...st, size: 0, shape: rockShape(0), spin: (rnd() - 0.5) * 2, rot: 0 });
     }
-    if (wave >= RAMA.wave && !ramaHit) ramaTimer = RAMA.delay;
+    if (wave >= RAMA.wave && !ramaHit) ramaTimer = RAMA.delay[0] + (RAMA.delay[1] - RAMA.delay[0]) * rnd();
     message = `Wave ${wave}`;
     setTimeout(() => { if (message === `Wave ${wave}`) message = ''; }, 1600);
   }
