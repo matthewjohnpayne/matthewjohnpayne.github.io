@@ -52,7 +52,7 @@ ${cv.appointments.map((a) => row(a.dates, a.title, a.place, a.details)).join('\n
 ${cv.education.map((e) => row(e.dates, e.degree, e.place, e.details ? [e.details] : [])).join('\n')}
 
 \cvsection{Publications}
-${papers.total} refereed papers, ${papers.firstAuthor} as first author (NASA ADS). Full list: \href{${cv.website}publications/}{${esc(cv.website.replace(/^https:\/\//, ''))}publications}.\par\vspace{4pt}
+${papers.total} refereed papers, ${papers.firstAuthor} as first author (NASA ADS). Full list: \href{${cv.website}research/}{${esc(cv.website.replace(/^https:\/\//, ''))}research}.\par\vspace{4pt}
 \textbf{Recent first-author papers}
 \begin{enumerate}
 ${papers.selected.map((p) => `\\item {\\small ${esc(authorList(p.authors, p.authorCount ?? p.authors.length))} (${p.year}). ${p.url ? `\\href{${p.url}}{${esc(p.title)}}` : esc(p.title)}. \\textit{${esc(p.venue)}}${p.volume ? ` ${esc(p.volume)}` : ''}${p.page ? `, ${esc(p.page)}` : ''}.}`).join('\n')}

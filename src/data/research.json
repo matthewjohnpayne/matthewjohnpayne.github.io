@@ -1,5 +1,5 @@
 {
-  "description": "Research themes, each with the ADS bibcodes of its papers (see src/content/publications/). Theme titles approved by Matthew Payne on 2026-10-14. Every refereed paper should appear in exactly one theme or in `other`; the Research page build warns about any that do not.",
+  "description": "Research themes, each with the ADS bibcodes of its papers (see src/content/publications/). Theme titles approved by Matthew Payne on 2026-10-14. Every refereed paper should appear in exactly one theme or in `other`; the Research page build warns about any that do not. `area` names the matching group of science notebooks on the Teaching page. `links` are the interactive pages, notebooks and other resources for a theme; the Research page counts the interactive pages and notebooks and lists the rest as related links.",
   "themes": [
     {
       "id": "formation",
@@ -11,6 +11,7 @@
     {
       "id": "exoplanet-dynamics",
       "title": "Exoplanet dynamics, TTVs and radial velocities",
+      "area": "exoplanets",
       "summary": "Resonances and stability in multi-planet systems, transit timing variations, and N-body modelling of radial-velocity data, from resonance overlap and 55 Cancri to Gliese 876 and RUN DMC.",
       "bibcodes": ["2009MNRAS.393.1219P", "2010ApJ...712L..86P", "2011AJ....141...16J", "2011ApJ...727...74V", "2011ApJ...729...98P", "2012ApJ...754...57B", "2012ApJ...761...46W", "2012MNRAS.426..187R", "2013ApJ...774..129D", "2013ApJ...777..101T", "2014ApJS..210...11N", "2014MNRAS.441..442N", "2015ApJ...799...89G", "2015ApJ...803...49Q", "2016MNRAS.455.2484N", "2019AJ....157..142G", "2019AJ....158..146H", "2020AJ....160..106H", "2021AJ....162..154D", "2022AJ....163..168W", "2024ApJS..271...16D", "2025AJ....169..248C"],
       "links": [
@@ -59,6 +60,7 @@
     {
       "id": "exomoons",
       "title": "Exomoons and satellite stability",
+      "area": "moons",
       "summary": "Whether moons survive in closely packed planetary systems and around white dwarfs.",
       "bibcodes": ["2013ApJ...775L..44P", "2016MNRAS.457..217P", "2017MNRAS.464.2557P"],
       "links": [
@@ -82,6 +84,7 @@
     {
       "id": "outer-solar-system",
       "title": "The outer Solar System",
+      "area": "solar-system",
       "summary": "Planet Nine, trans-Neptunian objects, Neptune Trojans, Centaurs and the DECam Ecliptic Exploration Project (DEEP).",
       "links": [
         {
@@ -120,6 +123,7 @@
     {
       "id": "detection",
       "title": "Detection and linking methods",
+      "area": "detection",
       "summary": "Finding and characterising small bodies in survey data: HelioLinC, digest2, machine learning for near-Earth objects, shift-and-stack, the ASSIST integrator and IAWN timing campaigns.",
       "links": [
         {

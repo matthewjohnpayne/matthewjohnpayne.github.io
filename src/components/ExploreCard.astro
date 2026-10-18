@@ -2,12 +2,13 @@
 // One interactive page as a card, for /explore/ and the homepage strip (src/lib/interactive.ts).
 import ExploreThumb from './ExploreThumb.astro';
 import type { ExplorePage } from '../lib/interactive';
-interface Props { page: ExplorePage; detail?: boolean }
-const { page, detail = false } = Astro.props;
+// `themes`: ids of the research themes the page belongs to, for the theme filter on /explore/.
+interface Props { page: ExplorePage; detail?: boolean; themes?: string[] }
+const { page, detail = false, themes } = Astro.props;
 const root = import.meta.env.BASE_URL;
 const paper = page.basedOn.find((s) => s.bibcode) ?? page.basedOn[0];
 ---
-<a class="feature-card xc" href={`${root}${page.path}/`}>
+<a class="feature-card xc" href={`${root}${page.path}/`} data-themes={themes?.join(' ')}>
   <div class="feature-illustration"><ExploreThumb visual={page.visual} area={page.area} label={paper?.label ?? ''} /></div>
   <div class="feature-copy">
     <h3>{page.title}</h3>

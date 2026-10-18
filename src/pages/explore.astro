@@ -1,25 +1,32 @@
 ---
 // /explore/: every interactive page, grouped by area. The list comes from src/data/page-status.json
 // (see src/lib/interactive.ts), so a new page appears here once it has a status entry.
+// #theme=<id> shows only the pages for one research theme (src/lib/themes.ts); the Research page
+// links here that way.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
 import ExploreCard from '../components/ExploreCard.astro';
 import { explorePages, AREAS } from '../lib/interactive';
+import { themes, themeContents } from '../lib/themes';
 const root = import.meta.env.BASE_URL;
 const pages = await explorePages();
+const contents = await themeContents();
+const themesOf = (path: string) => themes.filter((t) => contents.get(t.id)!.interactive.includes(path)).map((t) => t.id);
+const themeTitles = Object.fromEntries(themes.map((t) => [t.id, t.title]));
 const groups = Object.entries(AREAS).map(([id, a]) => ({ id, ...a, pages: pages.filter((p) => p.area === id) })).filter((g) => g.pages.length);
 ---
 <BaseLayout title="Explore" description="Interactive essays and simulations: real physics computed in your browser, each based on a paper or notebook.">
   <SectionHero eyebrow="INTERACTIVE ESSAYS & SIMULATIONS" title="Explore" lead={`${pages.length} interactive pages. Each runs real, checked calculations in your browser and is based on a published paper, a notebook or MPC software. Nothing moves until you press play.`} />
   <section class="site-content page-content">
     <div class="content-width">
+      <p class="xp-filter" id="xp-filter" hidden><span id="xp-filter-text"></span> <a href={`${root}research/`} id="xp-filter-back">Back to the theme</a> · <a href="#" id="xp-filter-clear">Show all interactive pages</a></p>
       <nav class="xp-index" aria-label="Areas">
         {groups.map((g) => <a href={`#${g.id}`}>{g.title} <span>{g.pages.length}</span></a>)}
       </nav>
       {groups.map((g) => (
         <section class="xp-group" id={g.id} aria-labelledby={`${g.id}-h`}>
           <div class="section-heading"><div><h2 id={`${g.id}-h`}>{g.title}</h2>{g.lead && <p class="xp-lead">{g.lead}</p>}</div></div>
-          <div class="feature-grid xp-grid">{g.pages.map((p) => <ExploreCard page={p} detail />)}</div>
+          <div class="feature-grid xp-grid">{g.pages.map((p) => <ExploreCard page={p} detail themes={themesOf(p.path)} />)}</div>
         </section>
       ))}
       <section class="xp-also" aria-label="Also">
@@ -32,6 +39,40 @@ const groups = Object.entries(AREAS).map(([id, a]) => ({ id, ...a, pages: pages.
       </section>
     </div>
   </section>
+  <script is:inline type="application/json" id="xp-themes" set:html={JSON.stringify(themeTitles)} />
+  <script>
+    const titles: Record<string, string> = JSON.parse(document.getElementById('xp-themes')!.textContent || '{}');
+    const box = document.getElementById('xp-filter')!;
+    const index = document.querySelector<HTMLElement>('.xp-index')!;
+    const also = document.querySelector<HTMLElement>('.xp-also')!;
+    function apply() {
+      const id = new URLSearchParams(location.hash.slice(1)).get('theme');
+      const theme = id && titles[id] ? id : null;
+      let n = 0;
+      document.querySelectorAll<HTMLElement>('.xp-group').forEach((g) => {
+        let shown = 0;
+        g.querySelectorAll<HTMLElement>('.xc').forEach((c) => {
+          c.hidden = theme !== null && !(c.dataset.themes || '').split(' ').includes(theme);
+          if (!c.hidden) shown++;
+        });
+        g.hidden = shown === 0;
+        n += shown;
+      });
+      box.hidden = index.hidden = also.hidden = false;
+      if (theme) {
+        index.hidden = also.hidden = true;
+        document.getElementById('xp-filter-text')!.textContent = `Showing the ${n} interactive page${n === 1 ? '' : 's'} on ${titles[theme]}.`;
+        (document.getElementById('xp-filter-back') as HTMLAnchorElement).hash = theme;
+      } else box.hidden = true;
+    }
+    document.getElementById('xp-filter-clear')!.addEventListener('click', (e) => {
+      e.preventDefault();
+      history.replaceState(null, '', location.pathname);
+      apply();
+    });
+    window.addEventListener('hashchange', apply);
+    apply();
+  </script>
 </BaseLayout>
 <style>
   .xp-index { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
@@ -41,6 +82,8 @@ const groups = Object.entries(AREAS).map(([id, a]) => ({ id, ...a, pages: pages.
   .xp-group { margin-bottom: 48px; scroll-margin-top: 20px; }
   .xp-lead { margin: 6px 0 0; color: var(--body); font-size: 14px; }
   .xp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .xp-filter { background: #e6f2f3; border-radius: 4px; padding: 10px 14px; font-size: 14px; color: var(--ink); margin: 0 0 30px; }
+  .xp-filter a { color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
   .xp-also { border-top: 1px solid var(--line); padding-top: 24px; }
   .xp-also ul { margin: 0; padding-left: 18px; color: var(--body); font-size: 14px; line-height: 1.8; }
   @media (max-width: 1080px) { .xp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

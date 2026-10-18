@@ -69,7 +69,7 @@ const areas = [
             </ul>
           ) : group.topic === 'science' ? (
             areas.filter((a) => tutorials.some((t) => t.data.topic === 'science' && t.data.area === a.area)).map((a) => (
-              <div class="area-group">
+              <div class="area-group" id={`nb-${a.area}`}>
                 <h3 class="area-heading">{a.heading}</h3>
                 <div class="resource-grid">
                   {tutorials.filter((t) => t.data.topic === 'science' && t.data.area === a.area).map(({ data }) => {

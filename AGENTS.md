@@ -24,7 +24,7 @@ This repository is a **personal scientific website** for Matthew Payne, astrophy
 - Intro and identity: `src/data/site.json`.
 - Section titles, eyebrows and leads: `src/data/pages.json`. Research, People, Teaching, Software and Publications have their own pages in `src/pages/`; MPC still uses the generic `src/pages/[slug].astro`.
 - Homepage cards: `src/data/features.json`.
-- Research themes: `src/data/research.json`, which assigns every refereed paper (by ADS bibcode) to one of six themes or to `other`. When a new paper appears, add its bibcode to a theme; the build prints a `[research]` warning for any paper not assigned.
+- Research themes: `src/data/research.json`, which assigns every refereed paper (by ADS bibcode) to one of five themes or to `other`. The page `/research/` shows the themes and the full publication list together, by topic or by year (`?view=year`); `/publications/` redirects there. Each theme's `area` points to its notebook group on Teaching; its interactive pages and notebooks are worked out in `src/lib/themes.ts` (also used for the `#theme=` filter on `/explore/`). When a new paper appears, add its bibcode to a theme; the build prints a `[research]` warning for any paper not assigned.
 - Structured records (one YAML file each, validated by `src/content.config.ts`):
   - `src/content/tutorials/`: notebooks, linking to the authoritative MPC tutorial pages.
   - `src/content/courses/`: courses written or taught.

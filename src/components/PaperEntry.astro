@@ -1,0 +1,39 @@
+---
+// One refereed paper on /research/, in the same format in both views: title, short author list,
+// venue and DOI, the interactive page, notebook and code built on it, and (in the year view) a tag
+// naming its research theme, which switches to that theme in the topic view.
+import PubExplore from './PubExplore.astro';
+import type { Explore } from '../lib/explore';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { p: CollectionEntry<'publications'>['data']; e?: Explore; theme?: { id: string; title: string; n: number } }
+const { p, e, theme } = Astro.props;
+
+// ADS titles can carry <SUB>, <SUP> and <i> markup; keep only those tags.
+const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const titleHtml = escape(p.title).replace(/&lt;(\/?)(sub|sup|i)&gt;/gi, (_, slash, tag) => `<${slash}${tag.toLowerCase()}>`);
+const isPayne = (a: string) => /^Payne, M(\.|atthew)/.test(a);
+// Short author line: up to six names in full, otherwise the first three and Payne's position.
+const total = p.authorCount ?? p.authors.length;
+const shown = total <= 6 ? p.authors : p.authors.slice(0, 3);
+const rest = total <= 6 ? 0 : total - 3;
+const pos = rest && p.authorPosition && p.authorPosition > 3 ? p.authorPosition : undefined;
+const suffix = ['th', 'st', 'nd', 'rd'];
+const ordinal = (n: number) => n + (suffix[(n % 100 - 20) % 10] || suffix[n % 100] || 'th');
+---
+<li class="pub-item" data-first={p.authorPosition === 1 ? 'true' : 'false'} data-bibcode={p.bibcode}>
+  <span class="pub-yr">{p.year}</span>
+  <div>
+    <a class="pub-title" href={p.url} target="_blank" rel="noopener noreferrer" set:html={titleHtml} />
+    <p class="pub-authors">
+      {shown.map((name, i) => <>{i > 0 && ', '}{isPayne(name) ? <strong>{name}</strong> : name}</>)}
+      {rest > 0 && <> and {rest} others{pos && <> (<strong>Payne</strong> {ordinal(pos)})</>}</>}
+    </p>
+    <p class="pub-venue">
+      {p.venue}{p.volume && `, ${p.volume}`}{p.page && `, ${p.page}`}
+      {p.doi && <> · <a href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener noreferrer">DOI</a></>}
+      {theme && <> <a class={`pub-theme pub-theme-${theme.n}`} href={`?view=topic#${theme.id}`} data-theme-link={theme.id}>{theme.title}</a></>}
+    </p>
+    <PubExplore e={e} />
+  </div>
+</li>

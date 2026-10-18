@@ -75,7 +75,7 @@ const join = (...parts: (string | undefined)[]) => parts.filter(Boolean).join(' 
         <ul class="people-list">
           {people.map((c) => (
             <li>
-              <a href={`${root}publications/#with=${encodeURIComponent(c.key)}`}>
+              <a href={`${root}research/?view=year#with=${encodeURIComponent(c.key)}`}>
                 <span class="people-name">{display(c.name)}</span>
                 <span class="people-meta">{c.papers} papers · {span(c)}</span>
               </a>
@@ -83,7 +83,7 @@ const join = (...parts: (string | undefined)[]) => parts.filter(Boolean).join(' 
           ))}
         </ul>
       </div>
-      <div class="editorial-note"><div><span class="status-dot"></span> Sources</div><p>Collaborators are generated from the same NASA ADS search as the <a href={`${root}publications/`}>publication list</a>, last updated {meta.fetched}. MPC staff follow the MPC's own staff page and its archived versions.</p></div>
+      <div class="editorial-note"><div><span class="status-dot"></span> Sources</div><p>Collaborators are generated from the same NASA ADS search as the <a href={`${root}research/?view=year`}>publication list</a>, last updated {meta.fetched}. MPC staff follow the MPC's own staff page and its archived versions.</p></div>
       <p class="back-row"><a href={root}>← Return to homepage</a></p>
     </div>
   </section>

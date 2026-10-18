@@ -1,124 +1,209 @@
 ---
+// /research/: research themes and the full list of refereed papers on one page, in two views.
+// "By topic" groups the papers into the themes of src/data/research.json; "By year" lists them
+// newest first, each tagged with its theme. The view is in the URL (?view=year), and the filters
+// (first author only; #with=<ADS name> for papers with one co-author, used by the People page)
+// apply to both. /publications/ redirects here with ?view=year.
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
-import PubExplore from '../components/PubExplore.astro';
+import PaperEntry from '../components/PaperEntry.astro';
 import { exploreByPaper } from '../lib/explore';
+import { themes, themeContents } from '../lib/themes';
 import pages from '../data/pages.json';
 import research from '../data/research.json';
+import meta from '../data/publications-meta.json';
+import collab from '../data/collaborators.json';
 
 const page = pages.find((p) => p.slug === 'research')!;
 const root = import.meta.env.BASE_URL;
-// Interactive pages, notebooks and software linked to each paper, by bibcode.
 const exploreMap = await exploreByPaper();
-const pubs = new Map((await getCollection('publications')).map((p) => [p.data.bibcode, p.data]));
+const contents = await themeContents();
+const all = (await getCollection('publications')).map((p) => p.data)
+  .sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
+const pubs = new Map(all.map((p) => [p.bibcode, p]));
 
 // Every paper belongs to one theme (or "other"); say so at build time if not.
-const assigned = new Set([...research.themes.flatMap((t) => t.bibcodes), ...research.other.bibcodes]);
+const assigned = new Set([...themes.flatMap((t) => t.bibcodes), ...research.other.bibcodes]);
 const unassigned = [...pubs.keys()].filter((b) => b && !assigned.has(b));
 if (unassigned.length) console.warn(`[research] Papers not in any theme in src/data/research.json: ${unassigned.join(', ')}`);
 const missing = [...assigned].filter((b) => !pubs.has(b));
 if (missing.length) console.warn(`[research] Bibcodes in research.json with no publication record: ${missing.join(', ')}`);
 
-const papersFor = (bibcodes: string[]) => bibcodes
-  .map((b) => pubs.get(b))
-  .filter((p) => p !== undefined)
+const papersFor = (bibcodes: string[]) => bibcodes.map((b) => pubs.get(b)).filter((p) => p !== undefined)
   .sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
-type Link = { label: string; href: string; group?: string };
-// Consecutive links that share a group (a topic, usually an interactive page and its notebook)
-// are shown together under the group's name.
-const groupLinks = (links: Link[]) => links.reduce((out: { group?: string; links: Link[] }[], l) => {
-  const last = out[out.length - 1];
-  if (last && l.group && last.group === l.group) last.links.push(l);
-  else out.push({ group: l.group, links: [l] });
-  return out;
-}, []);
-const themes = research.themes.map((t) => ({ ...t, papers: papersFor(t.bibcodes), linkGroups: groupLinks(t.links as Link[]) }));
-const other = papersFor(research.other.bibcodes);
-const years = (ps: { year: number }[]) => `${Math.min(...ps.map((p) => p.year))}–${Math.max(...ps.map((p) => p.year))}`;
+const span = (ps: { year: number }[]) => `${Math.min(...ps.map((p) => p.year))}–${Math.max(...ps.map((p) => p.year))}`;
+const groups = [
+  ...themes.map((t, i) => ({ ...t, n: i + 1, papers: papersFor(t.bibcodes), ...contents.get(t.id)! })),
+  { id: 'other', title: research.other.title, n: 0, summary: '', area: undefined, papers: papersFor(research.other.bibcodes), interactive: [], notebooks: [], related: [] }
+].filter((g) => g.papers.length);
+const themeOf = new Map(groups.flatMap((g) => g.papers.map((p) => [p.bibcode, { id: g.id, title: g.title, n: g.n }])));
+const years = [...new Set(all.map((p) => p.year))];
+const firstAuthor = all.filter((p) => p.authorPosition === 1).length;
 
-const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-const titleHtml = (t: string) => escape(t).replace(/&lt;(\/?)(sub|sup|i)&gt;/gi, (_, slash, tag) => `<${slash}${tag.toLowerCase()}>`);
+// Co-author filter (#with=<ADS normalised name>), used by links from the People page.
+const withMap = Object.fromEntries(collab.collaborators.map((c) => [c.key, { name: c.name.split(/,\s*/).reverse().join(' '), bibcodes: c.bibcodes }]));
+const fetched = new Date(meta.fetched).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+const ext = (h: string) => h.startsWith('http');
 const href = (h: string) => (h.startsWith('/') ? `${root}${h.slice(1)}` : h);
-const external = (h: string) => h.startsWith('http');
 ---
 <BaseLayout title={page.title} description={page.summary}>
   <SectionHero eyebrow={page.eyebrow} title={page.title} lead={page.lead} />
   <section class="site-content page-content">
     <div class="content-width">
-      <nav class="theme-index" aria-label="Research themes">
-        {themes.map((t, i) => (
-          <a class="theme-card" href={`#${t.id}`}>
-            <span class="theme-n">{String(i + 1).padStart(2, '0')}</span>
-            <strong>{t.title}</strong>
-            <span class="theme-meta">{t.papers.length} papers · {years(t.papers)}</span>
-          </a>
+      <div class="rp-bar">
+        <p class="rp-count"><strong>{all.length}</strong> refereed papers, <strong>{firstAuthor}</strong> as first author, {years.at(-1)}–{years[0]}.</p>
+        <div class="rp-controls">
+          <fieldset class="rp-toggle" id="rp-toggle" hidden>
+            <legend class="visually-hidden">Order the papers</legend>
+            <label><input type="radio" name="rp-view" value="topic" checked /><span>By topic</span></label>
+            <label><input type="radio" name="rp-view" value="year" /><span>By year</span></label>
+          </fieldset>
+          <label class="rp-first" id="rp-first-wrap" hidden><input type="checkbox" id="rp-first" /> First author only</label>
+        </div>
+        <p class="pub-with" id="pub-with" hidden><span id="pub-with-text"></span> <a href="#" id="pub-with-clear">Show all</a></p>
+      </div>
+
+      <div id="rp-topic">
+        <nav class="theme-index" aria-label="Research themes">
+          {groups.map((g) => (
+            <a class={`theme-card${g.n ? '' : ' theme-card-other'}`} href={`#${g.id}`} data-group={g.id}>
+              <span class="theme-n">{g.n ? String(g.n).padStart(2, '0') : '+'}</span>
+              <strong>{g.title}</strong>
+              <span class="theme-meta">{g.papers.length} papers · {span(g.papers)}</span>
+            </a>
+          ))}
+        </nav>
+        {groups.map((g) => (
+          <section class="theme rp-group" id={g.id}>
+            <div class="theme-head">
+              {g.n > 0 && <p class="item-kicker">Theme {g.n}</p>}
+              <h2>{g.title}</h2>
+              {g.summary && <p>{g.summary}</p>}
+              {(g.interactive.length > 0 || g.notebooks.length > 0) && (
+                <p class="rp-explore">
+                  {g.interactive.length > 0 && <a href={`${root}explore/#theme=${g.id}`}>▶ {plural(g.interactive.length, 'interactive page')} →</a>}
+                  {g.notebooks.length > 0 && g.area && <a href={`${root}teaching/#nb-${g.area}`}>{plural(g.notebooks.length, 'notebook')} →</a>}
+                </p>
+              )}
+              {g.related.length > 0 && (
+                <p class="rp-related">Related: {g.related.map((l, i) => <>{i > 0 && ' · '}<a href={href(l.href)} {...(ext(l.href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{l.label.replace(/^Interactive: /, '')}{ext(l.href) ? ' ↗' : ''}</a></>)}</p>
+              )}
+            </div>
+            <ol class="theme-papers rp-papers">
+              {g.papers.map((p) => <PaperEntry p={p} e={exploreMap.get(p.bibcode ?? '')} />)}
+            </ol>
+          </section>
         ))}
-        {other.length > 0 && (
-          <a class="theme-card theme-card-other" href="#other">
-            <span class="theme-n">+</span>
-            <strong>{research.other.title}</strong>
-            <span class="theme-meta">{other.length} papers · {years(other)}</span>
-          </a>
-        )}
-      </nav>
+      </div>
 
-      {themes.map((t, i) => (
-        <section class="theme" id={t.id}>
-          <div class="theme-head">
-            <p class="item-kicker">Theme {i + 1}</p>
-            <h2>{t.title}</h2>
-            <p>{t.summary}</p>
-            {t.links.length > 0 && (
-              <div class="item-links">
-                {t.linkGroups.map((g) => g.group ? (
-                  <div class="link-group">
-                    <h3 class="link-group-title">{g.group}</h3>
-                    <ul>
-                      {g.links.map((l) => (
-                        <li><a class="text-link" href={href(l.href)} target={external(l.href) ? '_blank' : undefined} rel={external(l.href) ? 'noopener noreferrer' : undefined}>{l.label} {external(l.href) ? '↗' : '→'}</a></li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : g.links.map((l) => (
-                  <a class="text-link" href={href(l.href)} target={external(l.href) ? '_blank' : undefined} rel={external(l.href) ? 'noopener noreferrer' : undefined}>{l.label} {external(l.href) ? '↗' : '→'}</a>
-                )))}
-              </div>
-            )}
-          </div>
-          <ol class="theme-papers">
-            {t.papers.map((p) => (
-              <li>
-                <span class="theme-year">{p.year}</span>
-                <span>
-                  <a class="pub-title" href={p.url} target="_blank" rel="noopener noreferrer" set:html={titleHtml(p.title)} />
-                  <span class="theme-venue">{p.venue}{p.authorPosition === 1 && ' · first author'}</span>
-                  <PubExplore e={exploreMap.get(p.bibcode ?? "")} />
-                </span>
-              </li>
-            ))}
-          </ol>
-        </section>
-      ))}
+      <div id="rp-year" hidden>
+        {years.map((year) => (
+          <section class="theme rp-group rp-yeargroup">
+            <div class="theme-head"><h2>{year}</h2></div>
+            <ol class="theme-papers rp-papers">
+              {all.filter((p) => p.year === year).map((p) => <PaperEntry p={p} e={exploreMap.get(p.bibcode ?? '')} theme={themeOf.get(p.bibcode)} />)}
+            </ol>
+          </section>
+        ))}
+      </div>
 
-      {other.length > 0 && (
-        <section class="theme" id="other">
-          <div class="theme-head"><h2>{research.other.title}</h2></div>
-          <ol class="theme-papers">
-            {other.map((p) => (
-              <li>
-                <span class="theme-year">{p.year}</span>
-                <span>
-                  <a class="pub-title" href={p.url} target="_blank" rel="noopener noreferrer" set:html={titleHtml(p.title)} />
-                  <span class="theme-venue">{p.venue}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
-
-      <p class="back-row"><a href={`${root}publications/`}>All publications, with authors →</a></p>
+      <p class="pub-source">From <a href={meta.adsUrl} target="_blank" rel="noopener noreferrer">this NASA ADS search ↗</a>, last updated {fetched}. ADS also has citations and full texts.</p>
+      <p class="back-row"><a href={root}>← Return to homepage</a></p>
     </div>
   </section>
+
+  <script is:inline type="application/json" id="pub-with-data" set:html={JSON.stringify(withMap)} />
+  <script>
+    const views = { topic: document.getElementById('rp-topic')!, year: document.getElementById('rp-year')! };
+    const toggle = document.getElementById('rp-toggle')!;
+    const radios = [...toggle.querySelectorAll<HTMLInputElement>('input[name="rp-view"]')];
+    const first = document.getElementById('rp-first') as HTMLInputElement;
+    const withBox = document.getElementById('pub-with')!;
+    const withMap: Record<string, { name: string; bibcodes: string[] }> = JSON.parse(document.getElementById('pub-with-data')!.textContent || '{}');
+    toggle.hidden = false;
+    document.getElementById('rp-first-wrap')!.hidden = false;
+
+    const currentView = () => (new URLSearchParams(location.search).get('view') === 'year' ? 'year' : 'topic');
+    const withKey = () => new URLSearchParams(location.hash.slice(1)).get('with');
+
+    function apply() {
+      const view = currentView();
+      views.topic.hidden = view !== 'topic';
+      views.year.hidden = view !== 'year';
+      radios.forEach((r) => (r.checked = r.value === view));
+      const key = withKey();
+      const person = key ? withMap[key] : undefined;
+      const allowed = person ? new Set(person.bibcodes) : null;
+      document.querySelectorAll<HTMLElement>('.pub-item').forEach((li) => {
+        li.hidden = (first.checked && li.dataset.first !== 'true') || (allowed !== null && !allowed.has(li.dataset.bibcode || ''));
+      });
+      document.querySelectorAll<HTMLElement>('.rp-group').forEach((sec) => {
+        sec.hidden = !sec.querySelector('.pub-item:not([hidden])');
+        const card = sec.id ? document.querySelector<HTMLElement>(`.theme-card[data-group="${sec.id}"]`) : null;
+        if (card) card.hidden = sec.hidden;
+      });
+      withBox.hidden = !person;
+      if (person) document.getElementById('pub-with-text')!.textContent = `Showing ${person.bibcodes.length} papers with ${person.name}.`;
+    }
+
+    function setView(view: string, hash: string) {
+      history.replaceState(null, '', (view === 'year' ? '?view=year' : location.pathname) + hash);
+      apply();
+    }
+    radios.forEach((r) => r.addEventListener('change', () => {
+      // Keep a co-author filter; drop a theme anchor, which belongs to the topic view.
+      setView(r.value, withKey() ? location.hash : '');
+      window.scrollTo({ top: toggle.getBoundingClientRect().top + scrollY - 24 });
+    }));
+    first.addEventListener('change', apply);
+    window.addEventListener('hashchange', apply);
+    document.getElementById('pub-with-clear')!.addEventListener('click', (e) => {
+      e.preventDefault();
+      setView(currentView(), '');
+    });
+    // A theme tag in the year view opens that theme in the topic view.
+    views.year.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-theme-link]');
+      if (!a) return;
+      e.preventDefault();
+      setView('topic', '#' + a.dataset.themeLink);
+      document.getElementById(a.dataset.themeLink!)?.scrollIntoView();
+    });
+    apply();
+  </script>
 </BaseLayout>
+
+<style is:global>
+  .rp-bar { display: grid; gap: 12px; margin-bottom: 32px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+  .rp-count { margin: 0; font-size: 15px; color: var(--body); }
+  .rp-count strong { color: var(--ink); }
+  .rp-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
+  .rp-toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; margin: 0; background: #fff; }
+  .rp-toggle label { position: relative; cursor: pointer; }
+  .rp-toggle input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .rp-toggle span { display: block; padding: 7px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--body); }
+  .rp-toggle input:checked + span { background: var(--teal); color: #fff; }
+  .rp-toggle input:focus-visible + span { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .rp-first { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; color: var(--ink); cursor: pointer; }
+  .pub-with { margin: 0; justify-self: start; }
+  .rp-explore { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px !important; }
+  .rp-explore a { color: var(--teal); font-weight: 650; font-size: 14px; }
+  .rp-explore a:hover, .rp-related a:hover { text-decoration: underline; }
+  .rp-related { margin-top: 10px !important; font-size: 13px !important; }
+  .rp-related a { color: var(--teal); }
+  .rp-papers .pub-item { display: grid; grid-template-columns: 52px 1fr; gap: 12px; padding: 14px 0; }
+  .pub-yr { font-size: 13px; color: var(--teal); font-weight: 600; font-variant-numeric: tabular-nums; padding-top: 2px; }
+  .rp-yeargroup .rp-papers .pub-item { grid-template-columns: 1fr; }
+  .rp-yeargroup .pub-yr { display: none; }
+  .rp-yeargroup .theme-head { position: sticky; top: 20px; align-self: start; }
+  .rp-yeargroup .theme-head h2 { font-size: clamp(28px, 3vw, 40px); color: var(--teal); font-variant-numeric: tabular-nums; }
+  .pub-authors { margin: 5px 0 0; font-size: 13px; line-height: 1.55; color: var(--body); }
+  .pub-theme { display: inline-block; margin-left: 4px; padding: 1px 9px; border-radius: 999px; font-size: 11.5px; font-style: normal; font-weight: 600; text-decoration: none !important; background: #e6f2f3; color: #0b5f66 !important; }
+  .pub-theme:hover { background: #cfe7e9; }
+  .pub-theme-0 { background: #eef0f1; color: #435866 !important; }
+  .pub-source { margin-top: 36px; font-size: 12px; color: var(--muted); }
+  .pub-source a { color: var(--teal); text-decoration: underline; }
+  @media (max-width: 575px) { .rp-papers .pub-item { grid-template-columns: 1fr; gap: 2px; } .rp-yeargroup .theme-head { position: static; } }
+</style>
