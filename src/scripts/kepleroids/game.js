@@ -13,6 +13,8 @@
 //
 // In wave 3 the Sun is replaced by a binary star of the same total mass (see BINARY): two stars on
 // a circular orbit about the centre, whose changing pull makes orbits close in precess and wander.
+// In later waves the centre is at random a single star or a binary of random separation and mass
+// ratio.
 //
 // startKepleroids(container, { onExit, compact, onToggleSize }) builds the game inside container
 // and returns { destroy, setExpanded }. compact: a small window (shorter start text, larger ship
@@ -35,21 +37,25 @@ const TWIN = { maxShots: 14, reload: 0.09, gap: 4 };   // twin guns: shot limit,
 // the release point and perihelion rp, so that it always comes back through the middle of the view.
 const RAMA = { wave: 2, delay: 5, L: 46, D: 16, q: [170, 260], e: [1.3, 1.6], start: 970 };
 const POD = { r: 7, rp: 250 };
-// The binary star of the waves listed: separation a, mass ratio q (secondary/primary), drawn radii r
-// (also the collision radii). Its period is 2π√(a³/GM), about 1.3 s. Orbits around a binary are
-// stable only beyond about 2–3 separations (Holman & Wiegert 1999), so that wave's asteroids keep
-// their perihelia beyond rockQ.
-const BINARY = { waves: [3], a: 60, q: 0.5, r: [10, 7], rockQ: 160 };
-const B_N = Math.sqrt(GM / BINARY.a ** 3);   // the binary's angular speed (rad/s)
+// The binary star: in wave `first`, separation a and mass ratio q (secondary/primary); after it, a
+// binary with probability `chance`, separation in aRange and mass ratio in qRange. Its period is
+// 2π√(a³/GM): 2.4 s at a = 90. The primary is drawn with radius r (also the collision radius), the
+// secondary smaller, as R ∝ M^0.8 for main-sequence stars. Orbits around a binary are stable only
+// beyond roughly 2–2.5 separations (Holman & Wiegert 1999), so asteroids keep their perihelia
+// beyond `stable` separations.
+const BINARY = { first: 3, a: 90, q: 0.5, chance: 0.5, aRange: [50, 90], qRange: [0.25, 1], r: 10, stable: 2.6 };
 
-// The central mass: a single star at the origin or, while `binary` is set, the binary about the
-// origin. `t` is the game clock that sets the binary's phase.
-const field = { binary: false, t: 0 };
+// The central mass: a single star at the origin or, while `binary` is set, a binary of separation a,
+// mass ratio q and angular speed n about the origin. `t` is the game clock that sets its phase.
+const field = { binary: false, t: 0, a: BINARY.a, q: BINARY.q, n: 0 };
+function setCentre(binary, a = BINARY.a, q = BINARY.q) {
+  Object.assign(field, { binary, a, q, n: Math.sqrt(GM / a ** 3) });
+}
 /** The star or stars at time t: positions, fractions of the total mass, and radii. */
 function starsAt(t) {
   if (!field.binary) return [{ x: 0, y: 0, m: 1, r: SUN_R }];
-  const mu = BINARY.q / (1 + BINARY.q), c = Math.cos(B_N * t) * BINARY.a, s = Math.sin(B_N * t) * BINARY.a;
-  return [{ x: -mu * c, y: -mu * s, m: 1 - mu, r: BINARY.r[0] }, { x: (1 - mu) * c, y: (1 - mu) * s, m: mu, r: BINARY.r[1] }];
+  const mu = field.q / (1 + field.q), c = Math.cos(field.n * t) * field.a, s = Math.sin(field.n * t) * field.a;
+  return [{ x: -mu * c, y: -mu * s, m: 1 - mu, r: BINARY.r }, { x: (1 - mu) * c, y: (1 - mu) * s, m: mu, r: Math.max(5, BINARY.r * field.q ** 0.8) }];
 }
 /** Whether (x, y) is within pad of a star's surface at time t. */
 const hitStar = (x, y, pad, t = field.t) => starsAt(t).some((st) => Math.hypot(x - st.x, y - st.y) < st.r + pad);
@@ -130,15 +136,19 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
   }
   function startWave() {
     wave += 1;
-    field.binary = BINARY.waves.includes(wave);
+    const lerp = ([lo, hi]) => lo + (hi - lo) * rnd();
+    if (wave === BINARY.first) setCentre(true);
+    else if (wave > BINARY.first && rnd() < BINARY.chance) setCentre(true, lerp(BINARY.aRange), lerp(BINARY.qRange));
+    else setCentre(false);
     rocks = [];
+    // around a binary, perihelia beyond the stability limit
+    const qMin = field.binary ? BINARY.stable * field.a : 0, aMin = Math.max(160, qMin + 20);
     for (let k = 0; k < 2 + wave; k++) {
-      // orbits that stay inside the view (aphelion below about 460), starting away from the ship;
-      // around the binary, with perihelia far enough out to be stable
+      // orbits that stay inside the view (aphelion below about 460), starting away from the ship
       let st;
       do {
-        const a = field.binary ? 200 + 160 * rnd() : 160 + 200 * rnd();
-        const e = Math.min(0.3 * rnd(), 460 / a - 1, field.binary ? 1 - BINARY.rockQ / a : 1), dir = rnd() < 0.8 ? 1 : -1;   // a few go the "wrong" way round
+        const a = aMin + (360 - aMin) * rnd();
+        const e = Math.min(0.3 * rnd(), 460 / a - 1, 1 - qMin / a), dir = rnd() < 0.8 ? 1 : -1;   // a few go the "wrong" way round
         st = orbitState(a, e, 2 * Math.PI * rnd(), 2 * Math.PI * rnd(), dir);
       } while (ship && Math.hypot(st.x - ship.x, st.y - ship.y) < 180);
       rocks.push({ ...st, size: 0, shape: rockShape(0), spin: (rnd() - 0.5) * 2, rot: 0 });
@@ -148,7 +158,7 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     setTimeout(() => { if (message === `Wave ${wave}`) message = ''; }, 1600);
   }
   function newGame() {
-    score = 0; lives = 3; wave = 0; field.binary = false; field.t = 0; shots = []; sparks = []; rama = null; pod = null; ramaTimer = -1; ramaHit = false;
+    score = 0; lives = 3; wave = 0; setCentre(false); field.t = 0; shots = []; sparks = []; rama = null; pod = null; ramaTimer = -1; ramaHit = false;
     newShip(); startWave();
     state = 'play'; overlay.hidden = true; canvas.focus();
   }
