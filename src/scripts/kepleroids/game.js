@@ -22,8 +22,6 @@
 // while expanded). Nothing moves until the player starts; the game pauses when the tab is
 // hidden. Keyboard: arrows or WASD to steer and thrust, Space to fire, P to pause,
 // O to toggle the orbit line, Esc to quit. On touch screens, on-screen buttons appear.
-// For testing: add ?wave=N to the page address to start each game at wave N; while the address has
-// ?wave, the N key also skips to the next wave.
 
 const GM = 4.9e6;              // world units^3 / s^2: a circular orbit at r = 200 takes about 8 s
 const SUN_R = 11;              // the Sun's radius: drawn with a glow three times this, and the collision radius
@@ -118,8 +116,6 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
   const ctx = canvas.getContext('2d');
   const rnd = mulberry(Date.now() & 0xffffffff);
 
-  // testing: ?wave=N starts each game at wave N, and enables the N key (next wave)
-  const testWave = (() => { try { const v = new URLSearchParams(location.search).get('wave'); return v === null ? 0 : Math.max(1, Math.floor(Number(v)) || 1); } catch (e) { return 0; } })();
   let best = 0;
   try { best = Number(localStorage.getItem('kepleroids-best')) || 0; } catch (e) { /* storage unavailable */ }
   const stars = Array.from({ length: 160 }, () => ({ x: rnd() * 2 - 1, y: rnd() * 2 - 1, b: 0.3 + 0.7 * rnd() }));
@@ -164,7 +160,6 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
   }
   function newGame() {
     score = 0; lives = 3; wave = 0; setCentre(false); field.t = 0; shots = []; sparks = []; rama = null; pod = null; ramaTimer = -1; ramaHit = false;
-    if (testWave) wave = testWave - 1;
     newShip(); startWave();
     state = 'play'; overlay.hidden = true; canvas.focus();
   }
@@ -309,8 +304,7 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
   }
   function gameOver() {
     state = 'over';
-    if (score > best && !testWave) { best = score;   // test games (?wave) do not count
-      try { localStorage.setItem('kepleroids-best', String(best)); } catch (e) { /* ignore */ } }
+    if (score > best) { best = score; try { localStorage.setItem('kepleroids-best', String(best)); } catch (e) { /* ignore */ } }
     showOverlay(`<h2>Game over</h2><p>Score ${score.toLocaleString('en')} · best ${best.toLocaleString('en')} · wave ${wave}</p><p><button type="button" class="bl-start">Play again</button></p>`);
   }
 
@@ -456,7 +450,6 @@ export function startKepleroids(container, { onExit = null, compact = false, onT
     if (!down) return;
     if (ev.key === 'p' || ev.key === 'P') { pause(state === 'play'); ev.preventDefault(); }
     else if (ev.key === 'o' || ev.key === 'O') showOrbit = !showOrbit;
-    else if ((ev.key === 'n' || ev.key === 'N') && testWave && state === 'play') startWave();
     else if (ev.key === 'Escape') { if (expanded && onToggleSize) onToggleSize(); else if (onExit) { destroy(); onExit(); } else pause(true); }
     else if (ev.key === 'Enter' && state !== 'play' && state !== 'paused') { newGame(); ev.preventDefault(); }
   }
