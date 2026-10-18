@@ -1,4 +1,4 @@
-// Updates the "Notebook updated" dates on the Teaching page from GitHub once the science-notebook
+// Updates the "Notebook updated" dates on the Explore & learn page (/explore/) from GitHub once the science-notebook
 // cards scroll into view. Answers are cached for an hour; requests stop if GitHub's quota for this
 // visitor runs low, and the build-time dates stay wherever a request fails.
 import { lastCommit, shortDate } from './commits.js';

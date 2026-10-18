@@ -1,4 +1,4 @@
-// When each science notebook last changed, for the Teaching page. Fetched from GitHub when the
+// When each science notebook last changed, for the Explore & learn page (/explore/). Fetched from GitHub when the
 // site is built (with GITHUB_TOKEN if set, as in GitHub Actions, to avoid the anonymous rate
 // limit); if that fails, the snapshot in src/data/notebook-dates.json
 // (tools/export_notebook_dates.mjs) is used. The browser then checks GitHub again

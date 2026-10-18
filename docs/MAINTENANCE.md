@@ -47,7 +47,7 @@ Pages fetch live data when someone opens them, and fall back to a copy saved at 
 | MPC at a glance | MPC Summary API | `src/scripts/mpcstats/` |
 | Today at the MPC | MPC RecentMPECs and NEO Confirmation Page | `src/scripts/mpctoday/` |
 | Software: latest release of each package with `pypi:` in its record | PyPI JSON API (no rate limit) | `src/scripts/releases/`, snapshot `tools/export_software_releases.mjs` |
-| Teaching: "Notebook updated" date on each science-notebook card | GitHub commits API (60 requests/hour per visitor; fetched when the cards scroll into view, cached an hour, stops when the quota runs low; the build uses `GITHUB_TOKEN` if set) | `src/scripts/notebooks/`, snapshot `tools/export_notebook_dates.mjs` |
+| Explore & learn (`/explore/`, formerly Teaching): "Notebook updated" date on each science-notebook card | GitHub commits API (60 requests/hour per visitor; fetched when the cards scroll into view, cached an hour, stops when the quota runs low; the build uses `GITHUB_TOKEN` if set) | `src/scripts/notebooks/`, snapshot `tools/export_notebook_dates.mjs` |
 
 Only sources that allow cross-origin requests and need no secret can be used here. ADS (token),
 arXiv (no CORS), MPC get-orb (GET with a body) and JPL APIs (unreliable) cannot.
