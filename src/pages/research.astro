@@ -62,6 +62,7 @@ const href = (h: string) => (h.startsWith('/') ? `${root}${h.slice(1)}` : h);
           </fieldset>
           <label class="rp-first" id="rp-first-wrap" hidden><input type="checkbox" id="rp-first" /> First author only</label>
         </div>
+        <p class="rp-ideas"><a href={`${root}ideas/`}>Open problems I would like to work on →</a></p>
         <p class="pub-with" id="pub-with" hidden><span id="pub-with-text"></span> <a href="#" id="pub-with-clear">Show all</a></p>
       </div>
 
@@ -187,6 +188,9 @@ const href = (h: string) => (h.startsWith('/') ? `${root}${h.slice(1)}` : h);
   .rp-toggle input:focus-visible + span { outline: 2px solid var(--teal); outline-offset: 2px; }
   .rp-first { display: inline-flex; gap: 8px; align-items: center; font-size: 14px; color: var(--ink); cursor: pointer; }
   .pub-with { margin: 0; justify-self: start; }
+  .rp-ideas { margin: 0; font-size: 14px; }
+  .rp-ideas a { color: var(--teal); font-weight: 650; }
+  .rp-ideas a:hover { text-decoration: underline; }
   .rp-explore { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px !important; }
   .rp-explore a { color: var(--teal); font-weight: 650; font-size: 14px; }
   .rp-explore a:hover, .rp-related a:hover { text-decoration: underline; }

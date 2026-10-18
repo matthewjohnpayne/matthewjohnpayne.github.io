@@ -2,7 +2,7 @@
 // About Matthew Payne. Drafted 2026-10-17 from the MPC staff page (minorplanetcenter.net/about),
 // src/data/cv.json and facts Matthew supplied in conversation (Acting Director from February 2021,
 // Director from 2022; hired as project scientist in April 2017; the (20592) Payne certificate at
-// ACM 2026). Not linked from the navigation, and noindex, until Matthew approves it.
+// ACM 2026). Approved and linked from the navigation 2026-10-18.
 // Sections only Matthew can write appear as placeholders under `npm run dev` and are left out of
 // the built site until he supplies the text.
 // The orbit figure is drawn at build time from the MPC orbit in src/data/asteroid-20592.json
@@ -53,11 +53,10 @@ const periodYears = (orbit.periodDays / 365.25).toFixed(1);
 const mpcLink = 'https://minorplanetcenter.net/db_search/show_object?object_id=20592';
 const jplLink = 'https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=20592';
 ---
-<BaseLayout title="About" description="About Matthew Payne, Director of the Minor Planet Center." noindex>
+<BaseLayout title="About" description="About Matthew Payne, Director of the Minor Planet Center.">
   <SectionHero eyebrow="ABOUT" title="About me" lead="I direct the Minor Planet Center, where the world’s observations of asteroids, comets and other small bodies of the Solar System come together and become orbits." />
   <section class="site-content rf-prose">
     <div class="content-width rf-prose-inner">
-      {dev && <p class="about-draft">Draft for Matthew’s review. This page is not linked from the navigation and is hidden from search engines until he approves it.</p>}
 
       <p>The Minor Planet Center (MPC) is the single worldwide location for receiving and distributing positional measurements of asteroids, comets and the outer irregular moons of the planets. Professional surveys and amateur astronomers around the world send us their measurements. We link them to known objects, identify new discoveries, give them designations, compute their orbits and publish the results, which are the starting point for everything from impact monitoring to studies of how the Solar System formed. The MPC is part of the Smithsonian Astrophysical Observatory, at the Center for Astrophysics | Harvard &amp; Smithsonian, and works under the auspices of the International Astronomical Union.</p>
 
@@ -66,7 +65,7 @@ const jplLink = 'https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=20592';
       <p>I then held postdoctoral positions at the University of Florida and at the Harvard-Smithsonian Center for Astrophysics, followed by a research scientist position at the Smithsonian Astrophysical Observatory. I joined the MPC as its project scientist in April 2017, leading the design of new software for processing and cataloguing observations. I became Acting Director in February 2021, and Director in 2022.</p>
 
       <h2>What I work on</h2>
-      <p>My research is on the dynamics of Solar System bodies and exoplanets, and on processing the large data sets produced by surveys such as TESS, Pan-STARRS and the Rubin Observatory’s Legacy Survey of Space and Time. The <a href={`${root}research/`}>Research</a> page describes the main themes, with the papers behind each, and <a href={`${root}explore/`}>Explore</a> has interactive versions of several of them that run in your browser.</p>
+      <p>My research is on the dynamics of Solar System bodies and exoplanets, and on processing the large data sets produced by surveys such as TESS, Pan-STARRS and the Rubin Observatory’s Legacy Survey of Space and Time. The <a href={`${root}research/`}>Research</a> page describes the main themes, with the papers behind each, and <a href={`${root}explore/`}>Explore</a> has interactive versions of several of them that run in your browser. <a href={`${root}ideas/`}>Open problems</a> lists questions left open by my papers that I would like to come back to.</p>
 
       <h2>Roles beyond the MPC</h2>
       <ul>
@@ -113,7 +112,6 @@ const jplLink = 'https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr=20592';
 </BaseLayout>
 
 <style>
-  .about-draft { border-left: 4px solid #e9a160; background: #fdf6ee; padding: 10px 16px; font-size: 14px !important; }
   .about-placeholder { border: 2px dashed #e9a160; border-radius: 6px; padding: 4px 18px 16px; margin: 30px 0; background: #fdf6ee; }
   .about-placeholder h2 { margin-top: 16px; }
   .about-orbit { margin: 8px 0 22px; max-width: 420px; }
