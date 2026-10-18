@@ -4,29 +4,40 @@ Open work, ideas for future content, and a short log of what is done. Update thi
 
 ## Waiting on Matthew
 
-- [x] **About page** `/about/` approved and in the navigation 2026-10-18; drafted 2026-10-17 from the MPC staff page, `cv.json` and facts Matthew gave: hired as MPC project scientist April 2017; Acting Director February 2021, Director 2022; asteroid (20592) Payne named in WGSBN Bulletin 6, no. 11, certificate presented at ACM 2026 (the MPC citation's birth year is deliberately not used). Orbit figure from `tools/export_about_asteroid.py`. Matthew to review, optionally write the "Outside work" section, then approve linking it. The MPC's own About page still says project scientist "from 2018"; Matthew to ask for it to be corrected.
-- [ ] **Portrait photo**, with permission (`public/assets/matthew.jpg`, then `site.json`).
-- [ ] **Software list:** Matthew is supplying a curated, up-to-date list, one entry at a time; so far digest2 (2026-10-14). Copy `src/content/software/_TEMPLATE.yaml` for each entry.
-- [ ] **Students and postdocs:** current positions and links added 2026-10-14 (see `docs/UPDATING_PEOPLE.md`; repeat yearly). Still open: pages for the current students (Kim Armas, Amanda Fanale, Milagros Tamara Giraldo) once they have them, and Tyler Valentine's current position.
-- [ ] **MPC staff:** Matthew to check the former-staff list (from archived MPC pages, 2013 onwards), add roles where blank, and add earlier staff.
-- [x] **ADS API token** (2026-10-17): saved locally in `~/.ads/dev_key` and as the repository secret `ADS_API_TOKEN`; `publications.yml` refreshes weekly.
-- [ ] **Review the new wording:**
-  - the theme summaries in `src/data/research.json` (titles approved; summaries written from paper titles);
-  - the Jupiter copy on the reference-frames page;
-  - the resonance-overlap notebook text.
-- [ ] **Review the HelioLinC interactive page** (`/teaching/heliolinc/`): wording, and whether to add the population or false-tracklet views of the notebook.
-- [ ] **Review the resonance-overlap interactive page** (`/teaching/resonance-overlap/`): wording, and whether the map should offer more starting phases or the Figure 9 (phase against period ratio) maps.
-- [ ] **Review the interstellar-objects interactive page** (`/teaching/interstellar-objects/`) and notebook (`iso_lsst`): wording, and the notebook's account of where it differs from Hoover, Seligman & Payne (2022).
+Status at the end of the session of 2026-10-18. Everything below the "Done" heading is live.
 
-## Next up
+- [ ] **/now page text** in `src/data/now.json` (page exists, noindex and unlinked until it has text). Then link it (About or footer) and list it on nownownow.com.
+- [ ] **Portrait photo**, with permission (`public/assets/matthew.jpg`, then `site.json`); the homepage still shows the initials placeholder.
+- [ ] **About:** optional "Outside work" section (placeholder visible only under `npm run dev`). Matthew to ask the MPC to correct its own About page ("project scientist from 2018" should be April 2017; Acting Director Feb 2021, Director 2022).
+- [ ] **Featured papers:** Matthew to choose a handful (`featured: true` in `src/content/publications/`); then build a "Start here" row on `/research/` and the homepage.
+- [ ] **Software list:** Matthew is supplying a curated list one entry at a time; so far digest2, mpc_orb and WIS. Copy `src/content/software/_TEMPLATE.yaml`.
+- [ ] **CV:** review `/cv/`; supply anything missing since 2024 (grants, honours, IAWN/SMPAG roles). Claude can add the (20592) Payne naming as an honours entry once there is an honours section.
+- [ ] **Talks:** 5 of 32 records have no materials; Google Slides decks and the 2023 IAWN Keynote deck still to export by hand; talks before 2022 not yet recovered. Optionally delete the unredacted "(1).pdf" uploads in Drive.
+- [ ] **Students and postdocs** (`docs/UPDATING_PEOPLE.md`, yearly): pages for the current students (Kim Armas, Amanda Fanale, Milagros Tamara Giraldo) once they have them; Tyler Valentine's current position.
+- [ ] **MPC staff:** check the former-staff list (archived MPC pages, 2013 onwards), add roles where blank, add earlier staff.
+- [ ] **Review wording:** theme summaries in `src/data/research.json`; the Jupiter copy on reference-frames; the resonance-overlap notebook text; the interactive pages HelioLinC, resonance overlap, interstellar objects, and the newer RUN DMC, Laplace resonance, shift-and-stack, exomoons, Cassini and Planet Nine pages.
+- [ ] **Small decisions:** whether "Working with me" goes in the navigation (now linked from About, People and Open problems); in Kepleroids, whether Rama, when a wave is cleared before it arrives (10–30 s), should carry its remaining wait into the next wave instead of being rescheduled.
 
-- [ ] **Render science-notebooks to GitHub Pages** (Jupyter Book or similar) at `matthewjohnpayne.github.io/science-notebooks/`.
-- [ ] **Featured papers:** set `featured: true` on a handful, and show them at the top of Publications and on the homepage.
-- [x] **Homepage card figures are computed** (2026-10-15): asteroid semi-major axes and eccentricities from MPCORB, the minimoon 2006 RH120 from JPL Horizons (`tools/export_card_figures.py`, `src/data/card-figures.json`), and Kamoʻoalewa integrated at build time with the reference-frames integrator.
-- [x] **Reference-frames run extended to 400 years** (2026-10-15). In this integration (and REBOUND IAS15, which agrees to 35 km) Kamoʻoalewa leaves the quasi-satellite state around 2330, not 2306 as first noted; a new "Not for ever" paragraph has a button that jumps to 2400 with a 150-year trail.
+## Next up (for Claude, when asked)
 
-- [ ] **Talks: public slides.** Seven `_public.pdf` copies are in their MPC_Public folders (2026-10-15) and linked from the Talks records; Matthew to set each to *Anyone with the link*. Still to export by hand: the Google Slides decks and the 2023 IAWN Keynote deck. Then recover talks from before 2022.
-- [ ] **CV:** Matthew to review `/cv/`, and to supply anything missing since 2024 (new grants, honours and awards, committee and service roles such as IAWN or SMPAG).
+- [ ] Featured-papers row, once Matthew has chosen them.
+- [ ] Remove the unused Orbital Laboratory (`src/components/OrbitLab.astro`, `public/js/orbital-lab.js`) and the stale `preview/` copy, if Matthew agrees.
+- [ ] Planet Nine notebook: two isolated J2 flips at rp = 30 au (a = 390 and 510) are reported but not investigated. The weekly notebook check runs its QUICK mode (about 7 minutes).
+- [x] Render science-notebooks as an online book (done 2026-10-17: `matthewjohnpayne.github.io/science-notebooks/`, `book.yml`).
+
+### Ideas from other science websites (review of 2026-10-17)
+
+Ranked by fit with the site's goals; all must follow AGENTS.md (static, real validated physics, no autoplay).
+1. **Uncertainty-shrinking essay** (after ciechanow.ski): a new NEO's cloud of possible orbits narrowing as nights of observations are added, with the impact probability rising then falling to zero. Extends the 2024 YR4 orbit-determination page.
+2. **Two centuries of discovery** (after Scott Manley's MPC-data animation): year slider, colour by survey, optional sound on request; built at build time from MPC discovery data.
+3. **Interactive companions linked from each paper** (Distill style); much already exists through the per-paper links.
+4. **Hover glossary and designation previews** (Gwern, Nutshell), from data saved at build time (MPC orbit API has no CORS).
+5. **Designation decoder** (packed/unpacked, discovery to naming), plus an 80-column/ADES line parser.
+6. **"Scroll to Sedna"**: a to-scale sideways scroll with discovery-history milestones.
+7. **Planetary-defence exercise** (after the CNEOS scenarios), possibly a Kepleroids mode.
+8. **"What the MPC data actually says"** notes for news flurries (after AstroWright).
+9. **A living "State of Planet Nine" page.**
+Cheap: a /uses page; short "today I learned" notes; maturity tags on open problems and notes; FAQ by difficulty.
 
 ## Content ideas
 
