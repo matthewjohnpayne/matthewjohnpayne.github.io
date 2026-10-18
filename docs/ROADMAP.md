@@ -58,7 +58,7 @@ Check author lists and bibcodes against `src/content/publications/` before quoti
 
 ## Done
 
-- 2026-10-18: **Explore and Teaching merged** (Matthew: "full merge") into `/explore/`, "Explore & learn": interactive cards now carry their notebook, online-book links and notebook dates; the two notebook-only science notebooks get cards; then MPC tutorials and Teaching (PHYS 422). `/teaching/` redirects (`#nb-<area>` to the area); Teaching removed from the navigation; interactive pages' "All tutorials" links now say "More to explore". The Research theme line is now a single link to the theme filter.
+- 2026-10-18: **Explore and Teaching merged** (Matthew: "full merge") into `/explore/`, "Explore & learn": interactive cards now carry their notebook, online-book links and notebook dates; the two notebook-only science notebooks get cards; Teaching (PHYS 422) above the MPC tutorials, with three tiles at the top linking to the three parts. `/teaching/` redirects to `#teaching` (`#nb-<area>` to the area); Teaching removed from the navigation; interactive pages' "All tutorials" links now say "More to explore". The Research theme line is now a single link to the theme filter.
 
 - 2026-10-18: **Research and Publications merged** (Matthew's request) into `/research/`, "Research & publications": a By topic / By year toggle kept in the URL, first-author and co-author filters in both views, theme tags in the year view. Each theme shows counts of its interactive pages (linking to `/explore/#theme=<id>`) and notebooks (`/teaching/#nb-<area>`), plus any other related links; per-paper links unchanged. `/publications/` redirects, keeping `#with=`. Publications removed from the navigation.
 

@@ -11,10 +11,10 @@ const target = `${import.meta.env.BASE_URL}explore/`;
     <title>Teaching · Matthew Payne</title>
     <meta name="robots" content="noindex" />
     <link rel="canonical" href={target} />
-    <script is:inline define:vars={{ target }}>location.replace(target + (location.hash.replace(/^#nb-/, '#') || '#tutorials'));</script>
-    <meta http-equiv="refresh" content={`0; url=${target}#tutorials`} />
+    <script is:inline define:vars={{ target }}>location.replace(target + (location.hash.replace(/^#nb-/, '#') || '#teaching'));</script>
+    <meta http-equiv="refresh" content={`0; url=${target}#teaching`} />
   </head>
   <body>
-    <p>Teaching and tutorials are now on <a href={`${target}#tutorials`}>Explore &amp; learn</a>.</p>
+    <p>Teaching and tutorials are now on <a href={`${target}#teaching`}>Explore &amp; learn</a>.</p>
   </body>
 </html>
