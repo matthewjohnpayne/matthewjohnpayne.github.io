@@ -35,7 +35,7 @@ const join = (...parts: (string | undefined)[]) => parts.filter(Boolean).join(' 
 
       <div class="catalogue-group" id="students">
         <div class="section-heading"><h2>Students and postdocs</h2></div>
-        <p class="catalogue-intro">Students and postdoctoral researchers I have supervised or advised.</p>
+        <p class="catalogue-intro">Students and postdoctoral researchers I have supervised or advised. Interested in joining them? See <a href={`${root}work-with-me/`}>Working with me</a>.</p>
         <ul class="people-list people-list-wide">
           {mentees.map((m) => {
             const lines = [{ role: m.role, roleUrl: m.roleUrl, period: m.period }, ...m.moreRoles];
