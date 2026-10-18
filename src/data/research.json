@@ -1,5 +1,5 @@
 {
-  "description": "Research themes, each with the ADS bibcodes of its papers (see src/content/publications/). Theme titles approved by Matthew Payne on 2026-10-14. Every refereed paper should appear in exactly one theme or in `other`; the Research page build warns about any that do not. `area` names the matching group of science notebooks on the Teaching page. `links` are the interactive pages, notebooks and other resources for a theme; the Research page counts the interactive pages and notebooks and lists the rest as related links.",
+  "description": "Research themes, each with the ADS bibcodes of its papers (see src/content/publications/). Theme titles approved by Matthew Payne on 2026-10-14. Every refereed paper should appear in exactly one theme or in `other`; the Research page build warns about any that do not. `area` names the matching area on the Explore page. `links` are the interactive pages, notebooks and other resources for a theme; the Research page counts the interactive pages and notebooks and lists the rest as related links.",
   "themes": [
     {
       "id": "formation",

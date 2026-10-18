@@ -29,7 +29,7 @@ const interactiveCount = (await explorePages()).length;
         <p class="hero-description">{site.introduction}</p>
         <div class="hero-actions">
           <a class="button button-primary" href={link('research/')}>Explore my research <span aria-hidden="true">↗</span></a>
-          <a class="button button-outline" href={link('teaching/')}>Teaching & tutorials <span aria-hidden="true">→</span></a>
+          <a class="button button-outline" href={link('explore/')}>Explore & learn <span aria-hidden="true">→</span></a>
         </div>
       </div>
       <HomeOrbit />
@@ -53,8 +53,8 @@ const interactiveCount = (await explorePages()).length;
       </div>
       <div class="feature-grid home-explore">{featured.map((p) => <ExploreCard page={p} />)}</div>
       <div class="discipline-grid">
-        <a href={link('teaching/')} class="discipline-item">
-          <div class="discipline-number">01</div><div><h3>Teaching & tutorials <span aria-hidden="true">↗</span></h3><p>Jupyter notebooks, numerical experiments and interactive explanations.</p></div>
+        <a href={link('explore/')} class="discipline-item">
+          <div class="discipline-number">01</div><div><h3>Explore & learn <span aria-hidden="true">↗</span></h3><p>Interactive explanations, science notebooks, MPC tutorials and teaching.</p></div>
         </a>
         <a href={link('software/')} class="discipline-item">
           <div class="discipline-number">02</div><div><h3>Software <span aria-hidden="true">↗</span></h3><p>Scientific code, tools for orbit analysis and data processing.</p></div>

@@ -1,125 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionHero from '../components/SectionHero.astro';
-import ToolTags from '../components/ToolTags.astro';
-import pages from '../data/pages.json';
-import { notebookDate } from '../lib/notebookDates';
-import { notebookFolder, shortDate } from '../scripts/notebooks/commits.js';
-
-const page = pages.find((p) => p.slug === 'teaching')!;
-const root = import.meta.env.BASE_URL;
-const tutorials = (await getCollection('tutorials')).sort((a, b) => a.data.order - b.data.order);
-const courses = (await getCollection('courses')).sort((a, b) => a.data.order - b.data.order);
-// Compact groups are rendered as a dense list rather than cards.
-const groups = [
-  { topic: 'science', heading: 'Science notebooks', intro: 'Results from my own papers, reproduced step by step in Jupyter notebooks, each with an interactive version here.', compact: false },
-  { topic: 'orbits', heading: 'Working with orbits', intro: 'Retrieve MPC orbits, integrate them, and look at the results from different points of view.', compact: false },
-  { topic: 'animations', heading: 'Orbit animations', intro: 'Animated explanations of how small bodies move near Earth.', compact: false },
-  { topic: 'iod', heading: 'Initial orbit determination', intro: 'How an orbit is found from a few nights of observations, how the MPC classifies short-arc tracklets with digest2, and how its population model works.', compact: false },
-  { topic: 'submission', heading: 'Submitting observations', intro: 'From formatting and validating observations to submitting them and tracking their status.', compact: true },
-  { topic: 'api', heading: 'MPC APIs', intro: 'Programmatic access to MPC data and services, one notebook per interface.', compact: true }
-] as const;
-// When each science notebook last changed, from GitHub (src/lib/notebookDates.ts).
-const nbDates = new Map(await Promise.all(tutorials.filter((t) => t.data.topic === 'science')
-  .map((t) => notebookFolder(t.data.url)).filter(Boolean)
-  .map(async (folder) => [folder, await notebookDate(folder)] as const)));
-const nbFromSnapshot = [...nbDates.values()].some((d) => d?.fromSnapshot);
-// Science notebooks are further grouped by research area, as on the Research page.
-const areas = [
-  { area: 'exoplanets', heading: 'Exoplanet dynamics' },
-  { area: 'moons', heading: 'Moons' },
-  { area: 'solar-system', heading: 'The outer Solar System' },
-  { area: 'detection', heading: 'Finding small bodies' }
-] as const;
+// Teaching is now part of /explore/ ("Explore & learn", merged 2026-10-18). This page sends old
+// links there: #nb-<area> (a science-notebook group) becomes that area's group of cards, and any
+// other hash is kept. A plain meta refresh (the no-script fallback) drops the hash.
+const target = `${import.meta.env.BASE_URL}explore/`;
 ---
-<BaseLayout title={page.title} description={page.summary}>
-  <SectionHero eyebrow={page.eyebrow} title={page.title} lead={page.lead} />
-  <section class="site-content page-content">
-    <div class="content-width">
-      <p class="teaching-explore">The interactive pages built from these notebooks are gathered on <a href={`${import.meta.env.BASE_URL}explore/`}>Explore</a>.</p>
-      {courses.length > 0 && (
-        <div class="catalogue-group">
-          <div class="section-heading"><h2>Courses</h2></div>
-          <div class="resource-grid">
-            {courses.map(({ data }) => (
-              <article class="resource-item">
-                <p class="item-kicker">{data.institution}</p>
-                <h3>{data.title}</h3>
-                <p>{data.summary}</p>
-                {data.topics.length > 0 && <ul class="tag-list" aria-label="Topics">{data.topics.map((topic) => <li>{topic}</li>)}</ul>}
-                {data.repo && <div class="item-links"><a class="text-link" href={data.repo} target="_blank" rel="noopener noreferrer">Course notebooks ↗</a></div>}
-              </article>
-            ))}
-          </div>
-        </div>
-      )}
-      {groups.map((group) => (
-        <div class="catalogue-group" data-nb-dates={group.topic === 'science' ? '' : undefined}>
-          <div class="section-heading"><h2>{group.heading}</h2></div>
-          <p class="catalogue-intro">{group.intro}</p>
-          {group.topic === 'science' && nbDates.size > 0 && (
-            <p class="nb-status" data-nb-status aria-live="polite">{nbFromSnapshot ? 'Dates of the last change to each notebook, from a saved copy of the GitHub record.' : 'Dates of the last change to each notebook, from GitHub when the site was built.'}</p>
-          )}
-          {group.compact ? (
-            <ul class="compact-list">
-              {tutorials.filter((t) => t.data.topic === group.topic).map(({ data }) => (
-                <li><a href={data.url} target="_blank" rel="noopener noreferrer">{data.title} ↗</a><p>{data.summary}</p></li>
-              ))}
-            </ul>
-          ) : group.topic === 'science' ? (
-            areas.filter((a) => tutorials.some((t) => t.data.topic === 'science' && t.data.area === a.area)).map((a) => (
-              <div class="area-group" id={`nb-${a.area}`}>
-                <h3 class="area-heading">{a.heading}</h3>
-                <div class="resource-grid">
-                  {tutorials.filter((t) => t.data.topic === 'science' && t.data.area === a.area).map(({ data }) => {
-                    const folder = notebookFolder(data.url);
-                    const nb = folder ? nbDates.get(folder) : undefined;
-                    return (
-                    <article class="resource-item">
-                      <h4>{data.title}</h4>
-                      <p>{data.summary}</p>
-                      <ToolTags tools={data.tools} />
-                      {nb && <p class="nb-updated" data-nb-folder={folder}>Notebook updated <a href={nb.url} target="_blank" rel="noopener noreferrer"><time datetime={nb.date}>{shortDate(nb.date)}</time><span class="visually-hidden"> (commit on GitHub, opens new tab)</span></a></p>}
-                      <div class="item-links">
-                        {data.interactive && <a class="text-link" href={`${root}${data.interactive.replace(/^\//, '')}`}>Interactive version →</a>}
-                        {data.book && <a class="text-link" href={data.book} target="_blank" rel="noopener noreferrer">Read online ↗</a>}
-                        <a class="text-link" href={data.url} target="_blank" rel="noopener noreferrer">Open notebook ↗</a>
-                      </div>
-                    </article>
-                  );})}
-                </div>
-              </div>
-            ))
-          ) : (
-            <div class="resource-grid">
-              {tutorials.filter((t) => t.data.topic === group.topic).map(({ data }) => (
-                <article class="resource-item">
-                  <h3>{data.title}</h3>
-                  <p>{data.summary}</p>
-                  <ToolTags tools={data.tools} />
-                  <div class="item-links">
-                    {data.interactive && <a class="text-link" href={`${root}${data.interactive.replace(/^\//, '')}`}>Interactive version →</a>}
-                    <a class="text-link" href={data.url} target="_blank" rel="noopener noreferrer">{data.urlLabel ?? 'Open notebook'} ↗</a>
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-        </div>
-      ))}
-      <div class="editorial-note"><div><span class="status-dot"></span> Source</div><p>The science notebooks are in my <a href="https://github.com/matthewjohnpayne/science-notebooks" target="_blank" rel="noopener noreferrer">science-notebooks</a> repository, and can be read with their figures as an <a href="https://matthewjohnpayne.github.io/science-notebooks/" target="_blank" rel="noopener noreferrer">online book</a>. I wrote the other notebooks for the Minor Planet Center's public documentation. They are published in the <a href="https://docs.minorplanetcenter.net/tutorials/" target="_blank" rel="noopener noreferrer">MPC tutorials</a>, which remain the authoritative versions. Interactive browser adaptations are linked here as they are built.</p></div>
-      <p class="back-row"><a href={root}>← Return to homepage</a></p>
-    </div>
-  </section>
-</BaseLayout>
-<script>
-  import { refreshNotebookDates } from '../scripts/notebooks/refresh.js';
-  refreshNotebookDates();
-</script>
-<style>
-  .teaching-explore { margin: 0 0 28px; font-size: 15px; color: var(--body); }
-  .nb-status { margin: -6px 0 18px; font-size: 13px; color: var(--body); }
-  .nb-updated { margin: 8px 0 0; font-size: 13px; color: var(--body); }
-  .nb-updated a { color: var(--link, #078d97); }
-</style>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Teaching · Matthew Payne</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={target} />
+    <script is:inline define:vars={{ target }}>location.replace(target + (location.hash.replace(/^#nb-/, '#') || '#tutorials'));</script>
+    <meta http-equiv="refresh" content={`0; url=${target}#tutorials`} />
+  </head>
+  <body>
+    <p>Teaching and tutorials are now on <a href={`${target}#tutorials`}>Explore &amp; learn</a>.</p>
+  </body>
+</html>

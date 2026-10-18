@@ -1,28 +1,58 @@
 ---
-// One interactive page as a card, for /explore/ and the homepage strip (src/lib/interactive.ts).
+// One card on /explore/ and the homepage strip: an interactive page (src/lib/interactive.ts), or a
+// science notebook that has no interactive version yet (`notebookOnly`). The whole card links to
+// the page (or to the notebook's chapter in the online book); `links` adds a row of separate links
+// (online book, notebook) and `nb` the date the notebook last changed, refreshed in the browser by
+// src/scripts/notebooks/refresh.js.
 import ExploreThumb from './ExploreThumb.astro';
 import type { ExplorePage } from '../lib/interactive';
-// `themes`: ids of the research themes the page belongs to, for the theme filter on /explore/.
-interface Props { page: ExplorePage; detail?: boolean; themes?: string[] }
-const { page, detail = false, themes } = Astro.props;
+import { shortDate } from '../scripts/notebooks/commits.js';
+type Link = { href: string; text: string; ext?: boolean };
+interface Props {
+  page: Pick<ExplorePage, 'path' | 'title' | 'teaser' | 'area' | 'visual' | 'basedOn'> & { href?: string };
+  detail?: boolean;
+  themes?: string[];          // research themes, for the theme filter on /explore/
+  links?: Link[];
+  nb?: { folder: string; date: string; url: string };
+  notebookOnly?: boolean;
+}
+const { page, detail = false, themes, links = [], nb, notebookOnly = false } = Astro.props;
 const root = import.meta.env.BASE_URL;
+const href = page.href ?? `${root}${page.path}/`;
+const external = href.startsWith('http');
 const paper = page.basedOn.find((s) => s.bibcode) ?? page.basedOn[0];
 ---
-<a class="feature-card xc" href={`${root}${page.path}/`} data-themes={themes?.join(' ')}>
+<article class={`feature-card xc${notebookOnly ? ' xc-nb' : ''}`} data-themes={themes?.join(' ')}>
   <div class="feature-illustration"><ExploreThumb visual={page.visual} area={page.area} label={paper?.label ?? ''} /></div>
   <div class="feature-copy">
-    <h3>{page.title}</h3>
+    <h3><a class="xc-main" href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{page.title}</a></h3>
     <p>{page.teaser}</p>
     {detail && paper && <p class="xc-meta">Based on {paper.label}</p>}
-    <span class="small-link">Open <span aria-hidden="true">→</span></span>
+    {nb && <p class="xc-meta xc-updated" data-nb-folder={nb.folder}>Notebook updated <a href={nb.url} target="_blank" rel="noopener noreferrer"><time datetime={nb.date}>{shortDate(nb.date)}</time><span class="visually-hidden"> (commit on GitHub, opens new tab)</span></a></p>}
+    {links.length > 0 ? (
+      <p class="xc-links">
+        <span class="xc-open">{notebookOnly ? 'Notebook only' : 'Interactive →'}</span>
+        {links.map((l) => <a href={l.href} {...(l.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{l.text}{l.ext ? ' ↗' : ''}</a>)}
+      </p>
+    ) : <span class="small-link">Open <span aria-hidden="true">→</span></span>}
   </div>
-</a>
+</article>
 <style>
-  .xc { display: flex; flex-direction: column; color: inherit; }
+  .xc { position: relative; display: flex; flex-direction: column; color: inherit; }
   .xc .feature-copy { flex: 1; display: flex; flex-direction: column; }
+  .xc h3 a { color: inherit; }
+  /* The title link covers the whole card; the separate links sit above it. */
+  .xc-main::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+  .xc-main:focus-visible { outline: none; }
+  .xc:has(.xc-main:focus-visible) { outline: 2px solid var(--teal); outline-offset: 2px; }
   .xc .feature-copy p { min-height: 0; margin-bottom: 12px; }
-  .xc .small-link { margin-top: auto; }
+  .xc .small-link, .xc .xc-links { margin-top: auto; }
   .xc .xc-meta { font-size: 12px; color: var(--muted); margin: -4px 0 14px; }
+  .xc .xc-updated a, .xc .xc-links a { position: relative; z-index: 1; color: var(--teal); }
+  .xc .xc-links { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; font-weight: 600; margin-bottom: 0; }
+  .xc .xc-links a:hover, .xc .xc-updated a:hover { text-decoration: underline; }
+  .xc .xc-open { color: var(--ink); }
+  .xc-nb .xc-open { color: var(--muted); font-weight: 500; }
   .xc .feature-illustration { padding: 0; }
   .xc .feature-illustration :global(.science-art) { padding: 7px 12px; }
 </style>

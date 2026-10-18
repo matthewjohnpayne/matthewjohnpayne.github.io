@@ -1,69 +1,186 @@
 ---
-// /explore/: every interactive page, grouped by area. The list comes from src/data/page-status.json
-// (see src/lib/interactive.ts), so a new page appears here once it has a status entry.
-// #theme=<id> shows only the pages for one research theme (src/lib/themes.ts); the Research page
-// links here that way.
+// /explore/ ("Explore & learn"): everything to learn from on the site, in three parts.
+// 1. Interactive pages and science notebooks, grouped by area. The interactive pages come from
+//    src/data/page-status.json (see src/lib/interactive.ts), so a new page appears once it has a
+//    status entry; each card also links to the notebook and online-book chapter it is built from.
+//    Science notebooks with no interactive version yet get a card of their own.
+// 2. MPC tutorials (the tutorials collection, by topic), linking to docs.minorplanetcenter.net.
+// 3. Teaching: courses.
+// #theme=<id> shows only the cards for one research theme (src/lib/themes.ts); the Research page
+// links here that way. /teaching/ redirects here (merged 2026-10-18).
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHero from '../components/SectionHero.astro';
 import ExploreCard from '../components/ExploreCard.astro';
 import { explorePages, AREAS } from '../lib/interactive';
 import { themes, themeContents } from '../lib/themes';
+import { notebookDate } from '../lib/notebookDates';
+import { notebookFolder } from '../scripts/notebooks/commits.js';
+
 const root = import.meta.env.BASE_URL;
 const pages = await explorePages();
 const contents = await themeContents();
-const themesOf = (path: string) => themes.filter((t) => contents.get(t.id)!.interactive.includes(path)).map((t) => t.id);
+const tutorials = (await getCollection('tutorials')).map((t) => t.data).sort((a, b) => a.order - b.order);
+const courses = (await getCollection('courses')).map((c) => c.data).sort((a, b) => a.order - b.order);
 const themeTitles = Object.fromEntries(themes.map((t) => [t.id, t.title]));
-const groups = Object.entries(AREAS).map(([id, a]) => ({ id, ...a, pages: pages.filter((p) => p.area === id) })).filter((g) => g.pages.length);
+const firstSentence = (s: string) => (s.match(/^.*?[.?!](\s|$)/)?.[0] ?? s).trim();
+const strip = (p: string) => p.replace(/^\/|\/$/g, '');
+
+// The notebook behind each interactive page, and when each science notebook last changed.
+const tutorialFor = (path: string) => tutorials.find((t) => t.interactive && strip(t.interactive) === path);
+const science = tutorials.filter((t) => t.topic === 'science');
+const nbDates = new Map(await Promise.all(science.map((t) => notebookFolder(t.url)).filter(Boolean)
+  .map(async (folder) => [folder, await notebookDate(folder)] as const)));
+const nbFromSnapshot = [...nbDates.values()].some((d) => d?.fromSnapshot);
+const nbFor = (url: string) => {
+  const folder = notebookFolder(url), d = folder ? nbDates.get(folder) : undefined;
+  return folder && d ? { folder, date: d.date, url: d.url } : undefined;
+};
+const notebookLinks = (t?: (typeof tutorials)[number]) => !t ? [] : [
+  t.book && { href: t.book, text: 'Read online', ext: true },
+  t.topic === 'science' ? { href: t.url, text: 'Notebook', ext: true } : { href: t.url, text: 'MPC tutorial', ext: true }
+].filter(Boolean) as { href: string; text: string; ext: boolean }[];
+const themesOfPage = (path: string) => themes.filter((t) => contents.get(t.id)!.interactive.includes(path)).map((t) => t.id);
+const themesOfPapers = (papers: string[]) => themes.filter((t) => papers.some((b) => t.bibcodes.includes(b))).map((t) => t.id);
+
+type Card = { key: string; area: string; props: Record<string, unknown> };
+const cards: Card[] = [
+  ...pages.map((p) => {
+    const t = tutorialFor(p.path);
+    return { key: p.path, area: p.area, props: { page: p, detail: true, themes: themesOfPage(p.path), links: notebookLinks(t), nb: t?.topic === 'science' ? nbFor(t.url) : undefined } };
+  }),
+  ...science.filter((t) => !t.interactive).map((t) => ({
+    key: t.url, area: t.area ?? 'other',
+    props: {
+      page: { path: '', href: t.book ?? t.url, title: t.title, teaser: firstSentence(t.summary), area: t.area ?? 'other', basedOn: [{ label: 'Science notebook' }] },
+      themes: themesOfPapers(t.papers), links: notebookLinks(t), nb: nbFor(t.url), notebookOnly: true
+    }
+  }))
+];
+const groups = Object.entries(AREAS).map(([id, a]) => ({ id, ...a, cards: cards.filter((c) => c.area === id) })).filter((g) => g.cards.length);
+const nInteractive = pages.length, nNotebooks = science.length;
+
+// MPC tutorials by topic. Compact groups are a dense list rather than cards.
+const tutorialGroups = [
+  { topic: 'orbits', heading: 'Working with orbits', intro: 'Retrieve MPC orbits, integrate them, and look at the results from different points of view.', compact: false },
+  { topic: 'animations', heading: 'Orbit animations', intro: 'Animated explanations of how small bodies move near Earth.', compact: false },
+  { topic: 'iod', heading: 'Initial orbit determination', intro: 'How an orbit is found from a few nights of observations, how the MPC classifies short-arc tracklets with digest2, and how its population model works.', compact: false },
+  { topic: 'submission', heading: 'Submitting observations', intro: 'From formatting and validating observations to submitting them and tracking their status.', compact: true },
+  { topic: 'api', heading: 'MPC APIs', intro: 'Programmatic access to MPC data and services, one notebook per interface.', compact: true }
+].map((g) => ({ ...g, items: tutorials.filter((t) => t.topic === g.topic) })).filter((g) => g.items.length);
+const nTutorials = tutorialGroups.reduce((n, g) => n + g.items.length, 0);
+const ext = { target: '_blank', rel: 'noopener noreferrer' };
 ---
-<BaseLayout title="Explore" description="Interactive essays and simulations: real physics computed in your browser, each based on a paper or notebook.">
-  <SectionHero eyebrow="INTERACTIVE ESSAYS & SIMULATIONS" title="Explore" lead={`${pages.length} interactive pages. Each runs real, checked calculations in your browser and is based on a published paper, a notebook or MPC software. Nothing moves until you press play.`} />
+<BaseLayout title="Explore & learn" description="Interactive pages that run real physics in your browser, the science notebooks behind them, MPC tutorials and teaching.">
+  <SectionHero eyebrow="INTERACTIVE PAGES, NOTEBOOKS & TUTORIALS" title="Explore & learn" lead={`${nInteractive} interactive pages that run real, checked calculations in your browser, ${nNotebooks} science notebooks that reproduce results from my papers, and ${nTutorials} tutorials I wrote for the Minor Planet Center. Nothing moves until you press play.`} />
   <section class="site-content page-content">
     <div class="content-width">
-      <p class="xp-filter" id="xp-filter" hidden><span id="xp-filter-text"></span> <a href={`${root}research/`} id="xp-filter-back">Back to the theme</a> · <a href="#" id="xp-filter-clear">Show all interactive pages</a></p>
-      <nav class="xp-index" aria-label="Areas">
-        {groups.map((g) => <a href={`#${g.id}`}>{g.title} <span>{g.pages.length}</span></a>)}
+      <nav class="xp-index" aria-label="Sections">
+        {groups.map((g) => <a href={`#${g.id}`}>{g.title} <span>{g.cards.length}</span></a>)}
+        <a href="#tutorials">MPC tutorials <span>{nTutorials}</span></a>
+        {courses.length > 0 && <a href="#teaching">Teaching <span>{courses.length}</span></a>}
       </nav>
-      {groups.map((g) => (
-        <section class="xp-group" id={g.id} aria-labelledby={`${g.id}-h`}>
-          <div class="section-heading"><div><h2 id={`${g.id}-h`}>{g.title}</h2>{g.lead && <p class="xp-lead">{g.lead}</p>}</div></div>
-          <div class="feature-grid xp-grid">{g.pages.map((p) => <ExploreCard page={p} detail themes={themesOf(p.path)} />)}</div>
+      <p class="xp-filter" id="xp-filter" hidden><span id="xp-filter-text"></span> <a href={`${root}research/`} id="xp-filter-back">Back to the theme</a> · <a href="#" id="xp-filter-clear">Show everything</a></p>
+
+      <div data-nb-dates>
+        {nbDates.size > 0 && <p class="nb-status" data-nb-status aria-live="polite">{nbFromSnapshot ? 'Notebook dates are from a saved copy of the GitHub record.' : 'Notebook dates are from GitHub when the site was built.'}</p>}
+        {groups.map((g) => (
+          <section class="xp-group" id={g.id} aria-labelledby={`${g.id}-h`}>
+            <div class="section-heading"><div><h2 id={`${g.id}-h`}>{g.title}</h2>{g.lead && <p class="xp-lead">{g.lead}</p>}</div></div>
+            <div class="feature-grid xp-grid">{g.cards.map((c) => <ExploreCard {...(c.props as any)} />)}</div>
+          </section>
+        ))}
+      </div>
+
+      <section class="xp-part" id="tutorials" aria-labelledby="tutorials-h">
+        <p class="section-kicker">FOR OBSERVERS AND DEVELOPERS</p>
+        <h2 class="xp-part-h" id="tutorials-h">MPC tutorials</h2>
+        <p class="catalogue-intro">Jupyter notebooks I wrote for the Minor Planet Center’s public documentation, on using MPC data and services. They are published in the <a href="https://docs.minorplanetcenter.net/tutorials/" {...ext}>MPC tutorials</a>, which remain the authoritative versions.</p>
+        {tutorialGroups.map((g) => (
+          <div class="catalogue-group" id={`tut-${g.topic}`}>
+            <div class="section-heading"><h3 class="xp-sub-h">{g.heading}</h3></div>
+            <p class="catalogue-intro">{g.intro}</p>
+            {g.compact ? (
+              <ul class="compact-list">
+                {g.items.map((t) => <li><a href={t.url} {...ext}>{t.title} ↗</a><p>{t.summary}</p></li>)}
+              </ul>
+            ) : (
+              <div class="resource-grid">
+                {g.items.map((t) => (
+                  <article class="resource-item">
+                    <h4>{t.title}</h4>
+                    <p>{t.summary}</p>
+                    <div class="item-links">
+                      {t.interactive && <a class="text-link" href={`${root}${strip(t.interactive)}/`}>Interactive version →</a>}
+                      <a class="text-link" href={t.url} {...ext}>{t.urlLabel ?? 'Open notebook'} ↗</a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </section>
+
+      {courses.length > 0 && (
+        <section class="xp-part" id="teaching" aria-labelledby="teaching-h">
+          <p class="section-kicker">COURSES</p>
+          <h2 class="xp-part-h" id="teaching-h">Teaching</h2>
+          <div class="resource-grid">
+            {courses.map((c) => (
+              <article class="resource-item">
+                <p class="item-kicker">{c.institution}</p>
+                <h3>{c.title}</h3>
+                <p>{c.summary}</p>
+                {c.topics.length > 0 && <ul class="tag-list" aria-label="Topics">{c.topics.map((topic) => <li>{topic}</li>)}</ul>}
+                {c.repo && <div class="item-links"><a class="text-link" href={c.repo} {...ext}>Course notebooks ↗</a></div>}
+              </article>
+            ))}
+          </div>
         </section>
-      ))}
+      )}
+
       <section class="xp-also" aria-label="Also">
         <p class="section-kicker">ALSO</p>
         <ul>
           <li><a href={`${root}objects/`}>Object of the Month</a>: one small body each month, with its orbit.</li>
           <li><a href={`${root}mpc/#today`}>Today at the Minor Planet Center</a>: the newest circulars and the NEO Confirmation Page, live.</li>
-          <li><a href={`${root}teaching/`}>Teaching</a>: the notebooks behind these pages, and the MPC tutorials.</li>
+          <li>The science notebooks are in my <a href="https://github.com/matthewjohnpayne/science-notebooks" {...ext}>science-notebooks</a> repository, and can be read with their figures as an <a href="https://matthewjohnpayne.github.io/science-notebooks/" {...ext}>online book</a>.</li>
         </ul>
       </section>
+      <p class="back-row"><a href={root}>← Return to homepage</a></p>
     </div>
   </section>
   <script is:inline type="application/json" id="xp-themes" set:html={JSON.stringify(themeTitles)} />
   <script>
+    import { refreshNotebookDates } from '../scripts/notebooks/refresh.js';
+    refreshNotebookDates();
+
     const titles: Record<string, string> = JSON.parse(document.getElementById('xp-themes')!.textContent || '{}');
     const box = document.getElementById('xp-filter')!;
-    const index = document.querySelector<HTMLElement>('.xp-index')!;
-    const also = document.querySelector<HTMLElement>('.xp-also')!;
+    // Shown only without a theme filter: the section index and the parts that have no themes.
+    const unthemed = [...document.querySelectorAll<HTMLElement>('.xp-index, .xp-part, .xp-also')];
     function apply() {
       const id = new URLSearchParams(location.hash.slice(1)).get('theme');
       const theme = id && titles[id] ? id : null;
-      let n = 0;
+      let interactive = 0, notebooks = 0;
       document.querySelectorAll<HTMLElement>('.xp-group').forEach((g) => {
         let shown = 0;
         g.querySelectorAll<HTMLElement>('.xc').forEach((c) => {
           c.hidden = theme !== null && !(c.dataset.themes || '').split(' ').includes(theme);
-          if (!c.hidden) shown++;
+          if (c.hidden) return;
+          shown++;
+          if (c.classList.contains('xc-nb')) notebooks++; else interactive++;
         });
         g.hidden = shown === 0;
-        n += shown;
       });
-      box.hidden = index.hidden = also.hidden = false;
+      unthemed.forEach((el) => (el.hidden = theme !== null));
+      box.hidden = theme === null;
       if (theme) {
-        index.hidden = also.hidden = true;
-        document.getElementById('xp-filter-text')!.textContent = `Showing the ${n} interactive page${n === 1 ? '' : 's'} on ${titles[theme]}.`;
+        const parts = [interactive && `${interactive} interactive page${interactive === 1 ? '' : 's'}`, notebooks && `${notebooks} notebook${notebooks === 1 ? '' : 's'} without one yet`].filter(Boolean);
+        document.getElementById('xp-filter-text')!.textContent = parts.length ? `Showing ${parts.join(' and ')} on ${titles[theme]}.` : `There is nothing to explore on ${titles[theme]} yet.`;
         (document.getElementById('xp-filter-back') as HTMLAnchorElement).hash = theme;
-      } else box.hidden = true;
+      }
     }
     document.getElementById('xp-filter-clear')!.addEventListener('click', (e) => {
       e.preventDefault();
@@ -79,13 +196,19 @@ const groups = Object.entries(AREAS).map(([id, a]) => ({ id, ...a, pages: pages.
   .xp-index a { padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: 13px; color: var(--ink); }
   .xp-index a:hover, .xp-index a:focus-visible { border-color: var(--teal); }
   .xp-index span { color: var(--teal); font-weight: 650; margin-left: 4px; }
+  .xp-filter { background: #e6f2f3; border-radius: 4px; padding: 10px 14px; font-size: 14px; color: var(--ink); margin: 0 0 30px; }
+  .xp-filter a { color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
+  .nb-status { margin: 0 0 18px; font-size: 12px; color: var(--muted); }
   .xp-group { margin-bottom: 48px; scroll-margin-top: 20px; }
   .xp-lead { margin: 6px 0 0; color: var(--body); font-size: 14px; }
   .xp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .xp-filter { background: #e6f2f3; border-radius: 4px; padding: 10px 14px; font-size: 14px; color: var(--ink); margin: 0 0 30px; }
-  .xp-filter a { color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
+  .xp-part { border-top: 1px solid var(--line); padding-top: 40px; margin-top: 24px; margin-bottom: 56px; scroll-margin-top: 20px; }
+  .xp-part-h { font-size: clamp(28px, 3vw, 38px); letter-spacing: -.035em; margin: 6px 0 14px; }
+  .xp-sub-h { font-size: 22px; letter-spacing: -.025em; margin: 0; }
+  .xp-part .catalogue-group { margin-top: 40px; scroll-margin-top: 20px; }
   .xp-also { border-top: 1px solid var(--line); padding-top: 24px; }
   .xp-also ul { margin: 0; padding-left: 18px; color: var(--body); font-size: 14px; line-height: 1.8; }
+  .xp-also a { color: var(--teal); }
   @media (max-width: 1080px) { .xp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 575px) { .xp-grid { grid-template-columns: 1fr; } }
 </style>

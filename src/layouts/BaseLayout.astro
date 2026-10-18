@@ -9,7 +9,7 @@ const year = new Date().getFullYear();
 const asset = (path: string) => `${root}${path.replace(/^\//, '')}`;
 const nav = [
   ['Research', 'research/'], ['Explore', 'explore/'], ['People', 'people/'], ['Software', 'software/'],
-  ['Teaching', 'teaching/'], ['Talks', 'talks/'], ['MPC', 'mpc/'], ['CV', 'cv/']
+  ['Talks', 'talks/'], ['MPC', 'mpc/'], ['CV', 'cv/']
 ];
 ---
 <!doctype html>
@@ -46,7 +46,7 @@ const nav = [
     <footer class="site-footer">
       <div class="content-width footer-content">
         <div><strong>Matthew Payne</strong><span>Astrophysics · Small-body dynamics · Scientific computing</span><span class="footer-legal">© {year} Matthew Payne. Text and images all rights reserved; code MIT licensed.</span></div>
-        <div class="footer-links"><a href={asset('teaching/')}>Tutorials</a><a href={asset('changelog/')}>Changelog</a><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href={site.cfaProfile} target="_blank" rel="noopener noreferrer">CfA profile ↗</a></div>
+        <div class="footer-links"><a href={asset('explore/#tutorials')}>Tutorials</a><a href={asset('changelog/')}>Changelog</a><a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href={site.cfaProfile} target="_blank" rel="noopener noreferrer">CfA profile ↗</a></div>
       </div>
     </footer>
     <script is:inline>

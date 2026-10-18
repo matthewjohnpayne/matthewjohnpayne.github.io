@@ -83,8 +83,7 @@ const href = (h: string) => (h.startsWith('/') ? `${root}${h.slice(1)}` : h);
               {g.summary && <p>{g.summary}</p>}
               {(g.interactive.length > 0 || g.notebooks.length > 0) && (
                 <p class="rp-explore">
-                  {g.interactive.length > 0 && <a href={`${root}explore/#theme=${g.id}`}>▶ {plural(g.interactive.length, 'interactive page')} →</a>}
-                  {g.notebooks.length > 0 && g.area && <a href={`${root}teaching/#nb-${g.area}`}>{plural(g.notebooks.length, 'notebook')} →</a>}
+                  <a href={`${root}explore/#theme=${g.id}`}>▶ Explore this theme: {[g.interactive.length && plural(g.interactive.length, 'interactive page'), g.notebooks.length && plural(g.notebooks.length, 'notebook')].filter(Boolean).join(', ')} →</a>
                 </p>
               )}
               {g.related.length > 0 && (
