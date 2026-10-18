@@ -78,7 +78,8 @@ ${cv.service.map((s) => `\\item {\\small ${esc(s)}}`).join('\n')}
 \end{itemize}
 
 \cvsection{Computing}
-{\small ${cv.skills.map(esc).join(' · ')}}
+{\small ${cv.skills.map(esc).join(' · ')}}\par\vspace{4pt}
+Software: \href{${cv.website}software/}{${esc(cv.website.replace(/^https:\/\//, ''))}software}.
 
 \vfill
 {\footnotesize\color{muted}Last updated ${esc(cv.updated)}. The latest version is at \href{${cv.website}cv/}{${esc(cv.website.replace(/^https:\/\//, ''))}cv}.}
