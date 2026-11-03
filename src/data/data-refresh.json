@@ -1,0 +1,9 @@
+{
+  "description": "Written by .github/workflows/data-refresh.yml: when the build-time data were last refreshed, and which steps succeeded.",
+  "date": "2026-11-03",
+  "steps": {
+    "mpc-today": "success",
+    "mpc-stats": "success",
+    "card-figures": "success"
+  }
+}

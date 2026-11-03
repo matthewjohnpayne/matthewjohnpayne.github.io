@@ -1,34 +1,34 @@
 {
-  "cutoff_time": "2026-10-01T21:00:00+00:00",
-  "designated_objects": 1609195,
+  "cutoff_time": "2026-11-03T12:00:00+00:00",
+  "designated_objects": 1617604,
   "designated_this_half_month": 0,
   "designated_this_month": 0,
-  "designated_this_year": 14738,
+  "designated_this_year": 20733,
   "identifications": 490506,
   "mpec_counts": {
-    "DOU": 10269,
+    "DOU": 10301,
     "PHA": 162,
     "TNO": 38,
-    "comet": 6574,
+    "comet": 6587,
     "critical": 125,
     "distant": 189,
     "editorial": 52,
     "identification": 734,
     "retraction": 15,
-    "single_object": 53683,
-    "total": 72806,
+    "single_object": 54018,
+    "total": 73187,
     "unusual": 228
   },
-  "named_comets": 4394,
+  "named_comets": 4400,
   "named_interstellar": 3,
   "named_minor_planets": 26525,
   "named_natural_satellites": 163,
-  "neocp_objects": 31,
+  "neocp_objects": 98,
   "numbered_objects": 896611,
   "object_type_counts": {
     "Comet": {
       "numbered": 507,
-      "unnumbered": 4075
+      "unnumbered": 4081
     },
     "Comet Fragment": {
       "numbered": 142,
@@ -44,7 +44,7 @@
     },
     "Minor Planet": {
       "numbered": 895901,
-      "unnumbered": 708227
+      "unnumbered": 716630
     },
     "Natural Satellite of Planet": {
       "numbered": 182,
@@ -55,66 +55,78 @@
       "unnumbered": 11
     }
   },
-  "obs_deleted": 1655205,
-  "obs_duplicated": 2404254,
-  "obs_itf": 9117535,
-  "obs_published": 546317817,
-  "obscodes": 2729,
+  "obs_deleted": 1689450,
+  "obs_duplicated": 2414411,
+  "obs_itf": 9053440,
+  "obs_published": 551244635,
+  "obscodes": 2734,
   "orbit_type_counts": {
     "Amor": {
       "numbered": 1572,
-      "unnumbered": 13298
+      "unnumbered": 13409
     },
     "Apollo": {
       "numbered": 2001,
-      "unnumbered": 22229
+      "unnumbered": 22395
     },
     "Aten": {
       "numbered": 293,
-      "unnumbered": 3188
+      "unnumbered": 3223
     },
     "Atira": {
       "numbered": 9,
       "unnumbered": 31
     },
     "Centaur": {
-      "numbered": 166,
-      "unnumbered": 355
+      "numbered": 164,
+      "unnumbered": 369
     },
     "Hyperbolic": {
-      "numbered": 1,
+      "numbered": 0,
       "unnumbered": 1
     },
     "Jovian Trojan": {
       "numbered": 10629,
-      "unnumbered": 5648
+      "unnumbered": 5712
     },
     "Jupiter Coupled": {
-      "numbered": 1673,
-      "unnumbered": 3536
+      "numbered": 1674,
+      "unnumbered": 3562
+    },
+    "Long Period Comet": {
+      "numbered": 2,
+      "unnumbered": 1080
     },
     "Main Belt": {
       "numbered": 862549,
-      "unnumbered": 593309
+      "unnumbered": 600059
     },
     "Mars Crosser": {
       "numbered": 9195,
-      "unnumbered": 21152
+      "unnumbered": 21365
     },
     "Middle Other": {
-      "numbered": 6774,
-      "unnumbered": 5562
+      "numbered": 6773,
+      "unnumbered": 5645
+    },
+    "Natural Satellite": {
+      "numbered": 2,
+      "unnumbered": 136
     },
     "Neptune Trojan": {
-      "numbered": 12,
+      "numbered": 13,
       "unnumbered": 42
     },
+    "Short Period Comet": {
+      "numbered": 491,
+      "unnumbered": 376
+    },
     "TNO": {
-      "numbered": 1037,
-      "unnumbered": 6170
+      "numbered": 1038,
+      "unnumbered": 7201
     }
   },
-  "pccp_objects": 12,
-  "program_codes": 2310,
-  "updated_at": "2026-10-01T21:05:26.102738+00:00"
+  "pccp_objects": 11,
+  "program_codes": 2341,
+  "updated_at": "2026-11-03T12:05:26.473567+00:00"
 }
